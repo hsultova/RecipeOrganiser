@@ -7,4 +7,15 @@
     <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
+	<ItemGroup>
+    <ProjectReference Include="..\RecipeOrganiser.Controls\RecipeOrganiser.Controls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\cart.png" />
+    <Resource Include="Images\home.png" />
+    <Resource Include="Images\notebook-multiple.png" />
+    <Resource Include="Images\plus.png" />
+  </ItemGroup>
+
 </Project>

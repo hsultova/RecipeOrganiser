@@ -4,9 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RecipeOrganiser"
+		xmlns:controls="clr-namespace:RecipeOrganiser.Controls;assembly=RecipeOrganiser.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
-    </Grid>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<controls:NavigationMenu 
+			Background="#D3D3CB" 
+			SelectionColor="#ADA7A7" 
+			HorizontalAlignment="Left" 
+			ButtonIconColor="Black" 
+			MenuItemForeground="Black" 
+			SelectionIndicatorColor="#D37506">
+			<controls:NavigationMenu.Items>
+				<controls:NavigationMenuItem Icon="/Images/home.png" Text="Home"/>
+				<controls:NavigationMenuItem Icon="/Images/plus.png" Text="New Recipe"/>
+				<controls:NavigationMenuItem Icon="/Images/notebook-multiple.png" Text="Categories"/>
+				<controls:NavigationMenuItem Icon="/Images/cart.png" Text="Shopping List"/>
+			</controls:NavigationMenu.Items>
+		</controls:NavigationMenu>
+	</Grid>
 </Window>
