@@ -4,15 +4,36 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RecipeOrganiser"
+		xmlns:viewmodels="clr-namespace:RecipeOrganiser.ViewModels"
+		xmlns:views="clr-namespace:RecipeOrganiser.Views"
 		xmlns:controls="clr-namespace:RecipeOrganiser.Controls;assembly=RecipeOrganiser.Controls"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+		mc:Ignorable="d"
+		Title="RecipeOrganiser" 
+		Width="800" Height="600"
+		MinWidth="730" MinHeight="420"> 
+
+	<Window.Resources>
+		<DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+			<views:HomeView/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewmodels:NewRecipeViewModel}">
+			<views:NewRecipeView/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewmodels:AddIngredientViewModel}">
+			<views:AddIngredientView/>
+		</DataTemplate>
+	</Window.Resources>
+
+	<Window.DataContext>
+		<viewmodels:ApplicationViewModel/>
+	</Window.DataContext>
 
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition/>
+			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
+		
 		<controls:NavigationMenu 
 			Background="#D3D3CB" 
 			SelectionColor="#ADA7A7" 
@@ -21,11 +42,13 @@
 			MenuItemForeground="Black" 
 			SelectionIndicatorColor="#D37506">
 			<controls:NavigationMenu.Items>
-				<controls:NavigationMenuItem Icon="/Images/home.png" Text="Home"/>
-				<controls:NavigationMenuItem Icon="/Images/plus.png" Text="New Recipe"/>
-				<controls:NavigationMenuItem Icon="/Images/notebook-multiple.png" Text="Categories"/>
-				<controls:NavigationMenuItem Icon="/Images/cart.png" Text="Shopping List"/>
+				<controls:NavigationMenuItem Icon="/Images/home.png" Text="Home" SelectionCommand="{Binding HomeCommand}" ToolTip="Home"/>
+				<controls:NavigationMenuItem Icon="/Images/plus.png" Text="New Recipe" SelectionCommand="{Binding NewRecipeCommand}" ToolTip="New Recipe"/>
+				<controls:NavigationMenuItem Icon="/Images/notebook-multiple.png" Text="Categories" ToolTip="Categories"/>
+				<controls:NavigationMenuItem Icon="/Images/cart.png" Text="Shopping List" ToolTip="Shopping List"/>
 			</controls:NavigationMenu.Items>
 		</controls:NavigationMenu>
+
+		<ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}"/>
 	</Grid>
 </Window>

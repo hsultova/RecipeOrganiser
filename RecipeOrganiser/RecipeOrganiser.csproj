@@ -14,8 +14,11 @@
   <ItemGroup>
     <Resource Include="Images\cart.png" />
     <Resource Include="Images\home.png" />
+    <Resource Include="Images\image-placeholder.png" />
     <Resource Include="Images\notebook-multiple.png" />
+    <Resource Include="Images\plus-circle.png" />
     <Resource Include="Images\plus.png" />
+    <Resource Include="Images\save.png" />
   </ItemGroup>
 
 </Project>
