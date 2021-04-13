@@ -8,14 +8,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-	<WrapPanel>
-		<TextBlock>Name</TextBlock>
-		<ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding Categories}" IsEditable="True" StaysOpenOnEdit="True" Width="200" VerticalAlignment="Top"/>
-		<TextBlock>Name</TextBlock>
-		<TextBox Width="30">To be Numeric</TextBox>
-		<TextBlock>Weight</TextBlock>
-		<TextBox Width="30">To be Numeric</TextBox>
-		<controls:NumericUpDownTextBox></controls:NumericUpDownTextBox>
+	<WrapPanel Margin="5">
+		<TextBlock Style="{StaticResource FormText}" Margin="0,0,10,0">Name</TextBlock>
+		<ComboBox ItemsSource="{Binding Categories}" IsEditable="True" StaysOpenOnEdit="True" Width="200" VerticalAlignment="Top" Margin="0,0,20,0"/>
+		<TextBlock  Style="{StaticResource FormText}" Margin="0,0,10,0">Quantity</TextBlock>
+		<controls:NumericUpDownTextBox Value="{Binding Value}" Margin="0,0,20,0"/>
+		<TextBlock  Style="{StaticResource FormText}"  Margin="0,0,10,0">Weight</TextBlock>
+		<controls:NumericUpDownTextBox Value="{Binding Value}" ValueType="Decimal" Margin="0,0,20,0"/>
+		<ComboBox ItemsSource="{Binding Categories}" IsEditable="True" StaysOpenOnEdit="True" Width="80" VerticalAlignment="Top" Margin="0,0,20,0"/>
 	</WrapPanel>
 
 </UserControl>

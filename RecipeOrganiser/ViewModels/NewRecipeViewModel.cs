@@ -1,4 +1,7 @@
-﻿using RecipeOrganiser.ViewModels.Base;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
+using RecipeOrganiser.Utils.General;
+using RecipeOrganiser.ViewModels.Base;
 
 namespace RecipeOrganiser.ViewModels
 {
@@ -59,5 +62,24 @@ namespace RecipeOrganiser.ViewModels
 				OnPropertyChanged(nameof(ImagePath));
 			}
 		}
+
+		private ObservableCollection<AddIngredientViewModel> _addIngredientControls = new ObservableCollection<AddIngredientViewModel>();
+		public ObservableCollection<AddIngredientViewModel> AddIngredientControls
+		{
+			get
+			{
+				return _addIngredientControls;
+			}
+			set
+			{
+				_addIngredientControls = value;
+				OnPropertyChanged(nameof(AddIngredientControls));
+			}
+		}
+
+
+		#region Commands
+		public ICommand AddIngredientCommand => new RelayCommand(_ => { AddIngredientControls.Add(new AddIngredientViewModel()); });
+		#endregion
 	}
 }
