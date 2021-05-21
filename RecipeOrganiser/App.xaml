@@ -1,14 +1,29 @@
 ﻿<Application x:Class="RecipeOrganiser.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:RecipeOrganiser"
-             StartupUri="MainWindow.xaml">
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:local="clr-namespace:RecipeOrganiser"
+			xmlns:viewmodels="clr-namespace:RecipeOrganiser.ViewModels"
+			xmlns:views="clr-namespace:RecipeOrganiser.Views"
+			Startup="Application_Startup"
+			Exit="Application_Exit">
 	<Application.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Resources/Styles/TextBoxStyles.xaml"/>
 				<ResourceDictionary Source="Resources/Styles/TextBlockStyles.xaml"/>
+				<ResourceDictionary>
+					<DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+						<views:HomeView/>
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type viewmodels:NewRecipeViewModel}">
+						<views:NewRecipeView/>
+					</DataTemplate>
+					<DataTemplate DataType="{x:Type viewmodels:AddIngredientViewModel}">
+						<views:AddIngredientView/>
+					</DataTemplate>
+				</ResourceDictionary>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
+
 	</Application.Resources>
 </Application>

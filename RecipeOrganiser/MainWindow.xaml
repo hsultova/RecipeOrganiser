@@ -4,28 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RecipeOrganiser"
-		xmlns:viewmodels="clr-namespace:RecipeOrganiser.ViewModels"
-		xmlns:views="clr-namespace:RecipeOrganiser.Views"
 		xmlns:controls="clr-namespace:RecipeOrganiser.Controls;assembly=RecipeOrganiser.Controls"
 		mc:Ignorable="d"
 		Title="RecipeOrganiser" 
 		MinWidth="960" MinHeight="720"> 
-
-	<Window.Resources>
-		<DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
-			<views:HomeView/>
-		</DataTemplate>
-		<DataTemplate DataType="{x:Type viewmodels:NewRecipeViewModel}">
-			<views:NewRecipeView/>
-		</DataTemplate>
-		<DataTemplate DataType="{x:Type viewmodels:AddIngredientViewModel}">
-			<views:AddIngredientView/>
-		</DataTemplate>
-	</Window.Resources>
-
-	<Window.DataContext>
-		<viewmodels:ApplicationViewModel/>
-	</Window.DataContext>
 
 	<Grid>
 		<Grid.ColumnDefinitions>
