@@ -42,7 +42,7 @@ namespace RecipeOrganiser.Resources.Controls
 		/// Identifies <see cref="Value" dependency property/>
 		/// </summary>
 		public static readonly DependencyProperty ValueProperty =
-			DependencyProperty.Register("Value", typeof(decimal), typeof(NumericUpDownTextBox), new PropertyMetadata(0.0m, new PropertyChangedCallback(OnValuePropertyChanged)));
+			DependencyProperty.Register("Value", typeof(decimal), typeof(NumericUpDownTextBox), new FrameworkPropertyMetadata(0.0m, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnValuePropertyChanged)));
 
 		/// <summary>
 		/// Handles changes to Value property.
