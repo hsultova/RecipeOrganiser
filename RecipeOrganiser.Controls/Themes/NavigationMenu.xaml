@@ -31,7 +31,9 @@
 							Grid.Row="1" 
 							ItemsSource="{TemplateBinding Items}" 
 							ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-							Style="{StaticResource NavigationMenuListBox}">
+							Style="{StaticResource NavigationMenuListBox}"
+							SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=local:NavigationMenu}, Path=SelectedMenuItem}"
+							IsSynchronizedWithCurrentItem="True">
 						</ListBox>
 					</Grid>
 				</ControlTemplate>

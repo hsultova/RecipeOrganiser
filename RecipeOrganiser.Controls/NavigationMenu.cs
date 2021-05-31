@@ -112,5 +112,22 @@ namespace RecipeOrganiser.Controls
 		/// </summary>
 		public static readonly DependencyProperty SelectionIndicatorColorProperty =
 			DependencyProperty.Register("SelectionIndicatorColor", typeof(Brush), typeof(NavigationMenuItem), new PropertyMetadata(Brushes.White));
+
+		/// <summary>
+		/// Indicates the selected menu item.
+		/// </summary>
+		public NavigationMenuItem SelectedMenuItem
+		{
+			get { return (NavigationMenuItem)GetValue(SelectedMenuItemProperty); }
+			set { SetValue(SelectedMenuItemProperty, value); }
+		}
+
+		/// <summary>
+		/// Identifies <see cref="SelectedMenuItem"/> dependency property.
+		/// </summary>
+		public static readonly DependencyProperty SelectedMenuItemProperty = DependencyProperty.Register("SelectedMenuItem",
+			typeof(NavigationMenuItem), 
+			typeof(NavigationMenu), 
+			new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 	}
 }
