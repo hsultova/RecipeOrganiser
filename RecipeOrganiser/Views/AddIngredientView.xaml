@@ -10,12 +10,41 @@
 
 	<WrapPanel Margin="5">
 		<TextBlock Style="{StaticResource FormText}" Margin="0,0,10,0">Name</TextBlock>
-		<ComboBox ItemsSource="{Binding Categories}" IsEditable="True" StaysOpenOnEdit="True" Width="200" VerticalAlignment="Top" Margin="0,0,20,0"/>
+		<ComboBox 
+			ItemsSource="{Binding Ingredients}" 
+			SelectedItem="{Binding Ingredient}" 
+			Text="{Binding IngredientName}" 
+			TextSearch.TextPath="Name" 
+			IsEditable="True" 
+			StaysOpenOnEdit="True" 
+			Width="200" 
+			VerticalAlignment="Top" 
+			Margin="0,0,20,0">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Name}"/>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
 		<TextBlock  Style="{StaticResource FormText}" Margin="0,0,10,0">Quantity</TextBlock>
-		<controls:NumericUpDownTextBox Value="{Binding Value}" Margin="0,0,20,0"/>
+		<controls:NumericUpDownTextBox Value="{Binding Quantity}" Margin="0,0,20,0"/>
 		<TextBlock  Style="{StaticResource FormText}"  Margin="0,0,10,0">Weight</TextBlock>
-		<controls:NumericUpDownTextBox Value="{Binding Value}" ValueType="Decimal" Margin="0,0,20,0"/>
-		<ComboBox ItemsSource="{Binding Categories}" IsEditable="True" StaysOpenOnEdit="True" Width="80" VerticalAlignment="Top" Margin="0,0,20,0"/>
+		<controls:NumericUpDownTextBox Value="{Binding Weight}" ValueType="Decimal" Margin="0,0,20,0"/>
+		<ComboBox 
+			ItemsSource="{Binding UnitsOfMeasurements}" 
+			SelectedItem="{Binding UnitOfMeasurement}" 
+			Text="{Binding UnitOfMeasurementName}" 
+			TextSearch.TextPath="Name" 
+			IsEditable="True" 
+			StaysOpenOnEdit="True" 
+			Width="80" 
+			VerticalAlignment="Top" 
+			Margin="0,0,20,0">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Name}"/>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
 	</WrapPanel>
-
 </UserControl>
