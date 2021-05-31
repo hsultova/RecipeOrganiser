@@ -7,29 +7,31 @@
 		xmlns:controls="clr-namespace:RecipeOrganiser.Controls;assembly=RecipeOrganiser.Controls"
 		mc:Ignorable="d"
 		Title="RecipeOrganiser" 
-		MinWidth="960" MinHeight="720"> 
+		MinWidth="960" MinHeight="720">
 
 	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto"/>
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
-		
+
 		<controls:NavigationMenu 
 			Background="#D3D3CB" 
 			SelectionColor="#ADA7A7" 
 			HorizontalAlignment="Left" 
 			ButtonIconColor="Black" 
 			MenuItemForeground="Black" 
-			SelectionIndicatorColor="#D37506">
-			<controls:NavigationMenu.Items>
-				<controls:NavigationMenuItem Icon="/Images/home.png" Text="Home" SelectionCommand="{Binding HomeCommand}" ToolTip="Home"/>
-				<controls:NavigationMenuItem Icon="/Images/plus.png" Text="New Recipe" SelectionCommand="{Binding NewRecipeCommand}" ToolTip="New Recipe"/>
-				<controls:NavigationMenuItem Icon="/Images/notebook-multiple.png" Text="Categories" ToolTip="Categories"/>
-				<controls:NavigationMenuItem Icon="/Images/cart.png" Text="Shopping List" ToolTip="Shopping List"/>
-			</controls:NavigationMenu.Items>
-		</controls:NavigationMenu>
-
+			SelectionIndicatorColor="#D37506"
+			SelectedMenuItem="{Binding SelectedMenuItem}"
+			Items="{Binding Items}"/>
 		<ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}"/>
+		<StatusBar Grid.Row="1" Grid.ColumnSpan="2">
+			<TextBlock Text="{Binding StatusMessage}"></TextBlock>
+		</StatusBar>
 	</Grid>
 </Window>
