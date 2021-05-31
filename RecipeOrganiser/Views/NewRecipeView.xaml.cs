@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using RecipeOrganiser.ViewModels;
 
 namespace RecipeOrganiser.Views
 {
@@ -21,6 +14,19 @@ namespace RecipeOrganiser.Views
 		public NewRecipeView()
 		{
 			InitializeComponent();
+		}
+
+		private void Image_Drop(object sender, DragEventArgs e)
+		{
+			string[] filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+			//Todo: handle more then one file
+			var filePath = filePaths.FirstOrDefault();
+			byte[] data = File.ReadAllBytes(filePath);
+
+			var vm = (NewRecipeViewModel)this.DataContext;
+			vm.Image = data;
+			vm.ImagePath = filePath;
 		}
 	}
 }
