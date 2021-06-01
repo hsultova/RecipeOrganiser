@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RecipeOrganiser.Data.DbContexts;
 using RecipeOrganiser.Data.Repositories;
+using RecipeOrganiser.Utils;
 using RecipeOrganiser.ViewModels;
 
 namespace RecipeOrganiser
@@ -20,6 +21,8 @@ namespace RecipeOrganiser
 			_host = new HostBuilder()
 				.ConfigureServices((hostContext, services) =>
 				{
+					services.AddScoped<IMapper, Mapper>();
+
 					services.AddDbContext<RecipeOrganiserDbContext>();
 					services.AddScoped<IRecipeRepository, RecipeRepository>();
 					services.AddScoped<ICategoryRepository, CategoryRepository>();
