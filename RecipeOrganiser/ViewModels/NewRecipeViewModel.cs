@@ -186,6 +186,7 @@ namespace RecipeOrganiser.ViewModels
 		private void AddIngredient(object obj)
 		{
 			AddIngredientControls.Add(new AddIngredientViewModel(_ingredientDTO));
+			_canExit = false;
 		}
 
 		private void Save(object obj)
@@ -265,11 +266,6 @@ namespace RecipeOrganiser.ViewModels
 					_ingredientRepository.Create(recipeIngredient.Ingredient);
 				}
 
-				if (recipeIngredient.UnitOfMeasurement?.Id == 0)
-				{
-					_unitOfMeasurementRepository.Create(recipeIngredient.UnitOfMeasurement);
-				}
-
 				_recipeIngredientRepository.Create(recipeIngredient);
 			}
 
@@ -287,14 +283,7 @@ namespace RecipeOrganiser.ViewModels
 				Categories.Add(category);
 			}
 
-			var ingredientDTO = new IngredientDTO
-			{
-				Ingredients = _ingredientRepository.GetAll(),
-				UnitsOfMeasurement = _unitOfMeasurementRepository.GetAll()
-			};
-
-			_ingredientDTO.Ingredients = ingredientDTO.Ingredients;
-			_ingredientDTO.UnitsOfMeasurement = ingredientDTO.UnitsOfMeasurement;
+			_ingredientDTO.Ingredients = _ingredientRepository.GetAll();
 		}
 
 		public override void Clear()
@@ -305,6 +294,8 @@ namespace RecipeOrganiser.ViewModels
 			CategoryName = string.Empty;
 			ImagePath = PlaceholderImagePath;
 			AddIngredientControls.Clear();
+
+			_canExit = true;
 		}
 
 		public override bool CanExit()

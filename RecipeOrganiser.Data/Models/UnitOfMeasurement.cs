@@ -9,5 +9,10 @@
 		/// Name of the unit
 		/// </summary>
 		public string Name { get; set; }
+
+		/// <summary>
+		/// Short name of the unit
+		/// </summary>
+		public string ShortName { get; set; }
 	}
 }
