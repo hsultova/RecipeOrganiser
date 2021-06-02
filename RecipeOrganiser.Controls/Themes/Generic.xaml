@@ -4,5 +4,6 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="RecipeOrganiser.Controls;component/Themes/NavigationMenu.xaml"></ResourceDictionary>
 		<ResourceDictionary Source="RecipeOrganiser.Controls;component/Themes/NavigationMenuItem.xaml"></ResourceDictionary>
+		<ResourceDictionary Source="RecipeOrganiser.Controls;component/Themes/SearchTextBox.xaml"></ResourceDictionary>
 	</ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -5,4 +5,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Resource Include="Images\close-thick.png" />
+    <Resource Include="Images\magnify.png" />
+  </ItemGroup>
+
 </Project>
