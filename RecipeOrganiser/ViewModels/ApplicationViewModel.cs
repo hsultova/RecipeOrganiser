@@ -23,7 +23,7 @@ namespace RecipeOrganiser.ViewModels
 		{
 			_newRecipeViewModel = newRecipeViewModel;
 			_homeViewModel = homeViewModel;
-			CurrentViewModel = _newRecipeViewModel;
+			CurrentViewModel = _homeViewModel;
 
 			CreateNavigationMenu(out List<NavigationMenuItem> items, out Dictionary<BaseViewModel, NavigationMenuItem> navigationMappings);
 			Items = items;

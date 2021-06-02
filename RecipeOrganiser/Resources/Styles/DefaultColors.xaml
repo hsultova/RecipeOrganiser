@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<!--Images-->
+	<BitmapImage x:Key="SearchImage" UriSource="/Images/cart.png"/>
+
+	<!--Colors-->
+	<Color x:Key="PewterColor">#D3D3CB</Color>
+	<Color x:Key="TaupeColor">#ADA7A7</Color>
+	<Color x:Key="BlackColor">Black</Color>
+	<Color x:Key="OrangeColor">#D37506</Color>
+	<Color x:Key="RedOrangeColor">#9F2B00</Color>
+
+	<SolidColorBrush x:Key="Background" Color="{DynamicResource PewterColor}"/>
+	<SolidColorBrush x:Key="SelectionBackground" Color="{DynamicResource TaupeColor}"/>
+	<SolidColorBrush x:Key="ButtonIcon" Color="{DynamicResource BlackColor}"/>
+	<SolidColorBrush x:Key="MenuItemForeground" Color="{DynamicResource BlackColor}"/>
+	<SolidColorBrush x:Key="SelectionIndicator" Color="{DynamicResource OrangeColor}"/>
+
+	<SolidColorBrush x:Key="SearchTextBoxBackground" Color="{DynamicResource PewterColor}"/>
+	<SolidColorBrush x:Key="SearchTextBoxForeground" Color="{DynamicResource BlackColor}"/>
+	<SolidColorBrush x:Key="SearchTextBoxBorder"  Color="{DynamicResource TaupeColor}"/>
+	<SolidColorBrush x:Key="SearchTextBoxBorderBackground"  Color="{DynamicResource PewterColor}"/>
+	<SolidColorBrush x:Key="SearchTextBoxCaret"  Color="{DynamicResource OrangeColor}"/>
+	<SolidColorBrush x:Key="SearchTextBoxSelection"  Color="{DynamicResource RedOrangeColor}"/>
+	<SolidColorBrush x:Key="FontForeground"  Color="{DynamicResource BlackColor}"/>
+	<SolidColorBrush x:Key="SearchButtonOnHoverBackground"  Color="{DynamicResource TaupeColor}"/>
+
+</ResourceDictionary>

@@ -3,43 +3,49 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:RecipeOrganiser.Views"
-             mc:Ignorable="d" 
+             xmlns:local="clr-namespace:RecipeOrganiser.Views" xmlns:controls="clr-namespace:RecipeOrganiser.Controls;assembly=RecipeOrganiser.Controls"
+			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-		<ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="20" Padding="20" SelectionMode="Extended">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		
+		<controls:SearchTextBox 
+			Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+			MinWidth="200" 
+			Margin="0,20,20,0" 
+			SearchIconBorderColor="{DynamicResource Background}"
+			SearchIconBackgroundMouseDownColor="{DynamicResource SelectionBackground}"
+			SearchCommand="{Binding SearchCommand}"
+			Style="{DynamicResource SearchTextBox}"/>
+
+		<ListBox Grid.Row="1"
+				 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				 Margin="20" Padding="20" SelectionMode="Extended" 
+				 ItemsSource="{Binding RecipesView}">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
 					<WrapPanel/>
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
-			<ListBoxItem>
-				<Image Source="/Images/Image-placeholder.png" Width="200"></Image>
-			</ListBoxItem>
-			<ListBoxItem>
-				<Image Source="/Images/Image-placeholder.png" Width="200"></Image>
-			</ListBoxItem>
-			<ListBoxItem>
-				<Image Source="/Images/Image-placeholder.png" Width="200"></Image>
-			</ListBoxItem>
-			<ListBoxItem>
-				<Image Source="/Images/Image-placeholder.png" Width="200"></Image>
-			</ListBoxItem>
-			<ListBoxItem>
-				<Image Source="/Images/Image-placeholder.png" Width="200"></Image>
-			</ListBoxItem>
-			<ListBoxItem>
-				<Image Source="/Images/Image-placeholder.png" Width="200"></Image>
-			</ListBoxItem>
-			<ListBoxItem>
-				<Image Source="/Images/Image-placeholder.png" Width="200"></Image>
-			</ListBoxItem>
-			<ListBoxItem>
-				<Image Source="/Images/Image-placeholder.png" Width="200"></Image>
-			</ListBoxItem>
-			<ListBoxItem>
-				<Image Source="/Images/Image-placeholder.png" Width="200"></Image>
-			</ListBoxItem>
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel>
+						<Image Width="200">
+							<Image.Source>
+								<Binding Path="Image" >
+									<Binding.TargetNullValue>
+										<BitmapImage UriSource="/Images/Image-placeholder.png" />
+									</Binding.TargetNullValue>
+								</Binding>
+							</Image.Source>
+						</Image>
+						<TextBlock Text="{Binding Name}"/>
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
 		</ListBox>
-    </Grid>
+	</Grid>
 </UserControl>

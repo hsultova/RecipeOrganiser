@@ -4,4 +4,14 @@
 		<Setter Property="Width" Value="300"/>
 		<Setter Property="Margin" Value="0,0,30,0"/>
 	</Style>
+
+	<Style x:Key="SearchTextBox" TargetType="TextBox">
+		<Setter Property="Background" Value="{DynamicResource SearchTextBoxBackground}"/>
+		<Setter Property="SelectionBrush" Value="{DynamicResource SearchTextBoxBorder}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource SearchTextBoxBorder}"/>
+		<Setter Property="CaretBrush" Value="{DynamicResource SearchTextBoxCaret}"/>
+		<Setter Property="SelectionBrush" Value="{DynamicResource SearchTextBoxSelection}"/>
+		<Setter Property="Foreground" Value="{DynamicResource SearchTextBoxForeground}"/>
+		<Setter Property="HorizontalAlignment" Value="Right"/>
+	</Style>
 </ResourceDictionary>

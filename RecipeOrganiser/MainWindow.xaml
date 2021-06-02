@@ -21,11 +21,11 @@
 		</Grid.ColumnDefinitions>
 
 		<controls:NavigationMenu 
-			Background="#D3D3CB" 
-			SelectionColor="#ADA7A7" 
+			Background="{DynamicResource Background}" 
+			SelectionColor="{DynamicResource SelectionBackground}" 
 			HorizontalAlignment="Left" 
-			ButtonIconColor="Black" 
-			MenuItemForeground="Black" 
+			ButtonIconColor="{DynamicResource ButtonIcon}" 
+			MenuItemForeground="{DynamicResource MenuItemForeground}" 
 			SelectionIndicatorColor="#D37506"
 			SelectedMenuItem="{Binding SelectedMenuItem}"
 			Items="{Binding Items}"/>
