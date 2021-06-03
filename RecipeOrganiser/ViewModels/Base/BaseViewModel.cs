@@ -81,5 +81,12 @@ namespace RecipeOrganiser.ViewModels.Base
 		public virtual void Clear()
 		{
 		}
+
+		/// <summary>
+		/// Refreshes view model data.
+		/// </summary>
+		public virtual void Refresh()
+		{
+		}
 	}
 }

@@ -58,5 +58,18 @@ namespace RecipeOrganiser.ViewModels
 
 			return ((Recipe)obj).Name.ToLower().Contains(SearchText.ToLower());
 		}
+
+		public override void Refresh()
+		{
+			var recipes = _recipeRepository.GetAll();
+			Recipes.Clear();
+
+			foreach(Recipe recipe in recipes)
+			{
+				Recipes.Add(recipe);
+			}
+
+			base.Refresh();
+		}
 	}
 }

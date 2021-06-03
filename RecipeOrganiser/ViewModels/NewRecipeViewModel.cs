@@ -273,7 +273,7 @@ namespace RecipeOrganiser.ViewModels
 			_recipeRepository.SaveChanges();
 		}
 
-		public void Refresh()
+		public override void Refresh()
 		{
 			var categories = _categoryRepository.GetAll();
 
@@ -284,6 +284,8 @@ namespace RecipeOrganiser.ViewModels
 			}
 
 			_ingredientDTO.Ingredients = _ingredientRepository.GetAll();
+
+			base.Refresh();
 		}
 
 		public override void Clear()

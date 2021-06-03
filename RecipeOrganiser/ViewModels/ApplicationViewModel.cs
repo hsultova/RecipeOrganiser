@@ -52,7 +52,10 @@ namespace RecipeOrganiser.ViewModels
 					_currentViewModel.Clear();
 				}
 
-				SetBackingFieldProperty<BaseViewModel>(ref _currentViewModel, value, nameof(CurrentViewModel));
+				if(SetBackingFieldProperty<BaseViewModel>(ref _currentViewModel, value, nameof(CurrentViewModel)))
+				{
+					CurrentViewModel.Refresh();
+				}
 			}
 		}
 
