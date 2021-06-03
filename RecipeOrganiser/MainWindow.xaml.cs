@@ -25,6 +25,16 @@ namespace RecipeOrganiser
 		{
 			InitializeComponent();
 			this.DataContext = appViewModel;
+			Dispatcher.ShutdownStarted += OnDispatcherShutDownStarted;
+		}
+
+		private void OnDispatcherShutDownStarted(object sender, EventArgs e)
+		{
+			var disposable = DataContext as IDisposable;
+			if (!ReferenceEquals(null, disposable))
+			{
+				disposable.Dispose();
+			}
 		}
 	}
 }

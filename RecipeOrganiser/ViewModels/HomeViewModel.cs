@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using RecipeOrganiser.Data.Models;
@@ -21,9 +23,12 @@ namespace RecipeOrganiser.ViewModels
 			Recipes = new ObservableCollection<Recipe>(_recipeRepository.GetAll());
 			RecipesView = CollectionViewSource.GetDefaultView(Recipes);
 			RecipesView.Filter = Filter;
+			SelectedRecipes = new List<Recipe>();
 		}
 
 		public ObservableCollection<Recipe> Recipes { get; }
+
+		public List<Recipe> SelectedRecipes { get; set; }
 
 		public ICollectionView RecipesView { get; set; }
 
@@ -42,12 +47,30 @@ namespace RecipeOrganiser.ViewModels
 
 		#region Commands
 		public ICommand SearchCommand => new RelayCommand(Search);
+		public ICommand DeleteCommand => new RelayCommand(Delete);
 
 		#endregion
 
 		private void Search(object obj)
 		{
 			RecipesView.Refresh();
+		}
+
+		private void Delete(object obj)
+		{
+			foreach(Recipe selectedRecipe in SelectedRecipes)
+			{
+				var result = MessageBox.Show($"Are you sure you want to delete '{selectedRecipe.Name}' recipe?", "Confirm", MessageBoxButton.YesNo);
+				if (result == MessageBoxResult.No)
+				{
+					continue;
+				}
+				_recipeRepository.Delete(selectedRecipe.Id);
+			}
+
+			_recipeRepository.SaveChanges();
+			OnRecordDeleted<Recipe>();
+			Refresh();
 		}
 
 		private bool Filter(object obj)

@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\trash-can.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,6 +34,7 @@
     <Resource Include="Images\plus-circle.png" />
     <Resource Include="Images\plus.png" />
     <Resource Include="Images\save.png" />
+    <Resource Include="Images\trash-can.png" />
   </ItemGroup>
 
 </Project>

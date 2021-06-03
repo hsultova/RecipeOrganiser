@@ -10,7 +10,7 @@ using RecipeOrganiser.ViewModels.Base;
 
 namespace RecipeOrganiser.ViewModels
 {
-	public class ApplicationViewModel : BaseViewModel
+	public class ApplicationViewModel : BaseViewModel, IDisposable
 	{
 		private readonly Dictionary<BaseViewModel, NavigationMenuItem> _navigationMappings;
 
@@ -30,6 +30,11 @@ namespace RecipeOrganiser.ViewModels
 			_navigationMappings = navigationMappings;
 
 			CurrentViewModel.DisplayMessageHandler += DisplayMessage;
+		}
+
+		public void Dispose()
+		{
+			CurrentViewModel.DisplayMessageHandler -= DisplayMessage;
 		}
 
 		private BaseViewModel _currentViewModel;

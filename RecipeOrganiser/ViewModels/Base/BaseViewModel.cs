@@ -63,6 +63,20 @@ namespace RecipeOrganiser.ViewModels.Base
 				});
 		}
 
+		/// <summary>
+		/// Raise DisplayMessage event with Info type which notifies when a record is deleted from the DB table.
+		/// </summary>
+		/// <typeparam name="T">Type of the deleted record.</typeparam>
+		protected void OnRecordDeleted<T>()
+		{
+			OnDisplayMessage(
+				new DisplayMessageEventArgs
+				{
+					Message = $"{typeof(T).Name} deleted.",
+					Тype = DisplayMessageType.Info
+				});
+		}
+
 		#endregion
 
 		/// <summary>

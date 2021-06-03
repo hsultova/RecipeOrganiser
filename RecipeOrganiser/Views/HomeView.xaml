@@ -6,13 +6,28 @@
              xmlns:local="clr-namespace:RecipeOrganiser.Views" xmlns:controls="clr-namespace:RecipeOrganiser.Controls;assembly=RecipeOrganiser.Controls"
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition/>
-		</Grid.RowDefinitions>
-		
-		<controls:SearchTextBox 
+	<DockPanel>
+		<Grid DockPanel.Dock="Top">
+			<TextBlock Grid.Column="1" FontSize="28" Margin="20,20,0,0">Home</TextBlock>
+			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+				<!--<Button x:Name="DeleteButton" 
+						Margin="0,20,10,0" 
+						ToolTip="Delete" 
+						Command="{Binding DeleteCommand}" 
+						CommandParameter="{Binding}"
+						Visibility="Collapsed">
+					<Image Source="/Images/trash-can.png" Width="30" Height="25"/>
+				</Button>-->
+			</StackPanel>
+		</Grid>
+
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+
+			<controls:SearchTextBox 
 			Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
 			MinWidth="200" 
 			Margin="0,20,20,0" 
@@ -21,31 +36,44 @@
 			SearchCommand="{Binding SearchCommand}"
 			Style="{DynamicResource SearchTextBox}"/>
 
-		<ListBox Grid.Row="1"
+			<ListBox Grid.Row="1"
 				 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 				 Margin="20" Padding="20" SelectionMode="Extended" 
-				 ItemsSource="{Binding RecipesView}">
-			<ListBox.ItemsPanel>
-				<ItemsPanelTemplate>
-					<WrapPanel/>
-				</ItemsPanelTemplate>
-			</ListBox.ItemsPanel>
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<StackPanel>
-						<Image Width="200">
-							<Image.Source>
-								<Binding Path="Image" >
-									<Binding.TargetNullValue>
-										<BitmapImage UriSource="/Images/Image-placeholder.png" />
-									</Binding.TargetNullValue>
-								</Binding>
-							</Image.Source>
-						</Image>
-						<TextBlock Text="{Binding Name}"/>
-					</StackPanel>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
-	</Grid>
+				 ItemsSource="{Binding RecipesView}" SelectionChanged="ListBox_SelectionChanged">
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel/>
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel>
+							<Image Width="200">
+								<Image.Source>
+									<Binding Path="Image" >
+										<Binding.TargetNullValue>
+											<BitmapImage UriSource="/Images/Image-placeholder.png" />
+										</Binding.TargetNullValue>
+									</Binding>
+								</Image.Source>
+							</Image>
+							<TextBlock Text="{Binding Name}"/>
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+				<ListBox.ContextMenu>
+					<ContextMenu >
+						<MenuItem Header="Delete" Command="{Binding DeleteCommand}"/>
+					</ContextMenu>
+				</ListBox.ContextMenu>
+				<!--<ControlTemplate TargetType="{x:Type ListBoxItem}">
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsSelected" Value="true">
+							<Setter Property="Visibility"  TargetName="DeleteButton" Value="Visible"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>-->
+			</ListBox>
+		</Grid>
+	</DockPanel>
 </UserControl>
