@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 using RecipeOrganiser.Data.Models;
@@ -56,7 +57,21 @@ namespace RecipeOrganiser.ViewModels
 				return true;
 			}
 
-			return ((Recipe)obj).Name.ToLower().Contains(SearchText.ToLower());
+			var recipeObj = (Recipe) obj;
+			string searchTextToLower = SearchText.ToLower();
+
+			Recipe recipe = _recipeRepository.Get(r => r.Id == recipeObj.Id, r => r.Category, r => r.RecipeIngredients);
+			var ingredients = recipe.RecipeIngredients.Select(i => i.Ingredient.Name.ToLower());
+
+			//Filter by recipe name, category or ingredients
+			if (recipe.Name.ToLower().Contains(searchTextToLower) ||
+				ingredients.Contains(searchTextToLower) ||
+				recipe.Category.Name.ToLower().Contains(searchTextToLower))
+			{
+				return true;
+			}
+
+			return false;
 		}
 
 		public override void Refresh()
