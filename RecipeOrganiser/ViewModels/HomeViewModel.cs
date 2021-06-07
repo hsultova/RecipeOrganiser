@@ -45,6 +45,32 @@ namespace RecipeOrganiser.ViewModels
 			}
 		}
 
+		private bool _isEditEnabled;
+		public bool IsEditEnabled
+		{
+			get
+			{
+				return _isEditEnabled;
+			}
+			set
+			{
+				SetBackingFieldProperty<bool>(ref _isEditEnabled, value, nameof(IsEditEnabled));
+			}
+		}
+
+		private bool _isDeleteEnabled;
+		public bool IsDeleteEnabled
+		{
+			get
+			{
+				return _isDeleteEnabled;
+			}
+			set
+			{
+				SetBackingFieldProperty<bool>(ref _isDeleteEnabled, value, nameof(IsDeleteEnabled));
+			}
+		}
+
 		#region Commands
 		public ICommand SearchCommand => new RelayCommand(Search);
 		public ICommand DeleteCommand => new RelayCommand(Delete);
@@ -70,6 +96,7 @@ namespace RecipeOrganiser.ViewModels
 
 			_recipeRepository.SaveChanges();
 			OnRecordDeleted<Recipe>();
+			SelectedRecipes.Clear();
 			Refresh();
 		}
 

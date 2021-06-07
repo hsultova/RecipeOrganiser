@@ -44,11 +44,20 @@ namespace RecipeOrganiser.Views
 
 			if(vm.SelectedRecipes.Count != 0)
 			{
-				DeleteButton.IsEnabled = true;
+				vm.IsDeleteEnabled = true;
 			}
 			else
 			{
-				DeleteButton.IsEnabled = false;
+				vm.IsDeleteEnabled = false;
+			}
+
+			if (vm.SelectedRecipes.Count == 1)
+			{
+				vm.IsEditEnabled = true;
+			}
+			else
+			{
+				vm.IsEditEnabled = false;
 			}
 		}
 	}

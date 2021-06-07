@@ -6,16 +6,31 @@
              xmlns:local="clr-namespace:RecipeOrganiser.Views" xmlns:controls="clr-namespace:RecipeOrganiser.Controls;assembly=RecipeOrganiser.Controls"
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+	<UserControl.InputBindings>
+		<KeyBinding Modifiers="Control" Key="D" Command="{Binding DeleteCommand}"/>
+		<KeyBinding Key="Delete" Command="{Binding DeleteCommand}"/>
+	</UserControl.InputBindings>
+	
 	<DockPanel>
 		<Grid DockPanel.Dock="Top">
 			<TextBlock Grid.Column="1" FontSize="28" Margin="20,20,0,0">Home</TextBlock>
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-				<Button x:Name="DeleteButton" 
-						Margin="0,20,10,0" 
-						ToolTip="Delete" 
-						IsEnabled="False"
+				<Button Margin="0,20,10,0" 
+						IsEnabled="{Binding IsEditEnabled}"
+						ToolTip="Edit"
+						ToolTipService.ShowOnDisabled="True"
+						Command="{Binding EditCommand}">
+					<Image Source="/Images/pencil.png" Width="30" Height="25"/>
+				</Button>
+				<Button Margin="0,20,10,0" 
+						IsEnabled="{Binding IsDeleteEnabled}"
+						ToolTipService.ShowOnDisabled="True"
 						Command="{Binding DeleteCommand}">
 					<Image Source="/Images/trash-can.png" Width="30" Height="25"/>
+					<Button.ToolTip>
+						<controls:HeaderedToolTip HeaderText="Delete (Ctrl+D)" ContentText="Permanently delete seleced items."/>
+					</Button.ToolTip>
 				</Button>
 			</StackPanel>
 		</Grid>
@@ -33,12 +48,12 @@
 				SearchIconBorderColor="{DynamicResource Background}"
 				SearchIconBackgroundMouseDownColor="{DynamicResource SelectionBackground}"
 				SearchCommand="{Binding SearchCommand}"
-				Style="{DynamicResource SearchTextBox}"/>
+				Style="{DynamicResource SearchTextBox}" Grid.ColumnSpan="2"/>
 
 			<ListBox Grid.Row="1"
 				 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-				 Margin="20" Padding="20" SelectionMode="Extended" 
-				 ItemsSource="{Binding RecipesView}" SelectionChanged="ListBox_SelectionChanged">
+				 Margin="20,20,20,20" Padding="20" SelectionMode="Extended" 
+				 ItemsSource="{Binding RecipesView}" SelectionChanged="ListBox_SelectionChanged" Grid.ColumnSpan="2">
 				<ListBox.ItemsPanel>
 					<ItemsPanelTemplate>
 						<WrapPanel/>
@@ -62,7 +77,16 @@
 				</ListBox.ItemTemplate>
 				<ListBox.ContextMenu>
 					<ContextMenu >
-						<MenuItem Header="Delete" Command="{Binding DeleteCommand}"/>
+						<MenuItem Header="_Edit..." IsEnabled="{Binding IsEditEnabled}" Command="{Binding EditCommand}">
+							<MenuItem.Icon>
+								<Image Source="/Images/pencil.png" />
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem Header="_Delete" IsEnabled="{Binding IsDeleteEnabled}" Command="{Binding DeleteCommand}" InputGestureText="Ctrl+D">
+							<MenuItem.Icon>
+								<Image Source="/Images/trash-can.png" />
+							</MenuItem.Icon>
+						</MenuItem>
 					</ContextMenu>
 				</ListBox.ContextMenu>
 			</ListBox>
