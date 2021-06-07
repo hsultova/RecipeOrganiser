@@ -10,14 +10,13 @@
 		<Grid DockPanel.Dock="Top">
 			<TextBlock Grid.Column="1" FontSize="28" Margin="20,20,0,0">Home</TextBlock>
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-				<!--<Button x:Name="DeleteButton" 
+				<Button x:Name="DeleteButton" 
 						Margin="0,20,10,0" 
 						ToolTip="Delete" 
-						Command="{Binding DeleteCommand}" 
-						CommandParameter="{Binding}"
-						Visibility="Collapsed">
+						IsEnabled="False"
+						Command="{Binding DeleteCommand}">
 					<Image Source="/Images/trash-can.png" Width="30" Height="25"/>
-				</Button>-->
+				</Button>
 			</StackPanel>
 		</Grid>
 
@@ -28,13 +27,13 @@
 			</Grid.RowDefinitions>
 
 			<controls:SearchTextBox 
-			Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-			MinWidth="200" 
-			Margin="0,20,20,0" 
-			SearchIconBorderColor="{DynamicResource Background}"
-			SearchIconBackgroundMouseDownColor="{DynamicResource SelectionBackground}"
-			SearchCommand="{Binding SearchCommand}"
-			Style="{DynamicResource SearchTextBox}"/>
+				Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+				MinWidth="200" 
+				Margin="0,20,20,0" 
+				SearchIconBorderColor="{DynamicResource Background}"
+				SearchIconBackgroundMouseDownColor="{DynamicResource SelectionBackground}"
+				SearchCommand="{Binding SearchCommand}"
+				Style="{DynamicResource SearchTextBox}"/>
 
 			<ListBox Grid.Row="1"
 				 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -66,13 +65,6 @@
 						<MenuItem Header="Delete" Command="{Binding DeleteCommand}"/>
 					</ContextMenu>
 				</ListBox.ContextMenu>
-				<!--<ControlTemplate TargetType="{x:Type ListBoxItem}">
-					<ControlTemplate.Triggers>
-						<Trigger Property="IsSelected" Value="true">
-							<Setter Property="Visibility"  TargetName="DeleteButton" Value="Visible"/>
-						</Trigger>
-					</ControlTemplate.Triggers>
-				</ControlTemplate>-->
 			</ListBox>
 		</Grid>
 	</DockPanel>

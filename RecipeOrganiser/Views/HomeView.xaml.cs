@@ -42,6 +42,14 @@ namespace RecipeOrganiser.Views
 				vm.SelectedRecipes.Remove((Recipe)item);
 			}
 
+			if(vm.SelectedRecipes.Count != 0)
+			{
+				DeleteButton.IsEnabled = true;
+			}
+			else
+			{
+				DeleteButton.IsEnabled = false;
+			}
 		}
 	}
 }
