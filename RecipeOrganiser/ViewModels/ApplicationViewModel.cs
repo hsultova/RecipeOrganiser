@@ -30,14 +30,26 @@ namespace RecipeOrganiser.ViewModels
 			Items = items;
 			_navigationMappings = navigationMappings;
 
-			CurrentViewModel.DisplayMessageHandler += DisplayMessage;
-			CurrentViewModel.ChangeViewModelHandler += ChangeViewModel;
+			SubscribeViewModels(_homeViewModel);
+			SubscribeViewModels(_recipeViewModel);
+		}
+
+		public void SubscribeViewModels(BaseViewModel model)
+		{
+			model.DisplayMessageHandler += DisplayMessage;
+			model.ChangeViewModelHandler += ChangeViewModel;
+		}
+
+		public void UnSubscribeViewModels(BaseViewModel model)
+		{
+			model.ChangeViewModelHandler -= ChangeViewModel;
+			model.DisplayMessageHandler -= DisplayMessage;
 		}
 
 		public void Dispose()
 		{
-			CurrentViewModel.ChangeViewModelHandler -= ChangeViewModel;
-			CurrentViewModel.DisplayMessageHandler -= DisplayMessage;
+			UnSubscribeViewModels(_recipeViewModel);
+			UnSubscribeViewModels(_homeViewModel);
 		}
 
 		private BaseViewModel _currentViewModel;

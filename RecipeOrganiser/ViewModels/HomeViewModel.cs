@@ -9,6 +9,7 @@ using System.Windows.Input;
 using RecipeOrganiser.Data.Models;
 using RecipeOrganiser.Data.Repositories;
 using RecipeOrganiser.Utils;
+using RecipeOrganiser.Utils.Events;
 using RecipeOrganiser.Utils.General;
 using RecipeOrganiser.ViewModels.Base;
 
