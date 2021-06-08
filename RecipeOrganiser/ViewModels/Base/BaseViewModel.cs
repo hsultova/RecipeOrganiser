@@ -63,6 +63,16 @@ namespace RecipeOrganiser.ViewModels.Base
 				});
 		}
 
+		protected void OnRecordUpdated<T>()
+		{
+			OnDisplayMessage(
+				new DisplayMessageEventArgs
+				{
+					Message = $"{typeof(T).Name} updated successfully.",
+					Тype = DisplayMessageType.Info
+				});
+		}
+
 		/// <summary>
 		/// Raise DisplayMessage event with Info type which notifies when a record is deleted from the DB table.
 		/// </summary>
@@ -76,6 +86,17 @@ namespace RecipeOrganiser.ViewModels.Base
 					Тype = DisplayMessageType.Info
 				});
 		}
+
+		#endregion
+
+		#region ChangeViewModel Event
+		public event EventHandler<ChangeViewModelEventArgs> ChangeViewModelHandler;
+
+		/// <summary>
+		/// Raise ChangeViewModel event.
+		/// </summary>
+		/// <param name="args">ChangeViewModel event arguments.</param>
+		protected void OnChangeViewModel(ChangeViewModelEventArgs args) => ChangeViewModelHandler?.Invoke(this, args);
 
 		#endregion
 

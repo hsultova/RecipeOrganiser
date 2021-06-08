@@ -51,9 +51,13 @@
 				Style="{DynamicResource SearchTextBox}" Grid.ColumnSpan="2"/>
 
 			<ListBox Grid.Row="1"
-				 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-				 Margin="20,20,20,20" Padding="20" SelectionMode="Extended" 
-				 ItemsSource="{Binding RecipesView}" SelectionChanged="ListBox_SelectionChanged" Grid.ColumnSpan="2">
+					 Grid.ColumnSpan="2"
+					 ItemsSource="{Binding RecipesView}"
+					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+					 Margin="20,20,20,20" Padding="20"
+					 SelectedItem="{Binding SelectedRecipe}"
+					 SelectionMode="Extended"
+					 SelectionChanged="ListBox_SelectionChanged">
 				<ListBox.ItemsPanel>
 					<ItemsPanelTemplate>
 						<WrapPanel/>

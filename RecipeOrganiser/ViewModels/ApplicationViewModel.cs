@@ -14,14 +14,15 @@ namespace RecipeOrganiser.ViewModels
 	{
 		private readonly Dictionary<BaseViewModel, NavigationMenuItem> _navigationMappings;
 
-		private readonly NewRecipeViewModel _newRecipeViewModel;
+		private readonly RecipeViewModel _recipeViewModel;
 		private readonly HomeViewModel _homeViewModel;
 
 		public ApplicationViewModel(
-			NewRecipeViewModel newRecipeViewModel,
+			RecipeViewModel recipeViewModel,
 			HomeViewModel homeViewModel)
 		{
-			_newRecipeViewModel = newRecipeViewModel;
+			_recipeViewModel = recipeViewModel;
+			_recipeViewModel.Title = "New Recipe";
 			_homeViewModel = homeViewModel;
 			CurrentViewModel = _homeViewModel;
 
@@ -30,10 +31,12 @@ namespace RecipeOrganiser.ViewModels
 			_navigationMappings = navigationMappings;
 
 			CurrentViewModel.DisplayMessageHandler += DisplayMessage;
+			CurrentViewModel.ChangeViewModelHandler += ChangeViewModel;
 		}
 
 		public void Dispose()
 		{
+			CurrentViewModel.ChangeViewModelHandler -= ChangeViewModel;
 			CurrentViewModel.DisplayMessageHandler -= DisplayMessage;
 		}
 
@@ -72,6 +75,11 @@ namespace RecipeOrganiser.ViewModels
 			StatusMessage = e.Message;
 		}
 
+		private void ChangeViewModel(object sender, ChangeViewModelEventArgs e)
+		{
+			CurrentViewModel = e.ViewModel;
+		}
+
 		public IList<NavigationMenuItem> Items { get; }
 
 		private NavigationMenuItem _selectedMenuItem;
@@ -102,7 +110,7 @@ namespace RecipeOrganiser.ViewModels
 
 		#region Commands
 		public ICommand HomeCommand => new RelayCommand(_ => { CurrentViewModel = _homeViewModel; });
-		public ICommand NewRecipeCommand => new RelayCommand(_ => { CurrentViewModel = _newRecipeViewModel; });
+		public ICommand RecipeCommand => new RelayCommand(_ => { CurrentViewModel = _recipeViewModel; });
 		#endregion
 
 		private void CreateNavigationMenu(out List<NavigationMenuItem> items, out Dictionary<BaseViewModel, NavigationMenuItem> navigationMappings)
@@ -118,7 +126,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				Icon = new BitmapImage(new Uri(@"/RecipeOrganiser;component/Images/plus.png", UriKind.Relative)),
 				Text = "New Recipe",
-				SelectionCommand = NewRecipeCommand,
+				SelectionCommand = RecipeCommand,
 				ToolTip = "New Recipe"
 			};
 
@@ -131,7 +139,7 @@ namespace RecipeOrganiser.ViewModels
 			navigationMappings = new Dictionary<BaseViewModel, NavigationMenuItem>
 			{
 				{ _homeViewModel, homeMenuItem },
-				{ _newRecipeViewModel, newRecipeMenuItem }
+				{ _recipeViewModel, newRecipeMenuItem }
 			};
 		}
 	}

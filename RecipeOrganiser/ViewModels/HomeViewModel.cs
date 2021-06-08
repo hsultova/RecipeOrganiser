@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using RecipeOrganiser.Data.Models;
 using RecipeOrganiser.Data.Repositories;
+using RecipeOrganiser.Utils;
 using RecipeOrganiser.Utils.General;
 using RecipeOrganiser.ViewModels.Base;
 
@@ -14,11 +16,20 @@ namespace RecipeOrganiser.ViewModels
 {
 	public class HomeViewModel : BaseViewModel
 	{
+		private readonly IMapper _mapper;
+
+		private readonly RecipeViewModel _recipeViewModel;
+
 		private readonly IRecipeRepository _recipeRepository;
 
-		public HomeViewModel(IRecipeRepository recipeRepository)
+		public HomeViewModel(IMapper mapper, IRecipeRepository recipeRepository, RecipeViewModel recipeViewModel)
 		{
+			_mapper = mapper;
+
 			_recipeRepository = recipeRepository;
+
+			_recipeViewModel = recipeViewModel;
+			_recipeViewModel.Title = "Edit Recipe";
 
 			Recipes = new ObservableCollection<Recipe>(_recipeRepository.GetAll());
 			RecipesView = CollectionViewSource.GetDefaultView(Recipes);
@@ -29,6 +40,19 @@ namespace RecipeOrganiser.ViewModels
 		public ObservableCollection<Recipe> Recipes { get; }
 
 		public List<Recipe> SelectedRecipes { get; set; }
+
+		private Recipe _selectedRecipe;
+		public Recipe SelectedRecipe
+		{
+			get
+			{
+				return _selectedRecipe;
+			}
+			set
+			{
+				SetBackingFieldProperty<Recipe>(ref _selectedRecipe, value, nameof(SelectedRecipe));
+			}
+		}
 
 		public ICollectionView RecipesView { get; set; }
 
@@ -73,6 +97,8 @@ namespace RecipeOrganiser.ViewModels
 
 		#region Commands
 		public ICommand SearchCommand => new RelayCommand(Search);
+		public ICommand EditCommand => new RelayCommand(Edit);
+
 		public ICommand DeleteCommand => new RelayCommand(Delete);
 
 		#endregion
@@ -81,6 +107,20 @@ namespace RecipeOrganiser.ViewModels
 		{
 			RecipesView.Refresh();
 		}
+
+		private void Edit(object obj)
+		{
+			if(SelectedRecipe.RecipeIngredients == null)
+			{
+				_recipeRepository.Get(r => r.Id == SelectedRecipe.Id, r => r.RecipeIngredients);
+			}
+
+			_mapper.Map(SelectedRecipe, _recipeViewModel);
+			_recipeViewModel.CurrentRecipe = SelectedRecipe;
+			_recipeViewModel.CategoryName = SelectedRecipe.Category.Name;
+			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _recipeViewModel});
+		}
+
 
 		private void Delete(object obj)
 		{
@@ -133,6 +173,8 @@ namespace RecipeOrganiser.ViewModels
 			{
 				Recipes.Add(recipe);
 			}
+
+			SelectedRecipes.Clear();
 
 			base.Refresh();
 		}

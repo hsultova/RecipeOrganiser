@@ -112,18 +112,5 @@ namespace RecipeOrganiser.ViewModels
 				Name = IngredientName
 			};
 		}
-
-		internal void SetUnitOfMeasurementIfNew()
-		{
-			if (UnitOfMeasurement != null || UnitOfMeasurementName == null)
-			{
-				return;
-			}
-
-			UnitOfMeasurement = new UnitOfMeasurement
-			{
-				Name = UnitOfMeasurementName
-			};
-		}
 	}
 }

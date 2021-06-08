@@ -7,11 +7,11 @@ using RecipeOrganiser.ViewModels;
 namespace RecipeOrganiser.Views
 {
 	/// <summary>
-	/// Interaction logic for NewRecipeView.xaml
+	/// Interaction logic for RecipeView.xaml
 	/// </summary>
-	public partial class NewRecipeView : UserControl
+	public partial class RecipeView : UserControl
 	{
-		public NewRecipeView()
+		public RecipeView()
 		{
 			InitializeComponent();
 		}
@@ -24,9 +24,8 @@ namespace RecipeOrganiser.Views
 			var filePath = filePaths.FirstOrDefault();
 			byte[] data = File.ReadAllBytes(filePath);
 
-			var vm = (NewRecipeViewModel)this.DataContext;
+			var vm = (RecipeViewModel)this.DataContext;
 			vm.Image = data;
-			vm.ImagePath = filePath;
 		}
 	}
 }

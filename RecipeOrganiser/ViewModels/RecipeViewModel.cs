@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -11,9 +12,10 @@ using RecipeOrganiser.ViewModels.Base;
 
 namespace RecipeOrganiser.ViewModels
 {
-	public class NewRecipeViewModel : BaseViewModel
+	public class RecipeViewModel : BaseViewModel
 	{
-		private const string PlaceholderImagePath = "/Images/image-placeholder.png";
+		private const string PlaceholderImagePath = "../../../Images/image-placeholder.png";
+		private readonly byte[] PlaceholderImageData;
 
 		private readonly IMapper _mapper;
 
@@ -27,7 +29,7 @@ namespace RecipeOrganiser.ViewModels
 
 		private bool _canExit = true;
 
-		public NewRecipeViewModel(
+		public RecipeViewModel(
 			IMapper mapper,
 			IRecipeRepository recipeRepository,
 			ICategoryRepository categoryRepository,
@@ -50,6 +52,24 @@ namespace RecipeOrganiser.ViewModels
 			};
 
 			Categories = new ObservableCollection<Category>(_categoryRepository.GetAll());
+
+			PlaceholderImageData = File.ReadAllBytes(PlaceholderImagePath);
+			Image = PlaceholderImageData;
+		}
+
+		public Recipe CurrentRecipe { get; set; }
+
+		private string _title;
+		public string Title
+		{
+			get
+			{
+				return _title;
+			}
+			set
+			{
+				SetBackingFieldProperty<string>(ref _title, value, nameof(Title));
+			}
 		}
 
 		private string _name;
@@ -77,7 +97,7 @@ namespace RecipeOrganiser.ViewModels
 			}
 			set
 			{
-				if(SetBackingFieldProperty<string>(ref _description, value, nameof(Description)))
+				if (SetBackingFieldProperty<string>(ref _description, value, nameof(Description)))
 				{
 					_canExit = false;
 				}
@@ -93,23 +113,7 @@ namespace RecipeOrganiser.ViewModels
 			}
 			set
 			{
-				if(SetBackingFieldProperty<string>(ref _note, value, nameof(Note)))
-				{
-					_canExit = false;
-				}
-			}
-		}
-
-		private string _imagePath = PlaceholderImagePath;
-		public string ImagePath
-		{
-			get
-			{
-				return _imagePath;
-			}
-			set
-			{
-				if(SetBackingFieldProperty<string>(ref _imagePath, value, nameof(ImagePath)))
+				if (SetBackingFieldProperty<string>(ref _note, value, nameof(Note)))
 				{
 					_canExit = false;
 				}
@@ -122,7 +126,13 @@ namespace RecipeOrganiser.ViewModels
 			get { return _image; }
 			set
 			{
-				SetBackingFieldProperty<byte[]>(ref _image, value, nameof(Image));
+				if (value == null)
+					return;
+
+				if (SetBackingFieldProperty<byte[]>(ref _image, value, nameof(Image)))
+				{
+					_canExit = false;
+				}
 			}
 		}
 
@@ -135,7 +145,7 @@ namespace RecipeOrganiser.ViewModels
 			}
 			set
 			{
-				if(SetBackingFieldProperty<string>(ref _categoryName, value, nameof(CategoryName)))
+				if (SetBackingFieldProperty<string>(ref _categoryName, value, nameof(CategoryName)))
 				{
 					_canExit = false;
 				}
@@ -151,7 +161,7 @@ namespace RecipeOrganiser.ViewModels
 			}
 			set
 			{
-				if(SetBackingFieldProperty<Category>(ref _category, value, nameof(Category)))
+				if (SetBackingFieldProperty<Category>(ref _category, value, nameof(Category)))
 				{
 					_canExit = false;
 				}
@@ -169,18 +179,43 @@ namespace RecipeOrganiser.ViewModels
 			}
 			set
 			{
-				if(SetBackingFieldProperty<ObservableCollection<AddIngredientViewModel>>(ref _addIngredientControls, value, nameof(AddIngredientControls)))
+				if (SetBackingFieldProperty<ObservableCollection<AddIngredientViewModel>>(ref _addIngredientControls, value, nameof(AddIngredientControls)))
 				{
 					_canExit = false;
 				}
 			}
 		}
 
+		public int Id { get; set; }
+
 		#region Commands
 		public ICommand AddIngredientCommand => new RelayCommand(AddIngredient);
 		public ICommand SaveCommand => new RelayCommand(Save);
 		public ICommand ClearCommand => new RelayCommand(Clear);
 		public ICommand UploadImageCommand => new RelayCommand(UploadImage);
+
+		private ICollection<RecipeIngredient> _recipeIngredients = new List<RecipeIngredient>();
+		public ICollection<RecipeIngredient> RecipeIngredients
+		{
+			get
+			{
+				return _recipeIngredients;
+			}
+			internal set
+			{
+				_recipeIngredients = value;
+				foreach (var ingredient in RecipeIngredients)
+				{
+					var addIngredientViewModel = new AddIngredientViewModel(_ingredientDTO);
+					addIngredientViewModel.IngredientName = ingredient.Ingredient.Name;
+					addIngredientViewModel.Quantity = ingredient.Quantity;
+					addIngredientViewModel.Weight = ingredient.Weight;
+					addIngredientViewModel.UnitOfMeasurementName = ingredient.UnitOfMeasurement.Name;
+
+					AddIngredientControls.Add(addIngredientViewModel);
+				}
+			}
+		}
 		#endregion
 
 		private void AddIngredient(object obj)
@@ -191,7 +226,7 @@ namespace RecipeOrganiser.ViewModels
 
 		private void Save(object obj)
 		{
-			var recipeViewModel = obj as NewRecipeViewModel;
+			var recipeViewModel = obj as RecipeViewModel;
 			if (recipeViewModel == null)
 			{
 				//The recipe is null, todo log error
@@ -207,7 +242,6 @@ namespace RecipeOrganiser.ViewModels
 			foreach (AddIngredientViewModel addIngredientViewModel in AddIngredientControls)
 			{
 				addIngredientViewModel.SetIngredientIfNew();
-				addIngredientViewModel.SetUnitOfMeasurementIfNew();
 
 				var recipeIngredient = new RecipeIngredient();
 				_mapper.Map(addIngredientViewModel, recipeIngredient);
@@ -215,13 +249,27 @@ namespace RecipeOrganiser.ViewModels
 			}
 
 			var recipe = new Recipe();
+			bool shouldClear = false;
+			if (CurrentRecipe != null)
+			{
+				recipe = CurrentRecipe;
+				OnRecordUpdated<Recipe>();
+			}
+			else
+			{
+				shouldClear = true;
+				OnRecordCreated<Recipe>();
+			}
+
 			_mapper.Map(recipeViewModel, recipe);
 			recipe.RecipeIngredients = recipeIngredients;
-			CreateRecipe(recipe);
-			Refresh();
-			Clear();
 
-			OnRecordCreated<Recipe>();
+			if (shouldClear)
+				Clear();
+
+			CreateOrUpdateRecipe(recipe);
+			Refresh();
+
 			_canExit = true;
 		}
 
@@ -243,15 +291,14 @@ namespace RecipeOrganiser.ViewModels
 				byte[] data = File.ReadAllBytes(fileDialog.FileName);
 
 				Image = data;
-				ImagePath = fileDialog.FileName;
 			}
 		}
 
 		/// <summary>
-		/// Creates a recipe and recipe ingredients. Also, check if navigation properties does not exist, creates them.
+		/// Creates or updates a recipe and recipe ingredients. Also, check if navigation properties does not exist, creates them.
 		/// </summary>
-		/// <param name="recipe">A recipe to create in the DB table</param>
-		private void CreateRecipe(Recipe recipe)
+		/// <param name="recipe">A recipe to create or update in the DB table</param>
+		private void CreateOrUpdateRecipe(Recipe recipe)
 		{
 			//Check navigation properties
 			if (recipe.Category.Id == 0)
@@ -264,12 +311,28 @@ namespace RecipeOrganiser.ViewModels
 				if (recipeIngredient.Ingredient?.Id == 0)
 				{
 					_ingredientRepository.Create(recipeIngredient.Ingredient);
+
 				}
 
-				_recipeIngredientRepository.Create(recipeIngredient);
+				if (recipeIngredient.Id == 0)
+				{
+					_recipeIngredientRepository.Create(recipeIngredient);
+				}
+				else
+				{
+					_recipeIngredientRepository.Update(recipeIngredient);
+				}
 			}
 
-			_recipeRepository.Create(recipe);
+			if (recipe.Id == 0)
+			{
+				_recipeRepository.Create(recipe);
+			}
+			else
+			{
+				_recipeRepository.Update(recipe);
+			}
+
 			_recipeRepository.SaveChanges();
 		}
 
@@ -294,7 +357,7 @@ namespace RecipeOrganiser.ViewModels
 			Description = string.Empty;
 			Note = string.Empty;
 			CategoryName = string.Empty;
-			ImagePath = PlaceholderImagePath;
+			Image = PlaceholderImageData;
 			AddIngredientControls.Clear();
 
 			_canExit = true;
