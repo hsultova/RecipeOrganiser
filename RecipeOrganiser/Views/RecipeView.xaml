@@ -8,17 +8,23 @@
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" >
 
+	<UserControl.InputBindings>
+		<KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveCommand}" CommandParameter="{Binding}"/>
+		<KeyBinding Key="Esc" Command="{Binding ClearCommand}"/>
+	</UserControl.InputBindings>
+
 	<DockPanel>
 
 		<Grid DockPanel.Dock="Top">
 			<TextBlock Text="{Binding Title}" Grid.Column="1" FontSize="28" Margin="20,20,0,0"></TextBlock>
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-				<Button Margin="0,20,10,0" ToolTip="Clear fields" Command="{Binding ClearCommand}" CommandParameter="{Binding}">
+				<Button Margin="0,20,10,0" ToolTip="Clear fields (Esc)" Command="{Binding ClearCommand}">
 					<Image Source="/Images/close-box-multiple.png" Width="30" Height="25"/>
 				</Button>
-				<Button Margin="0,20,20,0" ToolTip="Save" Command="{Binding SaveCommand}" CommandParameter="{Binding}">
+				<Button Margin="0,20,20,0" ToolTip="Save (Ctrl+S)" Command="{Binding SaveCommand}" CommandParameter="{Binding}">
 					<Image Source="/Images/save.png" Width="30" Height="25"/>
 				</Button>
+
 			</StackPanel>
 		</Grid>
 
