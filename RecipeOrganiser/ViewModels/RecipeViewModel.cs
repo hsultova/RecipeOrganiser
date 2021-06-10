@@ -145,6 +145,9 @@ namespace RecipeOrganiser.ViewModels
 			}
 			set
 			{
+				if (string.IsNullOrEmpty(value))
+					return;
+
 				if (SetBackingFieldProperty<string>(ref _categoryName, value, nameof(CategoryName)))
 				{
 					_canExit = false;
@@ -186,14 +189,6 @@ namespace RecipeOrganiser.ViewModels
 			}
 		}
 
-		public int Id { get; set; }
-
-		#region Commands
-		public ICommand AddIngredientCommand => new RelayCommand(AddIngredient);
-		public ICommand SaveCommand => new RelayCommand(Save);
-		public ICommand ClearCommand => new RelayCommand(Clear);
-		public ICommand UploadImageCommand => new RelayCommand(UploadImage);
-
 		private ICollection<RecipeIngredient> _recipeIngredients = new List<RecipeIngredient>();
 		public ICollection<RecipeIngredient> RecipeIngredients
 		{
@@ -216,6 +211,15 @@ namespace RecipeOrganiser.ViewModels
 				}
 			}
 		}
+
+		public int Id { get; set; }
+
+		#region Commands
+		public ICommand AddIngredientCommand => new RelayCommand(AddIngredient);
+		public ICommand SaveCommand => new RelayCommand(Save);
+		public ICommand ClearCommand => new RelayCommand(Clear);
+		public ICommand UploadImageCommand => new RelayCommand(UploadImage);
+
 		#endregion
 
 		private void AddIngredient(object obj)
