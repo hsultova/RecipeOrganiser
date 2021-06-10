@@ -16,14 +16,17 @@ namespace RecipeOrganiser.ViewModels
 
 		private readonly RecipeViewModel _recipeViewModel;
 		private readonly HomeViewModel _homeViewModel;
+		private readonly CategoriesViewModel _categoriesViewModel;
 
 		public ApplicationViewModel(
 			RecipeViewModel recipeViewModel,
-			HomeViewModel homeViewModel)
+			HomeViewModel homeViewModel,
+			CategoriesViewModel categoriesViewModel)
 		{
 			_recipeViewModel = recipeViewModel;
 			_recipeViewModel.Title = "New Recipe";
 			_homeViewModel = homeViewModel;
+			_categoriesViewModel = categoriesViewModel;
 			CurrentViewModel = _homeViewModel;
 
 			CreateNavigationMenu(out List<NavigationMenuItem> items, out Dictionary<BaseViewModel, NavigationMenuItem> navigationMappings);
@@ -123,6 +126,7 @@ namespace RecipeOrganiser.ViewModels
 		#region Commands
 		public ICommand HomeCommand => new RelayCommand(_ => { CurrentViewModel = _homeViewModel; });
 		public ICommand RecipeCommand => new RelayCommand(_ => { CurrentViewModel = _recipeViewModel; });
+		public ICommand CategoriesCommand => new RelayCommand(_ => { CurrentViewModel = _categoriesViewModel; });
 		#endregion
 
 		private void CreateNavigationMenu(out List<NavigationMenuItem> items, out Dictionary<BaseViewModel, NavigationMenuItem> navigationMappings)
@@ -141,17 +145,26 @@ namespace RecipeOrganiser.ViewModels
 				SelectionCommand = RecipeCommand,
 				ToolTip = "New Recipe"
 			};
+			var categoriesMenuItem = new NavigationMenuItem
+			{
+				Icon = new BitmapImage(new Uri(@"/RecipeOrganiser;component/Images/notebook-multiple.png", UriKind.Relative)),
+				Text = "Categories",
+				SelectionCommand = CategoriesCommand,
+				ToolTip = "Categories"
+			};
 
 			items = new List<NavigationMenuItem>
 			{
 				homeMenuItem,
-				newRecipeMenuItem
+				newRecipeMenuItem,
+				categoriesMenuItem
 			};
 
 			navigationMappings = new Dictionary<BaseViewModel, NavigationMenuItem>
 			{
 				{ _homeViewModel, homeMenuItem },
-				{ _recipeViewModel, newRecipeMenuItem }
+				{ _recipeViewModel, newRecipeMenuItem },
+				{ _categoriesViewModel, categoriesMenuItem }
 			};
 		}
 	}
