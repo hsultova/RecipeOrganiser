@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using RecipeOrganiser.Data.DbContexts;
 using RecipeOrganiser.Data.Repositories;
 using RecipeOrganiser.Utils;
+using RecipeOrganiser.Utils.Extensions;
 using RecipeOrganiser.ViewModels;
 
 namespace RecipeOrganiser
@@ -24,6 +25,7 @@ namespace RecipeOrganiser
 					services.AddScoped<IMapper, Mapper>();
 
 					services.AddDbContext<RecipeOrganiserDbContext>();
+
 					services.AddScoped<IRecipeRepository, RecipeRepository>();
 					services.AddScoped<ICategoryRepository, CategoryRepository>();
 					services.AddScoped<IIngredientRepository, IngredientRepository>();
@@ -31,8 +33,9 @@ namespace RecipeOrganiser
 					services.AddScoped<IUnitOfMeasurementRepository, UnitOfMeasurementRepository>();
 
 					services.AddSingleton<ApplicationViewModel>();
-					services.AddSingleton<NewRecipeViewModel>();
+					services.AddTransient<RecipeViewModel>();
 					services.AddSingleton<AddIngredientViewModel>();
+					services.AddSingleton<CategoriesViewModel>();
 					services.AddSingleton<HomeViewModel>();
 					services.AddSingleton<MainWindow>();
 
