@@ -4,7 +4,6 @@
 			xmlns:local="clr-namespace:RecipeOrganiser"
 			xmlns:viewmodels="clr-namespace:RecipeOrganiser.ViewModels"
 			xmlns:views="clr-namespace:RecipeOrganiser.Views" 
-			xmlns:converters="clr-namespace:RecipeOrganiser.Utils.Converters"
 			Startup="Application_Startup"
 			Exit="Application_Exit">
 	<Application.Resources>

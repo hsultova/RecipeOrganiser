@@ -5,7 +5,6 @@ using Microsoft.Extensions.Hosting;
 using RecipeOrganiser.Data.DbContexts;
 using RecipeOrganiser.Data.Repositories;
 using RecipeOrganiser.Utils;
-using RecipeOrganiser.Utils.Extensions;
 using RecipeOrganiser.ViewModels;
 
 namespace RecipeOrganiser
