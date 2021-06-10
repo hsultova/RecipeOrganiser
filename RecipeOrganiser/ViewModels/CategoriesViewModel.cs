@@ -55,7 +55,7 @@ namespace RecipeOrganiser.ViewModels
 		{
 			foreach (Category selectedCategory in SelectedCategories)
 			{
-				var result = MessageBox.Show($"Are you sure you want to delete '{selectedCategory.Name}' recipe?", "Confirm", MessageBoxButton.YesNo);
+				var result = MessageBox.Show($"Are you sure you want to delete '{selectedCategory.Name}' category? All items in this category will be deleted.", "Confirm", MessageBoxButton.YesNo);
 				if (result == MessageBoxResult.No)
 				{
 					continue;

@@ -19,8 +19,8 @@ namespace RecipeOrganiser.ViewModels
 		private readonly CategoriesViewModel _categoriesViewModel;
 
 		public ApplicationViewModel(
-			RecipeViewModel recipeViewModel,
-			HomeViewModel homeViewModel,
+			RecipeViewModel recipeViewModel, 
+			HomeViewModel homeViewModel, 
 			CategoriesViewModel categoriesViewModel)
 		{
 			_recipeViewModel = recipeViewModel;
@@ -33,17 +33,17 @@ namespace RecipeOrganiser.ViewModels
 			Items = items;
 			_navigationMappings = navigationMappings;
 
-			SubscribeViewModels(_homeViewModel);
-			SubscribeViewModels(_recipeViewModel);
+			SubscribeViewModel(_homeViewModel);
+			SubscribeViewModel(_recipeViewModel);
 		}
 
-		public void SubscribeViewModels(BaseViewModel model)
+		public void SubscribeViewModel(BaseViewModel model)
 		{
 			model.DisplayMessageHandler += DisplayMessage;
 			model.ChangeViewModelHandler += ChangeViewModel;
 		}
 
-		public void UnSubscribeViewModels(BaseViewModel model)
+		public void UnSubscribeViewModel(BaseViewModel model)
 		{
 			model.ChangeViewModelHandler -= ChangeViewModel;
 			model.DisplayMessageHandler -= DisplayMessage;
@@ -51,8 +51,8 @@ namespace RecipeOrganiser.ViewModels
 
 		public void Dispose()
 		{
-			UnSubscribeViewModels(_recipeViewModel);
-			UnSubscribeViewModels(_homeViewModel);
+			UnSubscribeViewModel(_homeViewModel);
+			UnSubscribeViewModel(_recipeViewModel);
 		}
 
 		private BaseViewModel _currentViewModel;
@@ -75,24 +75,11 @@ namespace RecipeOrganiser.ViewModels
 					_currentViewModel.Clear();
 				}
 
-				if(SetBackingFieldProperty<BaseViewModel>(ref _currentViewModel, value, nameof(CurrentViewModel)))
+				if (SetBackingFieldProperty<BaseViewModel>(ref _currentViewModel, value, nameof(CurrentViewModel)))
 				{
 					CurrentViewModel.Refresh();
 				}
 			}
-		}
-
-		private void DisplayMessage(object sender, DisplayMessageEventArgs e)
-		{
-			//Todo: Depending on the type, decorate different visual
-			//Handle many messages, not only the last
-			//Implement closing the message
-			StatusMessage = e.Message;
-		}
-
-		private void ChangeViewModel(object sender, ChangeViewModelEventArgs e)
-		{
-			CurrentViewModel = e.ViewModel;
 		}
 
 		public IList<NavigationMenuItem> Items { get; }
@@ -121,6 +108,19 @@ namespace RecipeOrganiser.ViewModels
 			{
 				SetBackingFieldProperty<string>(ref _statusMessage, value, nameof(StatusMessage));
 			}
+		}
+
+		private void DisplayMessage(object sender, DisplayMessageEventArgs e)
+		{
+			//Todo: Depending on the type, decorate different visual
+			//Handle many messages, not only the last
+			//Implement closing the message
+			StatusMessage = e.Message;
+		}
+
+		private void ChangeViewModel(object sender, ChangeViewModelEventArgs e)
+		{
+			CurrentViewModel = e.ViewModel;
 		}
 
 		#region Commands

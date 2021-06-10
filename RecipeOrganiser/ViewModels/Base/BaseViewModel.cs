@@ -63,6 +63,10 @@ namespace RecipeOrganiser.ViewModels.Base
 				});
 		}
 
+		/// <summary>
+		/// Raise DisplayMessage event with Info type which notifies when a record is updated in the DB table.
+		/// </summary>
+		/// <typeparam name="T">Type of the updated record.</typeparam>
 		protected void OnRecordUpdated<T>()
 		{
 			OnDisplayMessage(
@@ -90,6 +94,7 @@ namespace RecipeOrganiser.ViewModels.Base
 		#endregion
 
 		#region ChangeViewModel Event
+
 		public event EventHandler<ChangeViewModelEventArgs> ChangeViewModelHandler;
 
 		/// <summary>

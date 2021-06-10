@@ -99,7 +99,6 @@ namespace RecipeOrganiser.ViewModels
 		#region Commands
 		public ICommand SearchCommand => new RelayCommand(Search);
 		public ICommand EditCommand => new RelayCommand(Edit);
-
 		public ICommand DeleteCommand => new RelayCommand(Delete);
 
 		#endregion

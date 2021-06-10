@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -57,6 +56,9 @@ namespace RecipeOrganiser.ViewModels
 			Image = PlaceholderImageData;
 		}
 
+		#region Properties
+
+		public int Id { get; set; }
 		public Recipe CurrentRecipe { get; set; }
 
 		private string _title;
@@ -212,7 +214,7 @@ namespace RecipeOrganiser.ViewModels
 			}
 		}
 
-		public int Id { get; set; }
+		#endregion
 
 		#region Commands
 		public ICommand AddIngredientCommand => new RelayCommand(AddIngredient);
