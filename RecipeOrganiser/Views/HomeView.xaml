@@ -14,17 +14,17 @@
 
 	<DockPanel>
 		<Grid DockPanel.Dock="Top">
-			<TextBlock Grid.Column="1" FontSize="28" Margin="20,20,0,0">Home</TextBlock>
+			<TextBlock FontSize="28" Margin="20,20,0,0">Home</TextBlock>
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-				<Button Margin="0,20,10,0" 
-						IsEnabled="{Binding IsEditEnabled}"
+				<Button x:Name="EditButton" 
+						Margin="0,20,10,0" 
 						ToolTip="Edit"
 						ToolTipService.ShowOnDisabled="True"
 						Command="{Binding EditCommand}">
 					<Image Source="/Images/pencil.png" Width="30" Height="25"/>
 				</Button>
-				<Button Margin="0,20,10,0" 
-						IsEnabled="{Binding IsDeleteEnabled}"
+				<Button x:Name="DeleteButton"
+						Margin="0,20,10,0" 
 						ToolTipService.ShowOnDisabled="True"
 						Command="{Binding DeleteCommand}">
 					<Image Source="/Images/trash-can.png" Width="30" Height="25"/>
@@ -38,19 +38,53 @@
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
 				<RowDefinition/>
 			</Grid.RowDefinitions>
 
-			<controls:SearchTextBox 
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+				<controls:SearchTextBox 
 				Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
 				MinWidth="200" 
 				Margin="0,20,20,0" 
 				SearchIconBorderColor="{DynamicResource Background}"
 				SearchIconBackgroundMouseDownColor="{DynamicResource SelectionBackground}"
 				SearchCommand="{Binding SearchCommand}"
-				Style="{DynamicResource SearchTextBox}" Grid.ColumnSpan="2"/>
+				Style="{DynamicResource SearchTextBox}"/>
 
-			<ListBox Grid.Row="1"
+				<ToggleButton	x:Name="AdvancedFilterButton" 
+								Content="Filter" 
+								IsChecked="{Binding IsFilterEnabled}"
+								Checked="AdvancedFilterButton_Checked" 
+								Unchecked="AdvancedFilterButton_Unchecked" 
+								Height="30" 
+								Margin="0,20,20,0"/>
+			</StackPanel>
+
+			<StackPanel x:Name="AdvancedFilter" 
+						Grid.Row="1" Orientation="Horizontal" 
+						HorizontalAlignment="Right" 
+						Margin="0,10,20,0" 
+						Visibility="Collapsed">
+				<TextBlock>Category</TextBlock>
+				<ComboBox x:Name="CategoryComboBox"
+						  ItemsSource="{Binding Categories}" 
+						  SelectedItem="{Binding SelectedCategory}" 
+						  SelectionChanged="CategoryComboBox_SelectionChanged"
+						  Width="150" 
+						  Margin="10,0,10,0"/>
+
+				<TextBlock>Ingredient</TextBlock>
+				<ComboBox	x:Name="IngredientComboBox"
+							ItemsSource="{Binding Ingredients}" 
+							SelectedItem="{Binding SelectedIngredient, Mode=TwoWay}" 
+							Width="150" 
+							Margin="10,0,10,0" 
+							SelectionChanged="IngredientComboBox_SelectionChanged"/>
+				<Button x:Name="ClearFilterButton" Content="Clear" Click="ClearFilterButton_Click" Visibility="Collapsed"/>
+			</StackPanel>
+
+			<ListBox x:Name="RecipesListBox" Grid.Row="2"
 					 Grid.ColumnSpan="2"
 					 ItemsSource="{Binding Recipes}"
 					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -81,12 +115,12 @@
 				</ListBox.ItemTemplate>
 				<ListBox.ContextMenu>
 					<ContextMenu >
-						<MenuItem Header="_Edit..." IsEnabled="{Binding IsEditEnabled}" Command="{Binding EditCommand}">
+						<MenuItem x:Name="EditMenuItem" Header="_Edit..." Command="{Binding EditCommand}">
 							<MenuItem.Icon>
 								<Image Source="/Images/pencil.png" />
 							</MenuItem.Icon>
 						</MenuItem>
-						<MenuItem Header="_Delete" IsEnabled="{Binding IsDeleteEnabled}" Command="{Binding DeleteCommand}" InputGestureText="Ctrl+D">
+						<MenuItem x:Name="DeleteMenuItem" Header="_Delete" Command="{Binding DeleteCommand}" InputGestureText="Ctrl+D">
 							<MenuItem.Icon>
 								<Image Source="/Images/trash-can.png" />
 							</MenuItem.Icon>

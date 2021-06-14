@@ -22,12 +22,21 @@ namespace RecipeOrganiser.ViewModels
 		private readonly RecipeViewModel _recipeViewModel;
 
 		private readonly IRecipeRepository _recipeRepository;
+		private readonly ICategoryRepository _categoryRepository;
+		private readonly IIngredientRepository _ingredientRepository;
 
-		public HomeViewModel(IMapper mapper, IRecipeRepository recipeRepository, RecipeViewModel recipeViewModel)
+		public HomeViewModel(
+			IMapper mapper,
+			IRecipeRepository recipeRepository,
+			ICategoryRepository categoryRepository,
+			IIngredientRepository ingredientRepository,
+			RecipeViewModel recipeViewModel)
 		{
 			_mapper = mapper;
 
 			_recipeRepository = recipeRepository;
+			_categoryRepository = categoryRepository;
+			_ingredientRepository = ingredientRepository;
 
 			_recipeViewModel = recipeViewModel;
 			_recipeViewModel.Title = "Edit Recipe";
@@ -36,6 +45,9 @@ namespace RecipeOrganiser.ViewModels
 			RecipesView = CollectionViewSource.GetDefaultView(Recipes);
 			RecipesView.Filter = Filter;
 			SelectedRecipes = new List<Recipe>();
+
+			Categories = _categoryRepository.GetAll().Select(c => c.Name).ToList();
+			Ingredients = _ingredientRepository.GetAll().Select(i => i.Name).ToList();
 		}
 
 		public ObservableCollection<Recipe> Recipes { get; }
@@ -57,6 +69,64 @@ namespace RecipeOrganiser.ViewModels
 
 		public ICollectionView RecipesView { get; set; }
 
+		private string _selectedCategory;
+		public string SelectedCategory
+		{
+			get
+			{
+				return _selectedCategory;
+			}
+			set
+			{
+				if (SetBackingFieldProperty<string>(ref _selectedCategory, value, nameof(SelectedCategory)))
+				{
+					RecipesView.Refresh();
+				}
+			}
+		}
+
+		private List<string> _categories;
+		public List<string> Categories
+		{
+			get
+			{
+				return _categories;
+			}
+			set
+			{
+				SetBackingFieldProperty<List<string>>(ref _categories, value, nameof(Categories));
+			}
+		}
+
+		private string _selectedIngredient;
+		public string SelectedIngredient
+		{
+			get
+			{
+				return _selectedIngredient;
+			}
+			set
+			{
+				if (SetBackingFieldProperty<string>(ref _selectedIngredient, value, nameof(SelectedIngredient)))
+				{
+					RecipesView.Refresh();
+				}
+			}
+		}
+
+		private List<string> _ingredients;
+		public List<string> Ingredients
+		{
+			get
+			{
+				return _ingredients;
+			}
+			set
+			{
+				SetBackingFieldProperty<List<string>>(ref _ingredients, value, nameof(Ingredients));
+			}
+		}
+
 		private string _searchText;
 		public string SearchText
 		{
@@ -70,29 +140,16 @@ namespace RecipeOrganiser.ViewModels
 			}
 		}
 
-		private bool _isEditEnabled;
-		public bool IsEditEnabled
+		private bool _isAdvancedFilterEnabled = false;
+		public bool IsFilterEnabled
 		{
 			get
 			{
-				return _isEditEnabled;
+				return _isAdvancedFilterEnabled;
 			}
 			set
 			{
-				SetBackingFieldProperty<bool>(ref _isEditEnabled, value, nameof(IsEditEnabled));
-			}
-		}
-
-		private bool _isDeleteEnabled;
-		public bool IsDeleteEnabled
-		{
-			get
-			{
-				return _isDeleteEnabled;
-			}
-			set
-			{
-				SetBackingFieldProperty<bool>(ref _isDeleteEnabled, value, nameof(IsDeleteEnabled));
+				SetBackingFieldProperty<bool>(ref _isAdvancedFilterEnabled, value, nameof(IsFilterEnabled));
 			}
 		}
 
@@ -100,6 +157,7 @@ namespace RecipeOrganiser.ViewModels
 		public ICommand SearchCommand => new RelayCommand(Search);
 		public ICommand EditCommand => new RelayCommand(Edit);
 		public ICommand DeleteCommand => new RelayCommand(Delete);
+
 
 		#endregion
 
@@ -110,7 +168,7 @@ namespace RecipeOrganiser.ViewModels
 
 		private void Edit(object obj)
 		{
-			if(SelectedRecipe.RecipeIngredients == null)
+			if (SelectedRecipe.RecipeIngredients == null)
 			{
 				_recipeRepository.Get(r => r.Id == SelectedRecipe.Id, r => r.RecipeIngredients);
 			}
@@ -118,13 +176,12 @@ namespace RecipeOrganiser.ViewModels
 			_mapper.Map(SelectedRecipe, _recipeViewModel);
 			_recipeViewModel.CurrentRecipe = SelectedRecipe;
 			_recipeViewModel.CategoryName = SelectedRecipe.Category.Name;
-			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _recipeViewModel});
+			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _recipeViewModel });
 		}
-
 
 		private void Delete(object obj)
 		{
-			foreach(Recipe selectedRecipe in SelectedRecipes)
+			foreach (Recipe selectedRecipe in SelectedRecipes)
 			{
 				var result = MessageBox.Show($"Are you sure you want to delete '{selectedRecipe.Name}' recipe?", "Confirm", MessageBoxButton.YesNo);
 				if (result == MessageBoxResult.No)
@@ -142,26 +199,44 @@ namespace RecipeOrganiser.ViewModels
 
 		private bool Filter(object obj)
 		{
-			if (string.IsNullOrEmpty(SearchText))
+			if (string.IsNullOrEmpty(SearchText) && !IsFilterEnabled)
 			{
 				return true;
 			}
 
-			var recipeObj = (Recipe) obj;
-			string searchTextToLower = SearchText.ToLower();
-
+			var recipeObj = (Recipe)obj;
 			Recipe recipe = _recipeRepository.Get(r => r.Id == recipeObj.Id, r => r.Category, r => r.RecipeIngredients);
-			var ingredients = recipe.RecipeIngredients.Select(i => i.Ingredient.Name.ToLower());
 
-			//Filter by recipe name, category or ingredients
-			if (recipe.Name.ToLower().Contains(searchTextToLower) ||
-				ingredients.Contains(searchTextToLower) ||
-				recipe.Category.Name.ToLower().Contains(searchTextToLower))
+			bool hasName = true;
+			if (!string.IsNullOrEmpty(SearchText))
 			{
-				return true;
+				hasName = recipe.Name.ToLower().Contains(SearchText.ToLower());
 			}
 
-			return false;
+			if (IsFilterEnabled)
+			{
+				bool hasCategory = true;
+				bool hasIngredient = true;
+
+				if (!string.IsNullOrEmpty(SelectedCategory))
+				{
+					hasCategory = recipe.Category.Name == SelectedCategory;
+				}
+
+				if (!string.IsNullOrEmpty(SelectedIngredient))
+				{
+					hasIngredient = recipe.RecipeIngredients.Select(i => i.Ingredient.Name).Contains(SelectedIngredient);
+				}
+
+				if (hasName && hasCategory && hasIngredient)
+				{
+					return true;
+				}
+
+				return false;
+			}
+
+			return hasName;
 		}
 
 		public override void Refresh()
@@ -169,12 +244,15 @@ namespace RecipeOrganiser.ViewModels
 			var recipes = _recipeRepository.GetAll();
 			Recipes.Clear();
 
-			foreach(Recipe recipe in recipes)
+			foreach (Recipe recipe in recipes)
 			{
 				Recipes.Add(recipe);
 			}
 
 			SelectedRecipes.Clear();
+
+			Categories = _categoryRepository.GetAll().Select(c => c.Name).ToList();
+			Ingredients = _ingredientRepository.GetAll().Select(i => i.Name).ToList();
 
 			base.Refresh();
 		}
