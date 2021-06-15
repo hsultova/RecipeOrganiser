@@ -14,4 +14,9 @@
 		<Setter Property="Foreground" Value="{DynamicResource SearchTextBoxForeground}"/>
 		<Setter Property="HorizontalAlignment" Value="Right"/>
 	</Style>
+
+	<Style TargetType="ListBoxItem">
+		<Setter Property="HorizontalContentAlignment" Value="Left" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+	</Style>
 </ResourceDictionary>
