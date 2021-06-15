@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Windows.Input;
 using RecipeOrganiser.Data.Models;
 using RecipeOrganiser.Data.Repositories;
@@ -21,7 +20,6 @@ namespace RecipeOrganiser.ViewModels
 		private readonly IRecipeRepository _recipeRepository;
 		private readonly ICategoryRepository _categoryRepository;
 		private readonly IIngredientRepository _ingredientRepository;
-		private readonly IRecipeIngredientRepository _recipeIngredientRepository;
 		private readonly IUnitOfMeasurementRepository _unitOfMeasurementRepository;
 
 		private readonly IngredientDTO _ingredientDTO;
@@ -33,7 +31,6 @@ namespace RecipeOrganiser.ViewModels
 			IRecipeRepository recipeRepository,
 			ICategoryRepository categoryRepository,
 			IIngredientRepository ingredientRepository,
-			IRecipeIngredientRepository recipeIngredientRepository,
 			IUnitOfMeasurementRepository unitOfMeasurementRepository)
 		{
 			_mapper = mapper;
@@ -41,7 +38,6 @@ namespace RecipeOrganiser.ViewModels
 			_recipeRepository = recipeRepository;
 			_categoryRepository = categoryRepository;
 			_ingredientRepository = ingredientRepository;
-			_recipeIngredientRepository = recipeIngredientRepository;
 			_unitOfMeasurementRepository = unitOfMeasurementRepository;
 
 			_ingredientDTO = new IngredientDTO
@@ -49,8 +45,6 @@ namespace RecipeOrganiser.ViewModels
 				Ingredients = _ingredientRepository.GetAll(),
 				UnitsOfMeasurement = _unitOfMeasurementRepository.GetAll()
 			};
-
-			Categories = new ObservableCollection<Category>(_categoryRepository.GetAll());
 
 			PlaceholderImageData = File.ReadAllBytes(PlaceholderImagePath);
 			Image = PlaceholderImageData;
@@ -173,7 +167,18 @@ namespace RecipeOrganiser.ViewModels
 			}
 		}
 
-		public ObservableCollection<Category> Categories { get; }
+		private ObservableCollection<Category> _categories;
+		public ObservableCollection<Category> Categories
+		{
+			get
+			{
+				if (_categories == null)
+				{
+					_categories = new ObservableCollection<Category>(_categoryRepository.GetAll());
+				}
+				return _categories;
+			}
+		}
 
 		private ObservableCollection<AddIngredientViewModel> _addIngredientControls = new ObservableCollection<AddIngredientViewModel>();
 		public ObservableCollection<AddIngredientViewModel> AddIngredientControls
@@ -301,35 +306,11 @@ namespace RecipeOrganiser.ViewModels
 		}
 
 		/// <summary>
-		/// Creates or updates a recipe and recipe ingredients. Also, check if navigation properties does not exist, creates them.
+		/// Creates or updates a recipe.
 		/// </summary>
 		/// <param name="recipe">A recipe to create or update in the DB table</param>
 		private void CreateOrUpdateRecipe(Recipe recipe)
 		{
-			//Check navigation properties
-			if (recipe.Category.Id == 0)
-			{
-				_categoryRepository.Create(Category);
-			}
-
-			foreach (RecipeIngredient recipeIngredient in recipe.RecipeIngredients.ToList())
-			{
-				if (recipeIngredient.Ingredient?.Id == 0)
-				{
-					_ingredientRepository.Create(recipeIngredient.Ingredient);
-
-				}
-
-				if (recipeIngredient.Id == 0)
-				{
-					_recipeIngredientRepository.Create(recipeIngredient);
-				}
-				else
-				{
-					_recipeIngredientRepository.Update(recipeIngredient);
-				}
-			}
-
 			if (recipe.Id == 0)
 			{
 				_recipeRepository.Create(recipe);
