@@ -41,18 +41,24 @@ namespace RecipeOrganiser.ViewModels
 			_recipeViewModel = recipeViewModel;
 			_recipeViewModel.Title = "Edit Recipe";
 
-			Recipes = new ObservableCollection<Recipe>(_recipeRepository.GetAll());
 			RecipesView = CollectionViewSource.GetDefaultView(Recipes);
 			RecipesView.Filter = Filter;
-			SelectedRecipes = new List<Recipe>();
-
-			Categories = _categoryRepository.GetAll().Select(c => c.Name).ToList();
-			Ingredients = _ingredientRepository.GetAll().Select(i => i.Name).ToList();
 		}
 
-		public ObservableCollection<Recipe> Recipes { get; }
+		private ObservableCollection<Recipe> _recipes;
+		public ObservableCollection<Recipe> Recipes
+		{
+			get
+			{
+				if (_recipes == null)
+				{
+					_recipes = new ObservableCollection<Recipe>(_recipeRepository.GetAll());
+				}
+				return _recipes;
+			}
+		}
 
-		public List<Recipe> SelectedRecipes { get; set; }
+		public List<Recipe> SelectedRecipes { get; set; } = new List<Recipe>();
 
 		private Recipe _selectedRecipe;
 		public Recipe SelectedRecipe
@@ -90,6 +96,10 @@ namespace RecipeOrganiser.ViewModels
 		{
 			get
 			{
+				if (_categories == null)
+				{
+					_categories = _categoryRepository.GetAll().Select(c => c.Name).ToList();
+				}
 				return _categories;
 			}
 			set
@@ -119,6 +129,10 @@ namespace RecipeOrganiser.ViewModels
 		{
 			get
 			{
+				if (_ingredients == null)
+				{
+					_ingredients = _ingredientRepository.GetAll().Select(i => i.Name).ToList();
+				}
 				return _ingredients;
 			}
 			set
