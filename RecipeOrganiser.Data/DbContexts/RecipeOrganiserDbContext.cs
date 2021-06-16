@@ -10,6 +10,9 @@ namespace RecipeOrganiser.Data.DbContexts
 		public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
 		public DbSet<Category> Categories { get; set; }
 		public DbSet<UnitOfMeasurement> UnitOfMeasurements { get; set; }
+		public DbSet<ShoppingList> ShoppingLists { get; set; }
+
+		public DbSet<ShoppingListRecipe> ShoppingListRecipes { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
