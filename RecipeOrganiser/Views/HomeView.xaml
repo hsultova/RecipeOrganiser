@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RecipeOrganiser.Views" xmlns:controls="clr-namespace:RecipeOrganiser.Controls;assembly=RecipeOrganiser.Controls"
+			 xmlns:viewmodels="clr-namespace:RecipeOrganiser.ViewModels"
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -16,6 +17,27 @@
 		<Grid DockPanel.Dock="Top">
 			<TextBlock FontSize="28" Margin="20,20,0,0">Home</TextBlock>
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+				<Button x:Name="ShoppingListButton" 
+						Margin="0,20,10,0" 
+						ToolTip="Add to or create new shopping list"
+						ToolTipService.ShowOnDisabled="True"
+						Click="ShoppingListButton_Click">
+					<StackPanel>
+						<Image Source="/Images/cart.png" Width="30" Height="25"/>
+						<Popup x:Name="AddToShoppingListPopup" IsOpen="False" StaysOpen="False">
+							<StackPanel>
+								<Button Content="Add New" Command="{Binding AddNewShoppingListCommand}"></Button>
+								<ItemsControl x:Name="ShoppingListsControl" ItemsSource="{Binding ShoppingLists}">
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+											<Button Content="{Binding Name}" Command="{Binding DataContext.AddToShoppingListCommand, RelativeSource={RelativeSource AncestorType=local:HomeView}}" CommandParameter="{Binding}"></Button>
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
+							</StackPanel>
+						</Popup>
+					</StackPanel>
+				</Button>
 				<Button x:Name="EditButton" 
 						Margin="0,20,10,0" 
 						ToolTip="Edit"
@@ -115,6 +137,11 @@
 				</ListBox.ItemTemplate>
 				<ListBox.ContextMenu>
 					<ContextMenu >
+						<MenuItem x:Name="ShoppingListMenuItem" Header="_ShoppingList..." Command="{Binding ShoppingListCommand}">
+							<MenuItem.Icon>
+								<Image Source="/Images/cart.png" />
+							</MenuItem.Icon>
+						</MenuItem>
 						<MenuItem x:Name="EditMenuItem" Header="_Edit..." Command="{Binding EditCommand}">
 							<MenuItem.Icon>
 								<Image Source="/Images/pencil.png" />

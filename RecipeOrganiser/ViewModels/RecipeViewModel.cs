@@ -249,16 +249,6 @@ namespace RecipeOrganiser.ViewModels
 				Category = new Category { Name = CategoryName };
 			}
 
-			var recipeIngredients = new List<RecipeIngredient>();
-			foreach (AddIngredientViewModel addIngredientViewModel in AddIngredientControls)
-			{
-				addIngredientViewModel.SetIngredientIfNew();
-
-				var recipeIngredient = new RecipeIngredient();
-				_mapper.Map(addIngredientViewModel, recipeIngredient);
-				recipeIngredients.Add(recipeIngredient);
-			}
-
 			var recipe = new Recipe();
 			bool shouldClear = false;
 			if (CurrentRecipe != null)
@@ -273,7 +263,20 @@ namespace RecipeOrganiser.ViewModels
 			}
 
 			_mapper.Map(recipeViewModel, recipe);
-			recipe.RecipeIngredients = recipeIngredients;
+
+			if(recipe.RecipeIngredients == null)
+			{
+				recipe.RecipeIngredients = new List<RecipeIngredient>();
+			}
+
+			foreach (AddIngredientViewModel addIngredientViewModel in AddIngredientControls)
+			{
+				addIngredientViewModel.SetIngredientIfNew();
+
+				var recipeIngredient = new RecipeIngredient();
+				_mapper.Map(addIngredientViewModel, recipeIngredient);
+				recipe.RecipeIngredients.Add(recipeIngredient);
+			}
 
 			if (shouldClear)
 				Clear();

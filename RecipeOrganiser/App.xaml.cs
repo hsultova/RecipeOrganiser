@@ -30,11 +30,14 @@ namespace RecipeOrganiser
 					services.AddScoped<IIngredientRepository, IngredientRepository>();
 					services.AddScoped<IRecipeIngredientRepository, RecipeIngredientRepository>();
 					services.AddScoped<IUnitOfMeasurementRepository, UnitOfMeasurementRepository>();
+					services.AddScoped<IShoppingListRepository, ShoppingListRepository>();
+					services.AddScoped<IShoppingListRecipeRepository, ShoppingListRecipeRepository>();
 
 					services.AddSingleton<ApplicationViewModel>();
 					services.AddTransient<RecipeViewModel>();
 					services.AddSingleton<AddIngredientViewModel>();
 					services.AddSingleton<CategoriesViewModel>();
+					services.AddSingleton<ShoppingListViewModel>();
 					services.AddSingleton<HomeViewModel>();
 					services.AddSingleton<MainWindow>();
 

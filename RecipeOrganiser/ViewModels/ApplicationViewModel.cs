@@ -17,16 +17,20 @@ namespace RecipeOrganiser.ViewModels
 		private readonly RecipeViewModel _recipeViewModel;
 		private readonly HomeViewModel _homeViewModel;
 		private readonly CategoriesViewModel _categoriesViewModel;
-
+		private readonly ShoppingListViewModel _shoppingListViewModel;
 		public ApplicationViewModel(
-			RecipeViewModel recipeViewModel, 
-			HomeViewModel homeViewModel, 
-			CategoriesViewModel categoriesViewModel)
+			RecipeViewModel recipeViewModel,
+			HomeViewModel homeViewModel,
+			CategoriesViewModel categoriesViewModel,
+			ShoppingListViewModel shoppingListViewModel)
 		{
 			_recipeViewModel = recipeViewModel;
 			_recipeViewModel.Title = "New Recipe";
+
 			_homeViewModel = homeViewModel;
 			_categoriesViewModel = categoriesViewModel;
+			_shoppingListViewModel = shoppingListViewModel;
+
 			CurrentViewModel = _homeViewModel;
 
 			CreateNavigationMenu(out List<NavigationMenuItem> items, out Dictionary<BaseViewModel, NavigationMenuItem> navigationMappings);
@@ -35,6 +39,8 @@ namespace RecipeOrganiser.ViewModels
 
 			SubscribeViewModel(_homeViewModel);
 			SubscribeViewModel(_recipeViewModel);
+			SubscribeViewModel(_categoriesViewModel);
+			SubscribeViewModel(_shoppingListViewModel);
 		}
 
 		public void SubscribeViewModel(BaseViewModel model)
@@ -53,6 +59,8 @@ namespace RecipeOrganiser.ViewModels
 		{
 			UnSubscribeViewModel(_homeViewModel);
 			UnSubscribeViewModel(_recipeViewModel);
+			UnSubscribeViewModel(_categoriesViewModel);
+			UnSubscribeViewModel(_shoppingListViewModel);
 		}
 
 		private BaseViewModel _currentViewModel;
@@ -127,6 +135,7 @@ namespace RecipeOrganiser.ViewModels
 		public ICommand HomeCommand => new RelayCommand(_ => { CurrentViewModel = _homeViewModel; });
 		public ICommand RecipeCommand => new RelayCommand(_ => { CurrentViewModel = _recipeViewModel; });
 		public ICommand CategoriesCommand => new RelayCommand(_ => { CurrentViewModel = _categoriesViewModel; });
+		public ICommand ShoppingListsCommand => new RelayCommand(_ => { CurrentViewModel = _shoppingListViewModel; });
 		#endregion
 
 		private void CreateNavigationMenu(out List<NavigationMenuItem> items, out Dictionary<BaseViewModel, NavigationMenuItem> navigationMappings)
@@ -152,19 +161,28 @@ namespace RecipeOrganiser.ViewModels
 				SelectionCommand = CategoriesCommand,
 				ToolTip = "Categories"
 			};
+			var shoppingListsMenuItem = new NavigationMenuItem
+			{
+				Icon = new BitmapImage(new Uri(@"/RecipeOrganiser;component/Images/cart.png", UriKind.Relative)),
+				Text = "Shopping Lists",
+				SelectionCommand = ShoppingListsCommand,
+				ToolTip = "Shopping Lists"
+			};
 
 			items = new List<NavigationMenuItem>
 			{
 				homeMenuItem,
 				newRecipeMenuItem,
-				categoriesMenuItem
+				categoriesMenuItem,
+				shoppingListsMenuItem
 			};
 
 			navigationMappings = new Dictionary<BaseViewModel, NavigationMenuItem>
 			{
 				{ _homeViewModel, homeMenuItem },
 				{ _recipeViewModel, newRecipeMenuItem },
-				{ _categoriesViewModel, categoriesMenuItem }
+				{ _categoriesViewModel, categoriesMenuItem },
+				{ _shoppingListViewModel, shoppingListsMenuItem }
 			};
 		}
 	}

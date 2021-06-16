@@ -25,6 +25,9 @@
 					<DataTemplate DataType="{x:Type viewmodels:CategoriesViewModel}">
 						<views:CategoriesView/>
 					</DataTemplate>
+					<DataTemplate DataType="{x:Type viewmodels:ShoppingListViewModel}">
+						<views:ShoppingListView/>
+					</DataTemplate>
 				</ResourceDictionary>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>

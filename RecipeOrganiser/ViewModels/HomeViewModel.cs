@@ -24,12 +24,14 @@ namespace RecipeOrganiser.ViewModels
 		private readonly IRecipeRepository _recipeRepository;
 		private readonly ICategoryRepository _categoryRepository;
 		private readonly IIngredientRepository _ingredientRepository;
+		private readonly IShoppingListRepository _shoppingListRepository;
 
 		public HomeViewModel(
 			IMapper mapper,
 			IRecipeRepository recipeRepository,
 			ICategoryRepository categoryRepository,
 			IIngredientRepository ingredientRepository,
+			IShoppingListRepository shoppingListRepository,
 			RecipeViewModel recipeViewModel)
 		{
 			_mapper = mapper;
@@ -37,6 +39,7 @@ namespace RecipeOrganiser.ViewModels
 			_recipeRepository = recipeRepository;
 			_categoryRepository = categoryRepository;
 			_ingredientRepository = ingredientRepository;
+			_shoppingListRepository = shoppingListRepository;
 
 			_recipeViewModel = recipeViewModel;
 			_recipeViewModel.Title = "Edit Recipe";
@@ -141,6 +144,19 @@ namespace RecipeOrganiser.ViewModels
 			}
 		}
 
+		private ObservableCollection<ShoppingList> _shoppingLists;
+		public ObservableCollection<ShoppingList> ShoppingLists
+		{
+			get
+			{
+				if (_shoppingLists == null)
+				{
+					_shoppingLists = new ObservableCollection<ShoppingList>(_shoppingListRepository.GetAll());
+				}
+				return _shoppingLists;
+			}
+		}
+
 		private string _searchText;
 		public string SearchText
 		{
@@ -171,7 +187,8 @@ namespace RecipeOrganiser.ViewModels
 		public ICommand SearchCommand => new RelayCommand(Search);
 		public ICommand EditCommand => new RelayCommand(Edit);
 		public ICommand DeleteCommand => new RelayCommand(Delete);
-
+		public ICommand AddNewShoppingListCommand => new RelayCommand(AddNewShoppingList);
+		public ICommand AddToShoppingListCommand => new RelayCommand(AddToShoppingList);
 
 		#endregion
 
@@ -209,6 +226,53 @@ namespace RecipeOrganiser.ViewModels
 			OnRecordDeleted<Recipe>();
 			SelectedRecipes.Clear();
 			Refresh();
+		}
+
+		private void AddNewShoppingList(object obj)
+		{
+			var list = new ShoppingList { Name = "Untitled" };
+
+			if (list.ShoppingListRecipes == null)
+			{
+				list.ShoppingListRecipes = new List<ShoppingListRecipe>();
+			}
+
+			foreach (var recipe in SelectedRecipes)
+			{
+				var shoppingListRecipe = new ShoppingListRecipe
+				{
+					Recipe = recipe,
+					ShoppingList = list
+				};
+
+				list.ShoppingListRecipes.Add(shoppingListRecipe);
+			}
+
+			_shoppingListRepository.Create(list);
+			_shoppingListRepository.SaveChanges();
+		}
+
+		private void AddToShoppingList(object obj)
+		{
+			var list = obj as ShoppingList;
+			if (list == null)
+				return;
+
+			list = _shoppingListRepository.Get(x => x.Id == list.Id, x => x.ShoppingListRecipes);
+
+			foreach (var recipe in SelectedRecipes)
+			{
+				var shoppingListRecipe = new ShoppingListRecipe
+				{
+					Recipe = recipe,
+					ShoppingList = list
+				};
+
+				list.ShoppingListRecipes.Add(shoppingListRecipe);
+			}
+
+			_shoppingListRepository.Update(list);
+			_shoppingListRepository.SaveChanges();
 		}
 
 		private bool Filter(object obj)

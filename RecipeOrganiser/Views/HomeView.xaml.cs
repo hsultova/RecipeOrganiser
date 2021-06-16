@@ -28,6 +28,7 @@ namespace RecipeOrganiser.Views
 			if (_homeViewModel.SelectedRecipes == null)
 				return;
 
+			_homeViewModel.SelectedRecipes.Clear();
 			foreach (var item in RecipesListBox.SelectedItems)
 			{
 				_homeViewModel.SelectedRecipes.Add((Recipe)item);
@@ -37,11 +38,17 @@ namespace RecipeOrganiser.Views
 			{
 				DeleteButton.IsEnabled = true;
 				DeleteMenuItem.IsEnabled = true;
+
+				ShoppingListButton.IsEnabled = true;
+				ShoppingListMenuItem.IsEnabled = true;
 			}
 			else
 			{
 				DeleteButton.IsEnabled = false;
 				DeleteMenuItem.IsEnabled = false;
+
+				ShoppingListButton.IsEnabled = false;
+				ShoppingListMenuItem.IsEnabled = false;
 			}
 
 			if (RecipesListBox.SelectedItems.Count == 1)
@@ -94,6 +101,11 @@ namespace RecipeOrganiser.Views
 			IngredientComboBox.SelectedIndex = -1;
 
 			ClearFilterButton.Visibility = Visibility.Collapsed;
+		}
+
+		private void ShoppingListButton_Click(object sender, RoutedEventArgs e)
+		{
+			AddToShoppingListPopup.IsOpen = true;
 		}
 	}
 }
