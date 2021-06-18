@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Input;
 using RecipeOrganiser.Data.Models;
 using RecipeOrganiser.Data.Repositories;
@@ -196,6 +197,9 @@ namespace RecipeOrganiser.ViewModels
 			}
 		}
 
+		/// <summary>
+		/// Used when loading RecipeIngredients from the DB
+		/// </summary>
 		private ICollection<RecipeIngredient> _recipeIngredients = new List<RecipeIngredient>();
 		public ICollection<RecipeIngredient> RecipeIngredients
 		{
@@ -206,6 +210,7 @@ namespace RecipeOrganiser.ViewModels
 			internal set
 			{
 				_recipeIngredients = value;
+				AddIngredientControls.Clear();
 				foreach (var ingredient in RecipeIngredients)
 				{
 					var addIngredientViewModel = new AddIngredientViewModel(_ingredientDTO);
@@ -254,36 +259,41 @@ namespace RecipeOrganiser.ViewModels
 			if (CurrentRecipe != null)
 			{
 				recipe = CurrentRecipe;
+				_mapper.Map(recipeViewModel, recipe);
 				OnRecordUpdated<Recipe>();
 			}
 			else
 			{
+				_mapper.Map(recipeViewModel, recipe, nameof(RecipeIngredients));
 				shouldClear = true;
 				OnRecordCreated<Recipe>();
 			}
-
-			_mapper.Map(recipeViewModel, recipe);
 
 			if(recipe.RecipeIngredients == null)
 			{
 				recipe.RecipeIngredients = new List<RecipeIngredient>();
 			}
 
-			foreach (AddIngredientViewModel addIngredientViewModel in AddIngredientControls)
+			foreach (var addIngredientViewModel in AddIngredientControls)
 			{
 				addIngredientViewModel.SetIngredientIfNew();
 
-				var recipeIngredient = new RecipeIngredient();
+				var recipeIngredient = recipe.RecipeIngredients.FirstOrDefault(i => i.IngredientId == addIngredientViewModel.Ingredient.Id);
+				if(recipeIngredient == null)
+				{
+					recipeIngredient = new RecipeIngredient();
+				}
+
 				_mapper.Map(addIngredientViewModel, recipeIngredient);
 				recipe.RecipeIngredients.Add(recipeIngredient);
 			}
 
+			CreateOrUpdateRecipe(recipe);
+
 			if (shouldClear)
 				Clear();
 
-			CreateOrUpdateRecipe(recipe);
 			Refresh();
-
 			_canExit = true;
 		}
 
