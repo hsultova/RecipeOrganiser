@@ -51,6 +51,30 @@ namespace RecipeOrganiser.Utils
 			}
 		}
 
+		///<inheritdoc/>
+		///Property names of the source and destination should match.
+		public void Map(object source, object destination, params string[] propertyNamesToIgonore)
+		{
+			Type sourceType = source.GetType();
+			Type destinationType = destination.GetType();
+
+			string key = GetKey(sourceType, destinationType);
+			if (!_mappings.ContainsKey(key))
+			{
+				MapTypes(sourceType, destinationType);
+			}
+
+			PropertyPair[] propertyPairs = _mappings[key];
+			foreach (PropertyPair pair in propertyPairs)
+			{
+				if (propertyNamesToIgonore.Contains(pair.SourceProperty.Name))
+					continue;
+				var sourceValue = pair.SourceProperty.GetValue(source);
+				pair.DestinationProperty.SetValue(destination, sourceValue);
+			}
+		}
+
+
 		private void MapTypes(Type sourceType, Type destinationType)
 		{
 			PropertyInfo[] sourceProperties = sourceType.GetProperties();
