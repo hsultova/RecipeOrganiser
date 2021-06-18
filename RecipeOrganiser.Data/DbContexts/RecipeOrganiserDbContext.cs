@@ -11,8 +11,8 @@ namespace RecipeOrganiser.Data.DbContexts
 		public DbSet<Category> Categories { get; set; }
 		public DbSet<UnitOfMeasurement> UnitOfMeasurements { get; set; }
 		public DbSet<ShoppingList> ShoppingLists { get; set; }
-
 		public DbSet<ShoppingListRecipe> ShoppingListRecipes { get; set; }
+		public DbSet<ShoppingListIngredient> ShoppingListIngredients { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
@@ -28,6 +28,10 @@ namespace RecipeOrganiser.Data.DbContexts
 				.IsRequired(true);
 
 			modelBuilder.Entity<RecipeIngredient>()
+				.Property(p => p.UnitOfMeasurementId)
+				.HasDefaultValue(1);
+
+			modelBuilder.Entity<ShoppingListIngredient>()
 				.Property(p => p.UnitOfMeasurementId)
 				.HasDefaultValue(1);
 

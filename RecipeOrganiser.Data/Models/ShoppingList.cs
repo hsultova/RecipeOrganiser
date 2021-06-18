@@ -17,5 +17,10 @@ namespace RecipeOrganiser.Data.Models
 		/// All recipes included in the shopping list.
 		/// </summary>
 		public virtual ICollection<ShoppingListRecipe> ShoppingListRecipes { get; set; }
+
+		/// <summary>
+		/// All ingredients included in the shopping list.
+		/// </summary>
+		public virtual ICollection<ShoppingListIngredient> ShoppingListIngredients { get; set; }
 	}
 }
