@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using RecipeOrganiser.Data.Models;
 using RecipeOrganiser.Data.Repositories;
@@ -13,10 +12,10 @@ namespace RecipeOrganiser.ViewModels
 	public class ShoppingListViewModel : BaseViewModel
 	{
 		private readonly IShoppingListRepository _shoppingListRepository;
-
 		private readonly IRecipeRepository _recipeRepository;
 
-		public ShoppingListViewModel(IShoppingListRepository shoppingListRepository,
+		public ShoppingListViewModel(
+			IShoppingListRepository shoppingListRepository,
 			IRecipeRepository recipeRepository)
 		{
 			_shoppingListRepository = shoppingListRepository;
@@ -31,14 +30,11 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (_shoppingLists == null)
 				{
-					_shoppingLists = new ObservableCollection<ShoppingList>(_shoppingListRepository.GetAll(null, x => x.ShoppingListRecipes));
+					_shoppingLists = new ObservableCollection<ShoppingList>(_shoppingListRepository.GetAll(null, x => x.ShoppingListIngredients));
 				}
 				return _shoppingLists;
 			}
 		}
-
-
-		//public List<ShoppingListRecipe> ShoppingListRecipes { get; set; }
 
 		private ShoppingList _selectedShoppingList;
 		public ShoppingList SelectedShoppingList
@@ -50,22 +46,10 @@ namespace RecipeOrganiser.ViewModels
 			set
 			{
 				SetBackingFieldProperty<ShoppingList>(ref _selectedShoppingList, value, nameof(SelectedShoppingList));
-				//if (ShoppingListRecipes == null)
-				//{
-				//	_shoppingListRepository.Get(x => x.Id == SelectedShoppingList.Id, x => x.ShoppingListRecipes);
-				//	ShoppingListRecipes = SelectedShoppingList.ShoppingListRecipes.ToList();
-				//	foreach(var shoppingListRecipe in ShoppingListRecipes)
-				//	{
-				//		_recipeRepository.Get(x => x.Id == shoppingListRecipe.RecipeId, x=>x.RecipeIngredients);
-				//		RecipeIngredients.AddRange(shoppingListRecipe.Recipe.RecipeIngredients);
-				//	}
-				//}
 			}
 		}
 
-		public List<ShoppingList> SelectedShoppingLists { get; internal set; }
-
-		//public List<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
+		public List<ShoppingList> SelectedShoppingLists { get; internal set; } = new List<ShoppingList>();
 
 		#region Commands
 		public ICommand SaveCommand => new RelayCommand(Save);
@@ -76,13 +60,49 @@ namespace RecipeOrganiser.ViewModels
 
 		private void Save(object obj)
 		{
+			foreach (ShoppingList list in ShoppingLists)
+			{
+				if (list.Id == 0)
+				{
+					_shoppingListRepository.Create(list);
+				}
+				else
+				{
+					_shoppingListRepository.Update(list);
+				}
+			}
 
+			_shoppingListRepository.SaveChanges();
 		}
 
 		private void Delete(object obj)
 		{
+			foreach (ShoppingList selectedList in SelectedShoppingLists)
+			{
+				var result = MessageBox.Show($"Are you sure you want to delete '{selectedList.Name}' shopping list? All items in this list will be deleted.", "Confirm", MessageBoxButton.YesNo);
+				if (result == MessageBoxResult.No)
+				{
+					continue;
+				}
+				_shoppingListRepository.Delete(selectedList.Id);
+			}
 
+			_shoppingListRepository.SaveChanges();
+			OnRecordDeleted<ShoppingList>();
+			SelectedShoppingLists.Clear();
+			Refresh();
 		}
 
+		public override void Refresh()
+		{
+			base.Refresh();
+
+			var shoppingLists = _shoppingListRepository.GetAll();
+			ShoppingLists.Clear();
+			foreach (ShoppingList list in shoppingLists)
+			{
+				ShoppingLists.Add(list);
+			}
+		}
 	}
 }

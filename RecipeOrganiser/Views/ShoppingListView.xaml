@@ -47,17 +47,13 @@
 				</DataGrid.Columns>
 				<DataGrid.RowDetailsTemplate>
 					<DataTemplate>
-						<ItemsControl ItemsSource="{Binding ShoppingListRecipes}">
+						<ItemsControl ItemsSource="{Binding ShoppingListIngredients}">
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
-									<StackPanel>
-										<TextBlock Text="{Binding Recipe.Name}"></TextBlock>
-										<DataGrid ItemsSource="{Binding Recipe.RecipeIngredients}" AutoGenerateColumns="False">
-											<DataGrid.Columns>
-												<DataGridTextColumn Binding="{Binding Ingredient.Name}"/>
-												<DataGridTextColumn Binding="{Binding Quantity}"/>
-											</DataGrid.Columns>
-										</DataGrid>
+									<StackPanel Orientation="Horizontal">
+										<TextBlock Text="{Binding Ingredient.Name}" Margin="5"></TextBlock>
+										<TextBlock Text="{Binding Quantity}" Margin="5"></TextBlock>
+										<TextBlock Text="{Binding Weight}" Margin="5"></TextBlock>
 									</StackPanel>
 								</DataTemplate>
 							</ItemsControl.ItemTemplate>
