@@ -199,14 +199,11 @@ namespace RecipeOrganiser.ViewModels
 
 		private void Edit(object obj)
 		{
-			if (SelectedRecipe.RecipeIngredients == null)
-			{
-				_recipeRepository.Get(r => r.Id == SelectedRecipe.Id, r => r.RecipeIngredients);
-			}
+			var recipe = _recipeRepository.Get(r => r.Id == SelectedRecipe.Id, r => r.RecipeIngredients);
 
-			_mapper.Map(SelectedRecipe, _recipeViewModel);
-			_recipeViewModel.CurrentRecipe = SelectedRecipe;
-			_recipeViewModel.CategoryName = SelectedRecipe.Category.Name;
+			_mapper.Map(recipe, _recipeViewModel);
+			_recipeViewModel.CurrentRecipe = recipe;
+			_recipeViewModel.CategoryName = recipe.Category.Name;
 			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _recipeViewModel });
 		}
 
@@ -230,48 +227,69 @@ namespace RecipeOrganiser.ViewModels
 
 		private void AddNewShoppingList(object obj)
 		{
-			var list = new ShoppingList { Name = "Untitled" };
+			var shoppingList = new ShoppingList { Name = "Untitled" };
 
-			if (list.ShoppingListRecipes == null)
-			{
-				list.ShoppingListRecipes = new List<ShoppingListRecipe>();
-			}
+			shoppingList.ShoppingListRecipes = new List<ShoppingListRecipe>();
+			shoppingList.ShoppingListIngredients = new List<ShoppingListIngredient>();
 
 			foreach (var recipe in SelectedRecipes)
 			{
+				_recipeRepository.Get(x => x.Id == recipe.Id, x => x.RecipeIngredients);
 				var shoppingListRecipe = new ShoppingListRecipe
 				{
 					Recipe = recipe,
-					ShoppingList = list
+					ShoppingList = shoppingList
 				};
+				shoppingList.ShoppingListRecipes.Add(shoppingListRecipe);
 
-				list.ShoppingListRecipes.Add(shoppingListRecipe);
+				foreach (var recipeIngredient in recipe.RecipeIngredients)
+				{
+					var shoppingListIngredient = new ShoppingListIngredient();
+					_mapper.Map(recipeIngredient, shoppingListIngredient, nameof(recipeIngredient.Id));
+
+					shoppingList.ShoppingListIngredients.Add(shoppingListIngredient);
+				}
 			}
 
-			_shoppingListRepository.Create(list);
+			_shoppingListRepository.Create(shoppingList);
 			_shoppingListRepository.SaveChanges();
 		}
 
 		private void AddToShoppingList(object obj)
 		{
-			var list = obj as ShoppingList;
-			if (list == null)
+			var shoppingList = obj as ShoppingList;
+			if (shoppingList == null)
 				return;
 
-			list = _shoppingListRepository.Get(x => x.Id == list.Id, x => x.ShoppingListRecipes);
+			shoppingList = _shoppingListRepository.Get(x => x.Id == shoppingList.Id, x => x.ShoppingListRecipes, x => x.ShoppingListIngredients);
 
 			foreach (var recipe in SelectedRecipes)
 			{
 				var shoppingListRecipe = new ShoppingListRecipe
 				{
 					Recipe = recipe,
-					ShoppingList = list
+					ShoppingList = shoppingList
 				};
-
-				list.ShoppingListRecipes.Add(shoppingListRecipe);
+				shoppingList.ShoppingListRecipes.Add(shoppingListRecipe);
 			}
 
-			_shoppingListRepository.Update(list);
+			List<RecipeIngredient> allRecipeIngredients = SelectedRecipes.SelectMany(r => r.RecipeIngredients).ToList();
+			foreach (var recipeIngredient in allRecipeIngredients)
+			{
+				var shoppingListIngredient = shoppingList.ShoppingListIngredients.FirstOrDefault(s => s.IngredientId == recipeIngredient.IngredientId);
+				if (shoppingListIngredient == null)
+				{
+					shoppingListIngredient = new ShoppingListIngredient();
+					_mapper.Map(recipeIngredient, shoppingListIngredient, nameof(recipeIngredient.Id));
+					shoppingList.ShoppingListIngredients.Add(shoppingListIngredient);
+					continue;
+				}
+
+				shoppingListIngredient.Quantity += recipeIngredient.Quantity;
+				shoppingListIngredient.Weight += recipeIngredient.Weight;
+			}
+
+			_shoppingListRepository.Update(shoppingList);
 			_shoppingListRepository.SaveChanges();
 		}
 
@@ -331,6 +349,14 @@ namespace RecipeOrganiser.ViewModels
 
 			Categories = _categoryRepository.GetAll().Select(c => c.Name).ToList();
 			Ingredients = _ingredientRepository.GetAll().Select(i => i.Name).ToList();
+
+			var shoppingLists = _shoppingListRepository.GetAll();
+			ShoppingLists.Clear();
+
+			foreach (ShoppingList list in shoppingLists)
+			{
+				ShoppingLists.Add(list);
+			}
 
 			base.Refresh();
 		}
