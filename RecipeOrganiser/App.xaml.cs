@@ -21,7 +21,7 @@ namespace RecipeOrganiser
 			_host = new HostBuilder()
 				.ConfigureServices((hostContext, services) =>
 				{
-					services.AddScoped<IMapper, Mapper>();
+					services.AddSingleton<IMapper, Mapper>();
 
 					services.AddDbContext<RecipeOrganiserDbContext>();
 
@@ -38,6 +38,7 @@ namespace RecipeOrganiser
 					services.AddSingleton<AddIngredientViewModel>();
 					services.AddSingleton<CategoriesViewModel>();
 					services.AddSingleton<ShoppingListViewModel>();
+					services.AddSingleton<EditShoppingListViewModel>();
 					services.AddSingleton<HomeViewModel>();
 					services.AddSingleton<MainWindow>();
 
