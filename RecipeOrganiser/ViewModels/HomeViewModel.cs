@@ -20,6 +20,7 @@ namespace RecipeOrganiser.ViewModels
 		private readonly IMapper _mapper;
 
 		private readonly RecipeViewModel _recipeViewModel;
+		private readonly ShoppingListViewModel _shoppingListViewModel;
 
 		private readonly IRecipeRepository _recipeRepository;
 		private readonly ICategoryRepository _categoryRepository;
@@ -32,7 +33,8 @@ namespace RecipeOrganiser.ViewModels
 			ICategoryRepository categoryRepository,
 			IIngredientRepository ingredientRepository,
 			IShoppingListRepository shoppingListRepository,
-			RecipeViewModel recipeViewModel)
+			RecipeViewModel recipeViewModel,
+			ShoppingListViewModel shoppingListViewModel)
 		{
 			_mapper = mapper;
 
@@ -43,6 +45,8 @@ namespace RecipeOrganiser.ViewModels
 
 			_recipeViewModel = recipeViewModel;
 			_recipeViewModel.Title = "Edit Recipe";
+
+			_shoppingListViewModel = shoppingListViewModel;
 
 			RecipesView = CollectionViewSource.GetDefaultView(Recipes);
 			RecipesView.Filter = Filter;
@@ -253,6 +257,10 @@ namespace RecipeOrganiser.ViewModels
 
 			_shoppingListRepository.Create(shoppingList);
 			_shoppingListRepository.SaveChanges();
+
+			_shoppingListViewModel.SelectedShoppingList = shoppingList;
+
+			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _shoppingListViewModel });
 		}
 
 		private void AddToShoppingList(object obj)
@@ -265,6 +273,7 @@ namespace RecipeOrganiser.ViewModels
 
 			foreach (var recipe in SelectedRecipes)
 			{
+				_recipeRepository.Get(r => r.Id == recipe.Id, r => r.RecipeIngredients);
 				var shoppingListRecipe = new ShoppingListRecipe
 				{
 					Recipe = recipe,
@@ -291,6 +300,10 @@ namespace RecipeOrganiser.ViewModels
 
 			_shoppingListRepository.Update(shoppingList);
 			_shoppingListRepository.SaveChanges();
+
+			_shoppingListViewModel.SelectedShoppingList = shoppingList;
+
+			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _shoppingListViewModel });
 		}
 
 		private bool Filter(object obj)
