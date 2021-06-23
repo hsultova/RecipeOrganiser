@@ -115,7 +115,18 @@
 						<Image Source="/Images/plus-circle.png" Width="25"/>
 					</Button>
 					<Grid Grid.Row="5" Grid.ColumnSpan="2">
-						<ItemsControl ItemsSource="{Binding AddIngredientControls}"/>
+						<ItemsControl ItemsSource="{Binding AddIngredientControls}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<StackPanel Orientation="Horizontal">
+										<ContentControl Content="{Binding}"/>
+										<Button x:Name="DeleteButton" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=local:RecipeView}}"  CommandParameter="{Binding}" Height="22" Width="20">
+											<Image Source="/Images/trash-can.png" Width="15" Height="15"/>
+										</Button>
+									</StackPanel>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
 					</Grid>
 				</Grid>
 			</Grid>

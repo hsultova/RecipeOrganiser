@@ -231,6 +231,7 @@ namespace RecipeOrganiser.ViewModels
 		public ICommand SaveCommand => new RelayCommand(Save);
 		public ICommand ClearCommand => new RelayCommand(Clear);
 		public ICommand UploadImageCommand => new RelayCommand(UploadImage);
+		public ICommand DeleteCommand => new RelayCommand(Delete);
 
 		#endregion
 
@@ -316,6 +317,23 @@ namespace RecipeOrganiser.ViewModels
 
 				Image = data;
 			}
+		}
+
+		private void Delete(object obj)
+		{
+			var addIngredietnViewModel = obj as AddIngredientViewModel;
+			if (addIngredietnViewModel == null)
+				return;
+
+			AddIngredientControls.Remove(addIngredietnViewModel);
+
+			var ingredientToRemove = CurrentRecipe.RecipeIngredients.FirstOrDefault(x => x.Ingredient == addIngredietnViewModel.Ingredient);
+			if (ingredientToRemove == null)
+				return;
+			CurrentRecipe.RecipeIngredients.Remove(ingredientToRemove);
+
+			_recipeRepository.Update(CurrentRecipe);
+			_recipeRepository.SaveChanges();
 		}
 
 		/// <summary>
