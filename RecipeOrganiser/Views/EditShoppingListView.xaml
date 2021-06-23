@@ -35,7 +35,18 @@
 				Command="{Binding AddIngredientCommand}">
 				<Image Source="/Images/plus-circle.png" Width="25"/>
 			</Button>
-			<ItemsControl Grid.Row="1" ItemsSource="{Binding AddIngredientControls}" />
+			<ItemsControl x:Name="IngredientsItemsControl" Grid.Row="1" ItemsSource="{Binding AddIngredientControls}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal">
+							<ContentControl Content="{Binding}"/>
+							<Button x:Name="DeleteButton" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=local:EditShoppingListView}}"  CommandParameter="{Binding}" Height="22" Width="20">
+								<Image Source="/Images/trash-can.png" Width="15" Height="15"/>
+							</Button>
+						</StackPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
 		</Grid>
 	</DockPanel>
 </UserControl>

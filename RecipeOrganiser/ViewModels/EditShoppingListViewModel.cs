@@ -81,10 +81,14 @@ namespace RecipeOrganiser.ViewModels
 			}
 		}
 
+		public ShoppingList CurrentShoppingList { get; set; }
+
+
 		#region Commands
 		public ICommand AddIngredientCommand => new RelayCommand(AddIngredient);
 
 		public ICommand SaveCommand => new RelayCommand(Save);
+		public ICommand DeleteCommand => new RelayCommand(Delete);
 
 		#endregion
 
@@ -95,30 +99,46 @@ namespace RecipeOrganiser.ViewModels
 
 		private void Save(object obj)
 		{
-			var shoppingList = _shoppingListRepository.Get(x => x.Id == Id, x => x.ShoppingListIngredients);
-
-			if (shoppingList.ShoppingListIngredients == null)
+			if (CurrentShoppingList.ShoppingListIngredients == null)
 			{
-				shoppingList.ShoppingListIngredients = new List<ShoppingListIngredient>();
+				CurrentShoppingList.ShoppingListIngredients = new List<ShoppingListIngredient>();
 			}
 
 			foreach (var addIngredientViewModel in AddIngredientControls)
 			{
 				addIngredientViewModel.SetIngredientIfNew();
 
-				var shopppingListIngredient = shoppingList.ShoppingListIngredients.FirstOrDefault(i => i.IngredientId == addIngredientViewModel.Ingredient.Id);
+				var shopppingListIngredient = CurrentShoppingList.ShoppingListIngredients.FirstOrDefault(i => i.IngredientId == addIngredientViewModel.Ingredient.Id);
 				if (shopppingListIngredient == null)
 				{
 					shopppingListIngredient = new ShoppingListIngredient();
 				}
 
 				_mapper.Map(addIngredientViewModel, shopppingListIngredient);
-				shoppingList.ShoppingListIngredients.Add(shopppingListIngredient);
+				CurrentShoppingList.ShoppingListIngredients.Add(shopppingListIngredient);
 			}
 
 			OnRecordUpdated<ShoppingList>();
 
-			_shoppingListRepository.Update(shoppingList);
+			_shoppingListRepository.Update(CurrentShoppingList);
+			_shoppingListRepository.SaveChanges();
+		}
+
+		private void Delete(object obj)
+		{
+			var addIngredietnViewModel = obj as AddIngredientViewModel;
+			if (addIngredietnViewModel == null)
+				return;
+
+			AddIngredientControls.Remove(addIngredietnViewModel);
+
+			var ingredientToRemove = CurrentShoppingList.ShoppingListIngredients.FirstOrDefault(x => x.Ingredient == addIngredietnViewModel.Ingredient);
+			if (ingredientToRemove == null)
+				return;
+
+			CurrentShoppingList.ShoppingListIngredients.Remove(ingredientToRemove);
+
+			_shoppingListRepository.Update(CurrentShoppingList);
 			_shoppingListRepository.SaveChanges();
 		}
 	}

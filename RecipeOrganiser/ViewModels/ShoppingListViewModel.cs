@@ -83,6 +83,7 @@ namespace RecipeOrganiser.ViewModels
 			var shoppingList = _shoppingListRepository.Get(r => r.Id == SelectedShoppingList.Id, r => r.ShoppingListIngredients);
 
 			_editShoppingListViewModel.Id = shoppingList.Id;
+			_editShoppingListViewModel.CurrentShoppingList = shoppingList;
 			_editShoppingListViewModel.ShoppingListIngredients = shoppingList.ShoppingListIngredients;
 			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _editShoppingListViewModel });
 		}
