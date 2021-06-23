@@ -54,17 +54,16 @@
 				</DataGrid.Columns>
 				<DataGrid.RowDetailsTemplate>
 					<DataTemplate>
-						<ItemsControl ItemsSource="{Binding ShoppingListIngredients}">
-							<ItemsControl.ItemTemplate>
-								<DataTemplate>
-									<StackPanel Orientation="Horizontal">
-										<TextBlock Text="{Binding Ingredient.Name}" Margin="5"></TextBlock>
-										<TextBlock Text="{Binding Quantity}" Margin="5"></TextBlock>
-										<TextBlock Text="{Binding Weight}" Margin="5"></TextBlock>
-									</StackPanel>
-								</DataTemplate>
-							</ItemsControl.ItemTemplate>
-						</ItemsControl>
+						<ListView ItemsSource="{Binding ShoppingListIngredients}">
+							<ListView.View>
+								<GridView>
+									<GridViewColumn Header="Name" DisplayMemberBinding="{Binding Ingredient.Name}"/>
+									<GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
+									<GridViewColumn Header="Weight" DisplayMemberBinding="{Binding Weight}"/>
+									<GridViewColumn DisplayMemberBinding="{Binding UnitOfMeasurement.ShortName}"/>
+								</GridView>
+							</ListView.View>
+						</ListView>
 					</DataTemplate>
 				</DataGrid.RowDetailsTemplate>
 			</DataGrid>
