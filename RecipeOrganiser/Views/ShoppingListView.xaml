@@ -24,14 +24,14 @@
 					<Image Source="/Images/save.png" Width="30" Height="25"/>
 				</Button>
 				<Button x:Name="EditButton" 
-						Margin="0,20,10,0" 
+						Margin="0,20,20,0" 
 						ToolTip="Edit"
 						ToolTipService.ShowOnDisabled="True"
 						Command="{Binding EditCommand}">
 					<Image Source="/Images/pencil.png" Width="30" Height="25"/>
 				</Button>
 				<Button x:Name="DeleteButton" 
-						Margin="0,20,10,0" 
+						Margin="0,20,20,0" 
 						ToolTipService.ShowOnDisabled="True"
 						Command="{Binding DeleteCommand}">
 					<Image Source="/Images/trash-can.png" Width="30" Height="25"/>
