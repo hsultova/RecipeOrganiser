@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using RecipeOrganiser.Data.Models;
 using RecipeOrganiser.Data.Repositories;
+using RecipeOrganiser.Utils.Events;
 using RecipeOrganiser.Utils.General;
 using RecipeOrganiser.ViewModels.Base;
 
@@ -12,15 +13,16 @@ namespace RecipeOrganiser.ViewModels
 	public class ShoppingListViewModel : BaseViewModel
 	{
 		private readonly IShoppingListRepository _shoppingListRepository;
-		private readonly IRecipeRepository _recipeRepository;
+
+		private readonly EditShoppingListViewModel _editShoppingListViewModel;
 
 		public ShoppingListViewModel(
 			IShoppingListRepository shoppingListRepository,
-			IRecipeRepository recipeRepository)
+			EditShoppingListViewModel editShoppingListViewModel)
 		{
 			_shoppingListRepository = shoppingListRepository;
-			_recipeRepository = recipeRepository;
-			_recipeRepository.GetAll(null, x => x.RecipeIngredients);
+
+			_editShoppingListViewModel = editShoppingListViewModel;
 		}
 
 		private ObservableCollection<ShoppingList> _shoppingLists;
@@ -53,6 +55,7 @@ namespace RecipeOrganiser.ViewModels
 
 		#region Commands
 		public ICommand SaveCommand => new RelayCommand(Save);
+		public ICommand EditCommand => new RelayCommand(Edit);
 
 		public ICommand DeleteCommand => new RelayCommand(Delete);
 
@@ -73,6 +76,15 @@ namespace RecipeOrganiser.ViewModels
 			}
 
 			_shoppingListRepository.SaveChanges();
+		}
+
+		private void Edit(object obj)
+		{
+			var shoppingList = _shoppingListRepository.Get(r => r.Id == SelectedShoppingList.Id, r => r.ShoppingListIngredients);
+
+			_editShoppingListViewModel.Id = shoppingList.Id;
+			_editShoppingListViewModel.ShoppingListIngredients = shoppingList.ShoppingListIngredients;
+			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _editShoppingListViewModel });
 		}
 
 		private void Delete(object obj)
