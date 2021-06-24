@@ -194,6 +194,8 @@ namespace RecipeOrganiser.ViewModels
 		public ICommand AddNewShoppingListCommand => new RelayCommand(AddNewShoppingList);
 		public ICommand AddToShoppingListCommand => new RelayCommand(AddToShoppingList);
 
+		public ICommand DoubleClickCommand => new RelayCommand(DoubleClick);
+
 		#endregion
 
 		private void Search(object obj)
@@ -346,6 +348,12 @@ namespace RecipeOrganiser.ViewModels
 			}
 
 			return hasName;
+		}
+
+
+		private void DoubleClick(object obj)
+		{
+			Edit(obj);
 		}
 
 		public override void Refresh()
