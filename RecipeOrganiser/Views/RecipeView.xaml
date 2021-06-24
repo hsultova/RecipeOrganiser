@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:RecipeOrganiser.Views" 
-			 xmlns:controls="clr-namespace:RecipeOrganiser.Resources.Controls" 
+			 xmlns:controls="clr-namespace:RecipeOrganiser.Resources.Controls"
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" >
 
@@ -21,7 +21,11 @@
 				<Button Margin="0,20,10,0" ToolTip="Clear fields (Esc)" Command="{Binding ClearCommand}">
 					<Image Source="/Images/close-box-multiple.png" Width="30" Height="25"/>
 				</Button>
-				<Button Margin="0,20,20,0" ToolTip="Save (Ctrl+S)" Command="{Binding SaveCommand}" CommandParameter="{Binding}">
+				<Button Margin="0,20,20,0" 
+						ToolTip="Save (Ctrl+S)"
+						Command="{Binding SaveCommand}"
+						CommandParameter="{Binding}" 
+						Style="{StaticResource DisableOnValidationError}">
 					<Image Source="/Images/save.png" Width="30" Height="25"/>
 				</Button>
 
@@ -63,7 +67,10 @@
 					</StackPanel>
 					<StackPanel Grid.Row="2">
 						<TextBlock Style="{StaticResource FormText}">Name</TextBlock>
-						<TextBox Text="{Binding Name}" Style="{StaticResource FormTextBox}"/>
+						<TextBox Style="{StaticResource FormTextBox}" Text="{Binding Name, 
+                       UpdateSourceTrigger=PropertyChanged,
+                       ValidatesOnDataErrors=True}">
+						</TextBox>
 					</StackPanel>
 					<Grid Grid.Row="1" Grid.Column="1">
 						<Grid.RowDefinitions>
@@ -88,8 +95,10 @@
 						<ComboBox 
 							ItemsSource="{Binding Categories}" 
 							SelectedItem="{Binding Category}" 
-							Text="{Binding CategoryName}" 
 							TextSearch.TextPath="Name" 
+							Text="{Binding CategoryName, 
+                       UpdateSourceTrigger=PropertyChanged,
+                       ValidatesOnDataErrors=True}"
 							IsEditable="True" 
 							StaysOpenOnEdit="True" 
 							Width="300" 

@@ -70,6 +70,7 @@ namespace RecipeOrganiser.ViewModels
 		}
 
 		private string _name;
+		[Required]
 		public string Name
 		{
 			get
@@ -134,6 +135,7 @@ namespace RecipeOrganiser.ViewModels
 		}
 
 		private string _categoryName;
+		[Required]
 		public string CategoryName
 		{
 			get

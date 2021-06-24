@@ -1,16 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using RecipeOrganiser.Utils.Events;
 
 namespace RecipeOrganiser.ViewModels.Base
 {
+	[AttributeUsage(AttributeTargets.Property)]
+	public class RequiredAttribute : Attribute
+	{
+	}
+
 	/// <summary>
 	/// Base view model with basic funcionality.
 	/// </summary>
-	public class BaseViewModel : INotifyPropertyChanged
+	public class BaseViewModel : INotifyPropertyChanged, IDataErrorInfo
 	{
+		private PropertyInfo[] _properties;
+		public BaseViewModel()
+		{
+			_properties = GetType().GetProperties().Where(p => Attribute.IsDefined(p, typeof(RequiredAttribute))).ToArray();
+		}
+
 		#region INotifyPropertyChanged
 
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -38,6 +51,47 @@ namespace RecipeOrganiser.ViewModels.Base
 			return true;
 		}
 
+		#endregion
+
+		#region IDataErrorInfo
+
+		private string _error;
+		public string Error
+		{
+			get => _error;
+			set => SetBackingFieldProperty<string>(ref _error, value, nameof(Error));
+		}
+
+		public string this[string columnName]
+		{
+			get => OnValidate(columnName);
+		}
+
+		protected virtual string OnValidate(string columnName)
+		{
+			string result = string.Empty;
+			foreach (var property in _properties)
+			{
+				if (columnName == property.Name)
+				{
+				if(string.IsNullOrWhiteSpace(property.GetValue(this) as string))
+					{
+						result = $"{property.Name} is required.";
+					}
+				}
+			}
+			
+			if (string.IsNullOrEmpty(result))
+			{
+				Error = null;
+			}
+			else
+			{
+				Error = "Error";
+			}
+
+			return result;
+		}
 		#endregion
 
 		#region DisplayMessage Event
