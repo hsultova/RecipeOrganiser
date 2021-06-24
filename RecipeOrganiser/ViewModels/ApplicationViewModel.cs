@@ -77,7 +77,8 @@ namespace RecipeOrganiser.ViewModels
 					var result = MessageBox.Show("Are you sure you want to exit? Any unsaved changes will be lost.", "Confirm", MessageBoxButton.YesNo);
 					if (result == MessageBoxResult.No)
 					{
-						SelectedMenuItem = _navigationMappings[CurrentViewModel];
+						if(_navigationMappings.ContainsKey(CurrentViewModel))
+							SelectedMenuItem = _navigationMappings[CurrentViewModel];
 						return;
 					}
 					_currentViewModel.Clear();

@@ -67,19 +67,6 @@ namespace RecipeOrganiser.ViewModels
 
 		public List<Recipe> SelectedRecipes { get; set; } = new List<Recipe>();
 
-		private Recipe _selectedRecipe;
-		public Recipe SelectedRecipe
-		{
-			get
-			{
-				return _selectedRecipe;
-			}
-			set
-			{
-				SetBackingFieldProperty<Recipe>(ref _selectedRecipe, value, nameof(SelectedRecipe));
-			}
-		}
-
 		public ICollectionView RecipesView { get; set; }
 
 		private string _selectedCategory;
@@ -205,7 +192,7 @@ namespace RecipeOrganiser.ViewModels
 
 		private void Edit(object obj)
 		{
-			var recipe = _recipeRepository.Get(r => r.Id == SelectedRecipe.Id, r => r.RecipeIngredients);
+			var recipe = _recipeRepository.Get(r => r.Id == ((Recipe) obj).Id, r => r.RecipeIngredients);
 
 			_mapper.Map(recipe, _recipeViewModel);
 			_recipeViewModel.CurrentRecipe = recipe;

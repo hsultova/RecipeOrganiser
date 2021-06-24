@@ -40,7 +40,9 @@
 					<DataTemplate>
 						<StackPanel Orientation="Horizontal">
 							<ContentControl Content="{Binding}"/>
-							<Button x:Name="DeleteButton" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=local:EditShoppingListView}}"  CommandParameter="{Binding}" Height="22" Width="20">
+							<Button x:Name="DeleteButton" 
+									Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=local:EditShoppingListView}}" 
+									CommandParameter="{Binding}" Height="22" Width="20">
 								<Image Source="/Images/trash-can.png" Width="15" Height="15"/>
 							</Button>
 						</StackPanel>
