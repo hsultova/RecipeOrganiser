@@ -104,16 +104,12 @@ namespace RecipeOrganiser.ViewModels
 				CurrentShoppingList.ShoppingListIngredients = new List<ShoppingListIngredient>();
 			}
 
+			CurrentShoppingList.ShoppingListIngredients.Clear();
 			foreach (var addIngredientViewModel in AddIngredientControls)
 			{
 				addIngredientViewModel.SetIngredientIfNew();
 
-				var shopppingListIngredient = CurrentShoppingList.ShoppingListIngredients.FirstOrDefault(i => i.IngredientId == addIngredientViewModel.Ingredient.Id);
-				if (shopppingListIngredient == null)
-				{
-					shopppingListIngredient = new ShoppingListIngredient();
-				}
-
+				var shopppingListIngredient = new ShoppingListIngredient();
 				_mapper.Map(addIngredientViewModel, shopppingListIngredient);
 				CurrentShoppingList.ShoppingListIngredients.Add(shopppingListIngredient);
 			}
@@ -131,15 +127,6 @@ namespace RecipeOrganiser.ViewModels
 				return;
 
 			AddIngredientControls.Remove(addIngredietnViewModel);
-
-			var ingredientToRemove = CurrentShoppingList.ShoppingListIngredients.FirstOrDefault(x => x.Ingredient == addIngredietnViewModel.Ingredient);
-			if (ingredientToRemove == null)
-				return;
-
-			CurrentShoppingList.ShoppingListIngredients.Remove(ingredientToRemove);
-
-			_shoppingListRepository.Update(CurrentShoppingList);
-			_shoppingListRepository.SaveChanges();
 		}
 	}
 }

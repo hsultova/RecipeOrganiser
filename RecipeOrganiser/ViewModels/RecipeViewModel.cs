@@ -270,21 +270,12 @@ namespace RecipeOrganiser.ViewModels
 				OnRecordCreated<Recipe>();
 			}
 
-			if(recipe.RecipeIngredients == null)
-			{
-				recipe.RecipeIngredients = new List<RecipeIngredient>();
-			}
-
+			recipe.RecipeIngredients = new List<RecipeIngredient>();
 			foreach (var addIngredientViewModel in AddIngredientControls)
 			{
 				addIngredientViewModel.SetIngredientIfNew();
 
-				var recipeIngredient = recipe.RecipeIngredients.FirstOrDefault(i => i.IngredientId == addIngredientViewModel.Ingredient.Id);
-				if(recipeIngredient == null)
-				{
-					recipeIngredient = new RecipeIngredient();
-				}
-
+				var recipeIngredient = new RecipeIngredient();
 				_mapper.Map(addIngredientViewModel, recipeIngredient);
 				recipe.RecipeIngredients.Add(recipeIngredient);
 			}
@@ -326,14 +317,6 @@ namespace RecipeOrganiser.ViewModels
 				return;
 
 			AddIngredientControls.Remove(addIngredietnViewModel);
-
-			var ingredientToRemove = CurrentRecipe.RecipeIngredients.FirstOrDefault(x => x.Ingredient == addIngredietnViewModel.Ingredient);
-			if (ingredientToRemove == null)
-				return;
-			CurrentRecipe.RecipeIngredients.Remove(ingredientToRemove);
-
-			_recipeRepository.Update(CurrentRecipe);
-			_recipeRepository.SaveChanges();
 		}
 
 		/// <summary>
