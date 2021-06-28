@@ -19,6 +19,7 @@
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
 				<Button x:Name="ShoppingListButton" 
 						Margin="0,20,10,0" 
+						IsEnabled="False"
 						ToolTip="Add to or create new shopping list"
 						ToolTipService.ShowOnDisabled="True"
 						Click="ShoppingListButton_Click">
@@ -26,11 +27,12 @@
 						<Image Source="/Images/cart.png" Width="30" Height="25"/>
 						<Popup x:Name="AddToShoppingListPopup" IsOpen="False" StaysOpen="False">
 							<StackPanel>
-								<Button Content="Add New" Command="{Binding AddNewShoppingListCommand}"></Button>
+								<Button Content="Add New" Command="{Binding AddNewShoppingListCommand}"/>
+								<TextBlock Text="Shopping Lists" Background="Gray" FontWeight="Bold"/>
 								<ItemsControl x:Name="ShoppingListsControl" ItemsSource="{Binding ShoppingLists}">
 									<ItemsControl.ItemTemplate>
 										<DataTemplate>
-											<Button Content="{Binding Name}" Command="{Binding DataContext.AddToShoppingListCommand, RelativeSource={RelativeSource AncestorType=local:HomeView}}" CommandParameter="{Binding}"></Button>
+											<Button Content="{Binding Name}" Command="{Binding DataContext.AddToShoppingListCommand, RelativeSource={RelativeSource AncestorType=local:HomeView}}" CommandParameter="{Binding}"/>
 										</DataTemplate>
 									</ItemsControl.ItemTemplate>
 								</ItemsControl>
@@ -42,12 +44,14 @@
 						Margin="0,20,10,0" 
 						ToolTip="Edit"
 						ToolTipService.ShowOnDisabled="True"
+						IsEnabled="False"
 						Command="{Binding EditCommand}" CommandParameter="{Binding ElementName=RecipesListBox, Path=SelectedItem}">
 					<Image Source="/Images/pencil.png" Width="30" Height="25"/>
 				</Button>
 				<Button x:Name="DeleteButton"
 						Margin="0,20,10,0" 
 						ToolTipService.ShowOnDisabled="True"
+						IsEnabled="False"
 						Command="{Binding DeleteCommand}">
 					<Image Source="/Images/trash-can.png" Width="30" Height="25"/>
 					<Button.ToolTip>
@@ -139,16 +143,30 @@
 				</ListBox.ItemTemplate>
 				<ListBox.ContextMenu>
 					<ContextMenu >
-						<MenuItem x:Name="ShoppingListMenuItem" Header="_ShoppingList..." Command="{Binding ShoppingListCommand}">
+						<MenuItem x:Name="ShoppingListMenuItem" Header="_ShoppingList...">
 							<MenuItem.Icon>
 								<Image Source="/Images/cart.png" />
 							</MenuItem.Icon>
+							<MenuItem Header="_Add New" Command="{Binding AddNewShoppingListCommand}"/>
+							<MenuItem Header="_Shopping Lists" ItemsSource="{Binding ShoppingLists}">
+								<MenuItem.ItemContainerStyle>
+									<Style TargetType="MenuItem">
+										<Setter Property="Header" Value="{Binding Name}"/>
+										<Setter Property="Command" Value="{Binding DataContext.AddToShoppingListCommand, RelativeSource={RelativeSource AncestorType=local:HomeView}}"/>
+										<Setter Property="CommandParameter" Value="{Binding}"/>
+									</Style>
+								</MenuItem.ItemContainerStyle>
+							</MenuItem>
 						</MenuItem>
-						<MenuItem x:Name="EditMenuItem" Header="_Edit..." Command="{Binding EditCommand}">
+						<MenuItem x:Name="EditMenuItem"
+								  Header="_Edit..." 
+								  Command="{Binding EditCommand}" 
+								  CommandParameter="{Binding Path=PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" >
 							<MenuItem.Icon>
 								<Image Source="/Images/pencil.png" />
 							</MenuItem.Icon>
 						</MenuItem>
+						<Separator/>
 						<MenuItem x:Name="DeleteMenuItem" Header="_Delete" Command="{Binding DeleteCommand}" InputGestureText="Ctrl+D">
 							<MenuItem.Icon>
 								<Image Source="/Images/trash-can.png" />

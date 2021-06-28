@@ -41,6 +41,15 @@
 					<DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="*"/>
 					<DataGridTextColumn Binding="{Binding Description}" Header="Description" Width="*"/>
 				</DataGrid.Columns>
+				<DataGrid.ContextMenu>
+					<ContextMenu>
+						<MenuItem x:Name="DeleteMenuItem" Header="_Delete" Command="{Binding DeleteCommand}" InputGestureText="Ctrl+D">
+							<MenuItem.Icon>
+								<Image Source="/Images/trash-can.png" />
+							</MenuItem.Icon>
+						</MenuItem>
+					</ContextMenu>
+				</DataGrid.ContextMenu>
 			</DataGrid>
 		</Grid>
 	</DockPanel>

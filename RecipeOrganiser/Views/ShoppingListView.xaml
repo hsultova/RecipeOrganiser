@@ -66,6 +66,24 @@
 						</ListView>
 					</DataTemplate>
 				</DataGrid.RowDetailsTemplate>
+				<DataGrid.ContextMenu>
+					<ContextMenu>
+						<MenuItem x:Name="EditMenuItem"
+								  Header="_Edit..." 
+								  Command="{Binding EditCommand}" 
+								  CommandParameter="{Binding Path=PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" >
+							<MenuItem.Icon>
+								<Image Source="/Images/pencil.png" />
+							</MenuItem.Icon>
+						</MenuItem>
+						<Separator/>
+						<MenuItem x:Name="DeleteMenuItem" Header="_Delete" Command="{Binding DeleteCommand}" InputGestureText="Ctrl+D">
+							<MenuItem.Icon>
+								<Image Source="/Images/trash-can.png" />
+							</MenuItem.Icon>
+						</MenuItem>
+					</ContextMenu>
+				</DataGrid.ContextMenu>
 			</DataGrid>
 		</Grid>
 	</DockPanel>
