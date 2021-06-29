@@ -103,27 +103,15 @@ namespace RecipeOrganiser.ViewModels
 		private NavigationMenuItem _selectedMenuItem;
 		public NavigationMenuItem SelectedMenuItem
 		{
-			get
-			{
-				return _selectedMenuItem;
-			}
-			set
-			{
-				SetBackingFieldProperty<NavigationMenuItem>(ref _selectedMenuItem, value, nameof(SelectedMenuItem));
-			}
+			get => _selectedMenuItem;
+			set => SetBackingFieldProperty<NavigationMenuItem>(ref _selectedMenuItem, value, nameof(SelectedMenuItem));
 		}
 
 		private ObservableCollection<DisplayMessageEventArgs> _statusMessages = new ObservableCollection<DisplayMessageEventArgs>();
 		public ObservableCollection<DisplayMessageEventArgs> StatusMessages
 		{
-			get
-			{
-				return _statusMessages;
-			}
-			set
-			{
-				SetBackingFieldProperty<ObservableCollection<DisplayMessageEventArgs>>(ref _statusMessages, value, nameof(StatusMessages));
-			}
+			get => _statusMessages;
+			set => SetBackingFieldProperty<ObservableCollection<DisplayMessageEventArgs>>(ref _statusMessages, value, nameof(StatusMessages));
 		}
 
 		private void DisplayMessage(object sender, DisplayMessageEventArgs e)

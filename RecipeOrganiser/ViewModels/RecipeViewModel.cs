@@ -58,14 +58,8 @@ namespace RecipeOrganiser.ViewModels
 		private string _title;
 		public string Title
 		{
-			get
-			{
-				return _title;
-			}
-			set
-			{
-				SetBackingFieldProperty<string>(ref _title, value, nameof(Title));
-			}
+			get => _title;
+			set => SetBackingFieldProperty<string>(ref _title, value, nameof(Title));
 		}
 
 		private string _name;

@@ -41,14 +41,8 @@ namespace RecipeOrganiser.ViewModels
 		private ShoppingList _selectedShoppingList;
 		public ShoppingList SelectedShoppingList
 		{
-			get
-			{
-				return _selectedShoppingList;
-			}
-			set
-			{
-				SetBackingFieldProperty<ShoppingList>(ref _selectedShoppingList, value, nameof(SelectedShoppingList));
-			}
+			get => _selectedShoppingList;
+			set => SetBackingFieldProperty<ShoppingList>(ref _selectedShoppingList, value, nameof(SelectedShoppingList));
 		}
 
 		public List<ShoppingList> SelectedShoppingLists { get; internal set; } = new List<ShoppingList>();

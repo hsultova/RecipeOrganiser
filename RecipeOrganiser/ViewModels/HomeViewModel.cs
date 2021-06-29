@@ -151,27 +151,15 @@ namespace RecipeOrganiser.ViewModels
 		private string _searchText;
 		public string SearchText
 		{
-			get
-			{
-				return _searchText;
-			}
-			set
-			{
-				SetBackingFieldProperty<string>(ref _searchText, value, nameof(SearchText));
-			}
+			get => _searchText;
+			set => SetBackingFieldProperty<string>(ref _searchText, value, nameof(SearchText));
 		}
 
 		private bool _isAdvancedFilterEnabled = false;
 		public bool IsFilterEnabled
 		{
-			get
-			{
-				return _isAdvancedFilterEnabled;
-			}
-			set
-			{
-				SetBackingFieldProperty<bool>(ref _isAdvancedFilterEnabled, value, nameof(IsFilterEnabled));
-			}
+			get => _isAdvancedFilterEnabled;
+			set => SetBackingFieldProperty<bool>(ref _isAdvancedFilterEnabled, value, nameof(IsFilterEnabled));
 		}
 
 		#region Commands
