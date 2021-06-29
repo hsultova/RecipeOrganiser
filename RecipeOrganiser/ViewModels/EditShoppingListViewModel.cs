@@ -113,7 +113,7 @@ namespace RecipeOrganiser.ViewModels
 				CurrentShoppingList.ShoppingListIngredients.Add(shopppingListIngredient);
 			}
 
-			OnRecordUpdated<ShoppingList>();
+			OnRecordUpdated<ShoppingList>(CurrentShoppingList.Name);
 
 			_shoppingListRepository.Update(CurrentShoppingList);
 			_shoppingListRepository.SaveChanges();

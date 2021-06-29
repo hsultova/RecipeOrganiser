@@ -68,10 +68,12 @@ namespace RecipeOrganiser.ViewModels
 				if (list.Id == 0)
 				{
 					_shoppingListRepository.Create(list);
+					OnRecordCreated<ShoppingList>(list.Name);
 				}
 				else
 				{
 					_shoppingListRepository.Update(list);
+					OnRecordUpdated<ShoppingList>(list.Name);
 				}
 			}
 
@@ -98,10 +100,10 @@ namespace RecipeOrganiser.ViewModels
 					continue;
 				}
 				_shoppingListRepository.Delete(selectedList.Id);
+				OnRecordDeleted<ShoppingList>(selectedList.Name);
 			}
 
 			_shoppingListRepository.SaveChanges();
-			OnRecordDeleted<ShoppingList>();
 			SelectedShoppingLists.Clear();
 			Refresh();
 		}

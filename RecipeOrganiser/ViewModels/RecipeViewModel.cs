@@ -262,13 +262,13 @@ namespace RecipeOrganiser.ViewModels
 			{
 				recipe = CurrentRecipe;
 				_mapper.Map(recipeViewModel, recipe);
-				OnRecordUpdated<Recipe>();
+				OnRecordUpdated<Recipe>(recipe.Name);
 			}
 			else
 			{
 				_mapper.Map(recipeViewModel, recipe, nameof(RecipeIngredients));
 				shouldClear = true;
-				OnRecordCreated<Recipe>();
+				OnRecordCreated<Recipe>(recipe.Name);
 			}
 
 			recipe.RecipeIngredients = new List<RecipeIngredient>();

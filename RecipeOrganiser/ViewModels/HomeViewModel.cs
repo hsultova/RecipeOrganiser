@@ -210,10 +210,10 @@ namespace RecipeOrganiser.ViewModels
 					continue;
 				}
 				_recipeRepository.Delete(selectedRecipe.Id);
+				OnRecordDeleted<Recipe>(selectedRecipe.Name);
 			}
 
 			_recipeRepository.SaveChanges();
-			OnRecordDeleted<Recipe>();
 			SelectedRecipes.Clear();
 			Refresh();
 		}
@@ -249,6 +249,7 @@ namespace RecipeOrganiser.ViewModels
 
 			_shoppingListViewModel.SelectedShoppingList = shoppingList;
 
+			OnRecordCreated<ShoppingList>(shoppingList.Name);
 			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _shoppingListViewModel });
 		}
 
@@ -292,6 +293,7 @@ namespace RecipeOrganiser.ViewModels
 
 			_shoppingListViewModel.SelectedShoppingList = shoppingList;
 
+			OnRecordUpdated<ShoppingList>(shoppingList.Name);
 			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _shoppingListViewModel });
 		}
 

@@ -41,10 +41,12 @@ namespace RecipeOrganiser.ViewModels
 				if (category.Id == 0)
 				{
 					_categoryRepository.Create(category);
+					OnRecordCreated<Category>(category.Name);
 				}
 				else
 				{
 					_categoryRepository.Update(category);
+					OnRecordUpdated<Category>(category.Name);
 				}
 			}
 
@@ -61,10 +63,10 @@ namespace RecipeOrganiser.ViewModels
 					continue;
 				}
 				_categoryRepository.Delete(selectedCategory.Id);
+				OnRecordDeleted<Category>(selectedCategory.Name);
 			}
 
 			_categoryRepository.SaveChanges();
-			OnRecordDeleted<Category>();
 			SelectedCategories.Clear();
 			Refresh();
 		}

@@ -107,13 +107,13 @@ namespace RecipeOrganiser.ViewModels.Base
 		/// Raise DisplayMessage event with Info type which notifies when a record is created in the DB table.
 		/// </summary>
 		/// <typeparam name="T">Type of the created record.</typeparam>
-		protected void OnRecordCreated<T>()
+		protected void OnRecordCreated<T>(string name = "")
 		{
 			OnDisplayMessage(
 				new DisplayMessageEventArgs
 				{
-					Message = $"{typeof(T).Name} created successfully.",
-					Тype = DisplayMessageType.Info
+					Message = $"{typeof(T).Name} {name} created successfully.",
+					MessageТype = DisplayMessageType.Info
 				});
 		}
 
@@ -121,13 +121,13 @@ namespace RecipeOrganiser.ViewModels.Base
 		/// Raise DisplayMessage event with Info type which notifies when a record is updated in the DB table.
 		/// </summary>
 		/// <typeparam name="T">Type of the updated record.</typeparam>
-		protected void OnRecordUpdated<T>()
+		protected void OnRecordUpdated<T>(string name = "")
 		{
 			OnDisplayMessage(
 				new DisplayMessageEventArgs
 				{
-					Message = $"{typeof(T).Name} updated successfully.",
-					Тype = DisplayMessageType.Info
+					Message = $"{typeof(T).Name} {name} updated successfully.",
+					MessageТype = DisplayMessageType.Info
 				});
 		}
 
@@ -135,13 +135,13 @@ namespace RecipeOrganiser.ViewModels.Base
 		/// Raise DisplayMessage event with Info type which notifies when a record is deleted from the DB table.
 		/// </summary>
 		/// <typeparam name="T">Type of the deleted record.</typeparam>
-		protected void OnRecordDeleted<T>()
+		protected void OnRecordDeleted<T>(string name = "")
 		{
 			OnDisplayMessage(
 				new DisplayMessageEventArgs
 				{
-					Message = $"{typeof(T).Name} deleted.",
-					Тype = DisplayMessageType.Info
+					Message = $"{typeof(T).Name} {name} deleted.",
+					MessageТype = DisplayMessageType.Info
 				});
 		}
 
