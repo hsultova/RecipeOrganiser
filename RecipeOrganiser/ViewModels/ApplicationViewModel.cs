@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -18,11 +19,14 @@ namespace RecipeOrganiser.ViewModels
 		private readonly HomeViewModel _homeViewModel;
 		private readonly CategoriesViewModel _categoriesViewModel;
 		private readonly ShoppingListViewModel _shoppingListViewModel;
+		private readonly EditShoppingListViewModel _editShoppingListViewModel;
+
 		public ApplicationViewModel(
 			RecipeViewModel recipeViewModel,
 			HomeViewModel homeViewModel,
 			CategoriesViewModel categoriesViewModel,
-			ShoppingListViewModel shoppingListViewModel)
+			ShoppingListViewModel shoppingListViewModel,
+			EditShoppingListViewModel editShoppingListViewModel)
 		{
 			_recipeViewModel = recipeViewModel;
 			_recipeViewModel.Title = "New Recipe";
@@ -30,6 +34,7 @@ namespace RecipeOrganiser.ViewModels
 			_homeViewModel = homeViewModel;
 			_categoriesViewModel = categoriesViewModel;
 			_shoppingListViewModel = shoppingListViewModel;
+			_editShoppingListViewModel = editShoppingListViewModel;
 
 			CurrentViewModel = _homeViewModel;
 
@@ -41,6 +46,7 @@ namespace RecipeOrganiser.ViewModels
 			SubscribeViewModel(_recipeViewModel);
 			SubscribeViewModel(_categoriesViewModel);
 			SubscribeViewModel(_shoppingListViewModel);
+			SubscribeViewModel(_editShoppingListViewModel);
 		}
 
 		public void SubscribeViewModel(BaseViewModel model)
@@ -61,6 +67,7 @@ namespace RecipeOrganiser.ViewModels
 			UnSubscribeViewModel(_recipeViewModel);
 			UnSubscribeViewModel(_categoriesViewModel);
 			UnSubscribeViewModel(_shoppingListViewModel);
+			UnSubscribeViewModel(_editShoppingListViewModel);
 		}
 
 		private BaseViewModel _currentViewModel;
@@ -106,25 +113,22 @@ namespace RecipeOrganiser.ViewModels
 			}
 		}
 
-		private string _statusMessage;
-		public string StatusMessage
+		private ObservableCollection<DisplayMessageEventArgs> _statusMessages = new ObservableCollection<DisplayMessageEventArgs>();
+		public ObservableCollection<DisplayMessageEventArgs> StatusMessages
 		{
 			get
 			{
-				return _statusMessage;
+				return _statusMessages;
 			}
 			set
 			{
-				SetBackingFieldProperty<string>(ref _statusMessage, value, nameof(StatusMessage));
+				SetBackingFieldProperty<ObservableCollection<DisplayMessageEventArgs>>(ref _statusMessages, value, nameof(StatusMessages));
 			}
 		}
 
 		private void DisplayMessage(object sender, DisplayMessageEventArgs e)
 		{
-			//Todo: Depending on the type, decorate different visual
-			//Handle many messages, not only the last
-			//Implement closing the message
-			StatusMessage = e.Message;
+			StatusMessages.Add(e);
 		}
 
 		private void ChangeViewModel(object sender, ChangeViewModelEventArgs e)
@@ -137,7 +141,15 @@ namespace RecipeOrganiser.ViewModels
 		public ICommand RecipeCommand => new RelayCommand(_ => { CurrentViewModel = _recipeViewModel; });
 		public ICommand CategoriesCommand => new RelayCommand(_ => { CurrentViewModel = _categoriesViewModel; });
 		public ICommand ShoppingListsCommand => new RelayCommand(_ => { CurrentViewModel = _shoppingListViewModel; });
+		public ICommand CloseStatusMessageCommand => new RelayCommand(CloseStatusMessage);
+		public ICommand ClearMessagesCommand => new RelayCommand(_ => { StatusMessages.Clear(); });
+
 		#endregion
+
+		private void CloseStatusMessage(object obj)
+		{
+			StatusMessages.Remove((DisplayMessageEventArgs)obj);
+		}
 
 		private void CreateNavigationMenu(out List<NavigationMenuItem> items, out Dictionary<BaseViewModel, NavigationMenuItem> navigationMappings)
 		{

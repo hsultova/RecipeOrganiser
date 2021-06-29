@@ -34,7 +34,7 @@ namespace RecipeOrganiser
 					services.AddScoped<IShoppingListRecipeRepository, ShoppingListRecipeRepository>();
 
 					services.AddSingleton<ApplicationViewModel>();
-					services.AddTransient<RecipeViewModel>();
+					services.AddSingleton<RecipeViewModel>();
 					services.AddSingleton<AddIngredientViewModel>();
 					services.AddSingleton<CategoriesViewModel>();
 					services.AddSingleton<ShoppingListViewModel>();
