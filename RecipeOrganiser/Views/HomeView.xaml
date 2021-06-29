@@ -27,8 +27,13 @@
 						<Image Source="/Images/cart.png" Width="30" Height="25"/>
 						<Popup x:Name="AddToShoppingListPopup" IsOpen="False" StaysOpen="False">
 							<StackPanel>
-								<Button Content="Add New" Command="{Binding AddNewShoppingListCommand}"/>
-								<TextBlock Text="Shopping Lists" Background="Gray" FontWeight="Bold"/>
+								<Button Command="{Binding AddNewShoppingListCommand}">
+									<StackPanel Orientation="Horizontal">
+										<Image Source="/Images/plus.png" Width="18" Height="18" Margin="0,0,10,0"/>
+										<TextBlock Text="Add New"/>
+									</StackPanel>
+								</Button>
+								<TextBlock Text="All Shopping Lists" Background="LightGray" FontWeight="Bold"/>
 								<ItemsControl x:Name="ShoppingListsControl" ItemsSource="{Binding ShoppingLists}">
 									<ItemsControl.ItemTemplate>
 										<DataTemplate>
