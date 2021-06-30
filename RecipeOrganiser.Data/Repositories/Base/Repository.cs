@@ -98,5 +98,11 @@ namespace RecipeOrganiser.Data.Repositories
 		{
 			_dbContext.SaveChanges();
 		}
+
+		///<inheritdoc/>
+		public void Reload(T entity) 
+		{
+			_dbContext.Entry(entity).Reload();
+		}
 	}
 }

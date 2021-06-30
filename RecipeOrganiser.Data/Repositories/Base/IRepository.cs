@@ -62,5 +62,11 @@ namespace RecipeOrganiser.Data.Repositories
 		/// Saves all changes to the database
 		/// </summary>
 		void SaveChanges();
+
+		/// <summary>
+		/// Reloads the entity from the database overwriting any property values with values from the database.
+		/// </summary>
+		/// <param name="entity">Entity to be updated</param>
+		void Reload(T entity);
 	}
 }
