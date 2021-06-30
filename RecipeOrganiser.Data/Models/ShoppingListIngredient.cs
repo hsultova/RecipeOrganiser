@@ -15,6 +15,11 @@
 		public double Weight { get; set; }
 
 		/// <summary>
+		/// Indicates if the ingredient is bought.
+		/// </summary>
+		public bool IsBought { get; set; } = false;
+
+		/// <summary>
 		/// Shopping list in which is the ingredient.
 		/// </summary>
 		public int ShoppingListId { get; set; }

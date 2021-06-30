@@ -58,6 +58,13 @@
 						<ListView ItemsSource="{Binding ShoppingListIngredients}">
 							<ListView.View>
 								<GridView>
+									<GridViewColumn>
+										<GridViewColumn.CellTemplate>
+											<DataTemplate>
+												<CheckBox IsChecked="{Binding IsBought}"/>
+											</DataTemplate>
+										</GridViewColumn.CellTemplate>
+									</GridViewColumn>
 									<GridViewColumn Header="Name" DisplayMemberBinding="{Binding Ingredient.Name}"/>
 									<GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
 									<GridViewColumn Header="Weight" DisplayMemberBinding="{Binding Weight}"/>
