@@ -50,8 +50,8 @@ namespace RecipeOrganiser.ViewModels
 		#region Commands
 		public ICommand SaveCommand => new RelayCommand(Save);
 		public ICommand EditCommand => new RelayCommand(Edit);
-
 		public ICommand DeleteCommand => new RelayCommand(Delete);
+		public ICommand CellEditingCommand => new RelayCommand(_ => { CanExit = false; });
 
 		#endregion
 
@@ -108,8 +108,11 @@ namespace RecipeOrganiser.ViewModels
 
 			var shoppingLists = _shoppingListRepository.GetAll();
 			ShoppingLists.Clear();
+			SelectedShoppingLists.Clear();
+
 			foreach (ShoppingList list in shoppingLists)
 			{
+				_shoppingListRepository.Reload(list);
 				ShoppingLists.Add(list);
 			}
 		}
