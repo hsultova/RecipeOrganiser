@@ -79,7 +79,7 @@ namespace RecipeOrganiser.ViewModels
 			}
 			set
 			{
-				if (_currentViewModel != null && !_currentViewModel.CanExit())
+				if (_currentViewModel != null && !_currentViewModel.CanExit)
 				{
 					var result = MessageBox.Show("Are you sure you want to exit? Any unsaved changes will be lost.", "Confirm", MessageBoxButton.YesNo);
 					if (result == MessageBoxResult.No)

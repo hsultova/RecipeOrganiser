@@ -164,10 +164,7 @@ namespace RecipeOrganiser.ViewModels.Base
 		/// For example if there is unsaved changes, should be false. Default value is true.
 		/// </summary>
 		/// <returns>Value indicating if the view model is ready to exit.</returns>
-		public virtual bool CanExit()
-		{
-			return true;
-		}
+		public bool CanExit { get; protected set; } = true;
 
 		/// <summary>
 		/// Sets all the fields to their default values in the view model.

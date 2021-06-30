@@ -32,6 +32,8 @@ namespace RecipeOrganiser.ViewModels
 
 		public ICommand DeleteCommand => new RelayCommand(Delete);
 
+		public ICommand CellEditingCommand => new RelayCommand(_ => { CanExit = false; });
+
 		#endregion
 
 		private void Save(object obj)
@@ -51,6 +53,7 @@ namespace RecipeOrganiser.ViewModels
 			}
 
 			_categoryRepository.SaveChanges();
+			CanExit = true;
 		}
 
 		private void Delete(object obj)
@@ -76,10 +79,12 @@ namespace RecipeOrganiser.ViewModels
 			base.Refresh();
 
 			var categories = _categoryRepository.GetAll();
+			SelectedCategories.Clear();
 			Categories.Clear();
 
 			foreach (Category category in categories)
 			{
+				_categoryRepository.Reload(category);
 				Categories.Add(category);
 			}
 		}

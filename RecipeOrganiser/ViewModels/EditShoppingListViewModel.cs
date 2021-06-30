@@ -76,7 +76,10 @@ namespace RecipeOrganiser.ViewModels
 			}
 			set
 			{
-				SetBackingFieldProperty<ObservableCollection<AddIngredientViewModel>>(ref _addIngredientControls, value, nameof(AddIngredientControls));
+				if(SetBackingFieldProperty<ObservableCollection<AddIngredientViewModel>>(ref _addIngredientControls, value, nameof(AddIngredientControls)))
+				{
+					CanExit = false;
+				}
 			}
 		}
 
@@ -94,6 +97,7 @@ namespace RecipeOrganiser.ViewModels
 		private void AddIngredient(object obj)
 		{
 			AddIngredientControls.Add(new AddIngredientViewModel(_ingredientDTO));
+			CanExit = false;
 		}
 
 		private void Save(object obj)
@@ -114,6 +118,7 @@ namespace RecipeOrganiser.ViewModels
 			}
 
 			OnRecordUpdated<ShoppingList>(CurrentShoppingList.Name);
+			Refresh();
 
 			_shoppingListRepository.Update(CurrentShoppingList);
 			_shoppingListRepository.SaveChanges();
@@ -126,6 +131,14 @@ namespace RecipeOrganiser.ViewModels
 				return;
 
 			AddIngredientControls.Remove(addIngredietnViewModel);
+		}
+
+		public override void Refresh()
+		{
+			_ingredientDTO.Ingredients = _ingredientRepository.GetAll();
+			CanExit = true;
+
+			base.Refresh();
 		}
 	}
 }

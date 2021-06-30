@@ -24,8 +24,6 @@ namespace RecipeOrganiser.ViewModels
 
 		private readonly IngredientDTO _ingredientDTO;
 
-		private bool _canExit = true;
-
 		public RecipeViewModel(
 			IMapper mapper,
 			IRecipeRepository recipeRepository,
@@ -74,7 +72,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (SetBackingFieldProperty<string>(ref _name, value, nameof(Name)))
 				{
-					_canExit = false;
+					CanExit = false;
 				}
 			}
 		}
@@ -90,7 +88,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (SetBackingFieldProperty<string>(ref _description, value, nameof(Description)))
 				{
-					_canExit = false;
+					CanExit = false;
 				}
 			}
 		}
@@ -106,7 +104,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (SetBackingFieldProperty<string>(ref _note, value, nameof(Note)))
 				{
-					_canExit = false;
+					CanExit = false;
 				}
 			}
 		}
@@ -122,7 +120,7 @@ namespace RecipeOrganiser.ViewModels
 
 				if (SetBackingFieldProperty<byte[]>(ref _image, value, nameof(Image)))
 				{
-					_canExit = false;
+					CanExit = false;
 				}
 			}
 		}
@@ -142,7 +140,7 @@ namespace RecipeOrganiser.ViewModels
 
 				if (SetBackingFieldProperty<string>(ref _categoryName, value, nameof(CategoryName)))
 				{
-					_canExit = false;
+					CanExit = false;
 				}
 			}
 		}
@@ -158,7 +156,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (SetBackingFieldProperty<Category>(ref _category, value, nameof(Category)))
 				{
-					_canExit = false;
+					CanExit = false;
 				}
 			}
 		}
@@ -187,7 +185,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (SetBackingFieldProperty<ObservableCollection<AddIngredientViewModel>>(ref _addIngredientControls, value, nameof(AddIngredientControls)))
 				{
-					_canExit = false;
+					CanExit = false;
 				}
 			}
 		}
@@ -233,7 +231,7 @@ namespace RecipeOrganiser.ViewModels
 		private void AddIngredient(object obj)
 		{
 			AddIngredientControls.Add(new AddIngredientViewModel(_ingredientDTO));
-			_canExit = false;
+			CanExit = false;
 		}
 
 		private void Save(object obj)
@@ -281,7 +279,6 @@ namespace RecipeOrganiser.ViewModels
 				Clear();
 
 			Refresh();
-			_canExit = true;
 		}
 
 		private void Clear(object obj)
@@ -343,6 +340,7 @@ namespace RecipeOrganiser.ViewModels
 			}
 
 			_ingredientDTO.Ingredients = _ingredientRepository.GetAll();
+			CanExit = true;
 
 			base.Refresh();
 		}
@@ -356,12 +354,7 @@ namespace RecipeOrganiser.ViewModels
 			Image = PlaceholderImageData;
 			AddIngredientControls.Clear();
 
-			_canExit = true;
-		}
-
-		public override bool CanExit()
-		{
-			return _canExit;
+			CanExit = true;
 		}
 	}
 }
