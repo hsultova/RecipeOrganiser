@@ -20,10 +20,10 @@
 							<RowDefinition/>
 						</Grid.RowDefinitions>
 						<ToggleButton IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:NavigationMenu}}, Path=IsExpanded}"
-							Style="{StaticResource NavigationMenuButton}">
+							Style="{StaticResource NavigationMenuButton}" Cursor="Hand">
 							<Viewbox Width="48" Height="48">
-								<Canvas Width="24" Height="24">
-									<Path Fill="{TemplateBinding ButtonIconColor}" Data="M3 5H21V9H3V5M3 10H21V14H3V10M3 15H21V19H3V15Z" />
+								<Canvas Width="24" Height="22" Margin="5,0,5,0">
+									<Path Fill="{TemplateBinding ButtonIconColor}" Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
 								</Canvas>
 							</Viewbox>
 						</ToggleButton>

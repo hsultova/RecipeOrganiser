@@ -40,7 +40,7 @@
 								   Grid.Column="0" 
 								   Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:SearchTextBox}}, Path=LabelTextColor}" 
 								   Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:SearchTextBox}}, Path=LabelText}" 
-								   Padding="5,0,0,0"
+								   Padding="5"
 								   FontStyle="Italic" />
 							<Border x:Name="PART_SearchIconBorder"
 									Grid.Column="1"
@@ -69,7 +69,7 @@
 							</MultiTrigger.Conditions>
 							<Setter Property="Source" 
 									TargetName="SearchIcon" 
-									Value="pack://application:,,,/RecipeOrganiser.Controls;component/Images/close-thick.png" />
+									Value="pack://application:,,,/RecipeOrganiser.Controls;component/Images/close.png" />
 						</MultiTrigger>
 						<MultiTrigger>
 							<MultiTrigger.Conditions>

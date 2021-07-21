@@ -6,7 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Resource Include="Images\close-thick.png" />
+    <None Remove="Images\close.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\close.png" />
     <Resource Include="Images\magnify.png" />
   </ItemGroup>
 
