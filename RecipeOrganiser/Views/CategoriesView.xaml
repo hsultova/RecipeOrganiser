@@ -17,19 +17,28 @@
 	<DockPanel>
 		<Grid DockPanel.Dock="Top">
 			<TextBlock Text="Categories" FontSize="28" Margin="20,20,0,0"/>
+			<!--Command Bar-->
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-				<Button Margin="0,20,20,0" ToolTip="Save (Ctrl+S)" Command="{Binding SaveCommand}">
-					<Image Source="/Images/save.png" Width="30" Height="25"/>
-				</Button>
-				<Button Margin="0,20,10,0" 
-						IsEnabled="{Binding IsDeleteEnabled}"
-						ToolTipService.ShowOnDisabled="True"
-						Command="{Binding DeleteCommand}">
-					<Image Source="/Images/trash-can.png" Width="30" Height="25"/>
-					<Button.ToolTip>
-						<controls:HeaderedToolTip HeaderText="Delete (Ctrl+D)" ContentText="Permanently delete seleced items."/>
-					</Button.ToolTip>
-				</Button>
+				<ToolBarPanel DockPanel.Dock="Top" Margin="0,20,20,0"  ClipToBounds="True">
+					<ToolBar ToolBarTray.IsLocked="True" Margin="-5,0,-13,0" Padding="5,0,0,0">
+						<Menu>
+							<MenuItem Command="{Binding SaveCommand}" 
+									  Style="{StaticResource SaveFontIcon}"
+									  ToolTip="Save (Ctrl+S)" 
+									  Cursor="Hand" >
+							</MenuItem>
+							<MenuItem Command="{Binding DeleteCommand}" 
+									  IsEnabled="{Binding IsDeleteEnabled}"
+									  ToolTipService.ShowOnDisabled="True"
+									  Cursor="Hand"
+									  Style="{StaticResource DeleteFontIcon}">
+								<MenuItem.ToolTip>
+									<controls:HeaderedToolTip  FontFamily="Segoe UI" HeaderText="Delete (Ctrl+D)" ContentText="Permanently delete seleced items."/>
+								</MenuItem.ToolTip>
+							</MenuItem>
+						</Menu>
+					</ToolBar>
+				</ToolBarPanel>
 			</StackPanel>
 		</Grid>
 		<Grid Margin="10">

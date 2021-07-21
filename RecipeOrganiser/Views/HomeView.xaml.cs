@@ -36,29 +36,29 @@ namespace RecipeOrganiser.Views
 
 			if (RecipesListBox.SelectedItems.Count != 0)
 			{
-				DeleteButton.IsEnabled = true;
+				DeleteToolbarMenuItem.IsEnabled = true;
 				DeleteMenuItem.IsEnabled = true;
 
-				ShoppingListButton.IsEnabled = true;
+				ShoppingListToolbarMenuItem.IsEnabled = true;
 				ShoppingListMenuItem.IsEnabled = true;
 			}
 			else
 			{
-				DeleteButton.IsEnabled = false;
+				DeleteToolbarMenuItem.IsEnabled = false;
 				DeleteMenuItem.IsEnabled = false;
 
-				ShoppingListButton.IsEnabled = false;
+				ShoppingListToolbarMenuItem.IsEnabled = false;
 				ShoppingListMenuItem.IsEnabled = false;
 			}
 
 			if (RecipesListBox.SelectedItems.Count == 1)
 			{
-				EditButton.IsEnabled = true;
+				EditToolbarMenuItem.IsEnabled = true;
 				EditMenuItem.IsEnabled = true;
 			}
 			else
 			{
-				EditButton.IsEnabled = false;
+				EditToolbarMenuItem.IsEnabled = false;
 				EditMenuItem.IsEnabled = false;
 			}
 		}
@@ -101,11 +101,6 @@ namespace RecipeOrganiser.Views
 			IngredientComboBox.SelectedIndex = -1;
 
 			ClearFilterButton.Visibility = Visibility.Collapsed;
-		}
-
-		private void ShoppingListButton_Click(object sender, RoutedEventArgs e)
-		{
-			AddToShoppingListPopup.IsOpen = true;
 		}
 	}
 }

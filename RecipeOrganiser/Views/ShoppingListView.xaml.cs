@@ -31,11 +31,13 @@ namespace RecipeOrganiser.Views
 
 			if (ShoppingListDataGrid.SelectedItems.Count != 0)
 			{
-				DeleteButton.IsEnabled = true;
+				DeleteToolbarMenuItem.IsEnabled = true;
+				DeleteMenuItem.IsEnabled = true;
 			}
 			else
 			{
-				DeleteButton.IsEnabled = false;
+				DeleteToolbarMenuItem.IsEnabled = false;
+				DeleteMenuItem.IsEnabled = false;
 			}
 		}
 	}

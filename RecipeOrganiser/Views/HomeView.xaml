@@ -14,55 +14,57 @@
 	</UserControl.InputBindings>
 
 	<DockPanel>
-		<Grid DockPanel.Dock="Top">
-			<TextBlock FontSize="28" Margin="20,20,0,0">Home</TextBlock>
+		<Grid DockPanel.Dock="Top" Background="{DynamicResource AccentBackground}">
+			<TextBlock FontSize="28" Margin="40,10,0,0">Home</TextBlock>
+			<!--Command Bar-->
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-				<Button x:Name="ShoppingListButton" 
-						Margin="0,20,10,0" 
-						IsEnabled="False"
-						ToolTip="Add to or create new shopping list"
-						ToolTipService.ShowOnDisabled="True"
-						Click="ShoppingListButton_Click">
-					<StackPanel>
-						<Image Source="/Images/cart.png" Width="30" Height="25"/>
-						<Popup x:Name="AddToShoppingListPopup" IsOpen="False" StaysOpen="False">
-							<StackPanel>
-								<Button Command="{Binding AddNewShoppingListCommand}">
-									<StackPanel Orientation="Horizontal">
-										<Image Source="/Images/plus.png" Width="18" Height="18" Margin="0,0,10,0"/>
-										<TextBlock Text="Add New"/>
-									</StackPanel>
-								</Button>
-								<TextBlock Text="All Shopping Lists" Background="LightGray" FontWeight="Bold"/>
-								<ItemsControl x:Name="ShoppingListsControl" ItemsSource="{Binding ShoppingLists}">
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
-											<Button Content="{Binding Name}" Command="{Binding DataContext.AddToShoppingListCommand, RelativeSource={RelativeSource AncestorType=local:HomeView}}" CommandParameter="{Binding}"/>
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
-							</StackPanel>
-						</Popup>
-					</StackPanel>
-				</Button>
-				<Button x:Name="EditButton" 
-						Margin="0,20,10,0" 
-						ToolTip="Edit"
-						ToolTipService.ShowOnDisabled="True"
-						IsEnabled="False"
-						Command="{Binding EditCommand}" CommandParameter="{Binding ElementName=RecipesListBox, Path=SelectedItem}">
-					<Image Source="/Images/pencil.png" Width="30" Height="25"/>
-				</Button>
-				<Button x:Name="DeleteButton"
-						Margin="0,20,10,0" 
-						ToolTipService.ShowOnDisabled="True"
-						IsEnabled="False"
-						Command="{Binding DeleteCommand}">
-					<Image Source="/Images/trash-can.png" Width="30" Height="25"/>
-					<Button.ToolTip>
-						<controls:HeaderedToolTip HeaderText="Delete (Ctrl+D)" ContentText="Permanently delete seleced items."/>
-					</Button.ToolTip>
-				</Button>
+				<ToolBarPanel DockPanel.Dock="Top" Margin="0,5,20,0"  ClipToBounds="True">
+					<ToolBar ToolBarTray.IsLocked="True" Margin="-5,0,-13,0" Padding="5,0,0,0" Background="{DynamicResource AccentBackground}">
+						<Menu>
+							<MenuItem  x:Name="ShoppingListToolbarMenuItem" 
+									   IsEnabled="False"
+									   ToolTip="Add to or create new shopping list"
+									   ToolTipService.ShowOnDisabled="True"
+									   Cursor="Hand" 
+									   Style="{StaticResource ShoppingListFontIcon}">
+								<MenuItem Header="_Add New" Command="{Binding AddNewShoppingListCommand}">
+									<MenuItem.Icon>
+										<Image Source="/Images/plus.png"/>
+									</MenuItem.Icon>
+								</MenuItem>
+								<MenuItem Header="_Shopping Lists" ItemsSource="{Binding ShoppingLists}">
+									<MenuItem.ItemContainerStyle>
+										<Style TargetType="MenuItem">
+											<Setter Property="Header" Value="{Binding Name}"/>
+											<Setter Property="Command" Value="{Binding DataContext.AddToShoppingListCommand, RelativeSource={RelativeSource AncestorType=local:HomeView}}"/>
+											<Setter Property="CommandParameter" Value="{Binding}"/>
+										</Style>
+									</MenuItem.ItemContainerStyle>
+								</MenuItem>
+							</MenuItem>
+							<MenuItem x:Name="EditToolbarMenuItem" 
+									  Cursor="Hand" 
+									  Command="{Binding EditCommand}" 
+									  CommandParameter="{Binding ElementName=RecipesListBox, Path=SelectedItem}" 
+									  ToolTip="Edit"
+									  ToolTipService.ShowOnDisabled="True"
+									  IsEnabled="False" 
+									  Style="{StaticResource EditFontIcon}">
+							</MenuItem>
+							<MenuItem x:Name="DeleteToolbarMenuItem" 
+									  Cursor="Hand" 
+									  Command="{Binding DeleteCommand}" 
+									  CommandParameter="{Binding ElementName=RecipesListBox, Path=SelectedItem}" 
+									  ToolTipService.ShowOnDisabled="True"
+									  IsEnabled="False" 
+									  Style="{StaticResource DeleteFontIcon}">
+								<MenuItem.ToolTip>
+									<controls:HeaderedToolTip FontFamily="Segoe UI" HeaderText="Delete (Ctrl+D)" ContentText="Permanently delete seleced items."/>
+								</MenuItem.ToolTip>
+							</MenuItem>
+						</Menu>
+					</ToolBar>
+				</ToolBarPanel>
 			</StackPanel>
 		</Grid>
 
@@ -78,7 +80,7 @@
 				Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
 				MinWidth="200" 
 				Margin="0,20,20,0" 
-				SearchIconBorderColor="{DynamicResource Background}"
+				SearchIconBorderColor="{DynamicResource SearchTextBoxBorderBackground}"
 				SearchIconBackgroundMouseDownColor="{DynamicResource SelectionBackground}"
 				SearchCommand="{Binding SearchCommand}"
 				Style="{DynamicResource SearchTextBox}"/>
@@ -89,7 +91,8 @@
 								Checked="AdvancedFilterButton_Checked" 
 								Unchecked="AdvancedFilterButton_Unchecked" 
 								Height="30" 
-								Margin="0,20,20,0"/>
+								Margin="0,20,20,0"
+								Style="{StaticResource BasicToggleButton}"/>
 			</StackPanel>
 
 			<StackPanel x:Name="AdvancedFilter" 
@@ -103,7 +106,7 @@
 						  SelectedItem="{Binding SelectedCategory}" 
 						  SelectionChanged="CategoryComboBox_SelectionChanged"
 						  Width="150" 
-						  Margin="10,0,10,0"/>
+						  Margin="10,0,10,0" Style="{DynamicResource BasicComboBoxStyle}"/>
 
 				<TextBlock>Ingredient</TextBlock>
 				<ComboBox	x:Name="IngredientComboBox"
@@ -111,7 +114,7 @@
 							SelectedItem="{Binding SelectedIngredient, Mode=TwoWay}" 
 							Width="150" 
 							Margin="10,0,10,0" 
-							SelectionChanged="IngredientComboBox_SelectionChanged"/>
+							SelectionChanged="IngredientComboBox_SelectionChanged" Style="{DynamicResource BasicComboBoxStyle}"/>
 				<Button x:Name="ClearFilterButton" Content="Clear" Click="ClearFilterButton_Click" Visibility="Collapsed"/>
 			</StackPanel>
 
@@ -130,7 +133,7 @@
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<StackPanel>
-							<Image Width="200">
+							<Image Width="200" Height="200">
 								<Image.Source>
 									<Binding Path="Image" >
 										<Binding.TargetNullValue>

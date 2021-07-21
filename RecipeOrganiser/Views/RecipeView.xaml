@@ -17,18 +17,25 @@
 
 		<Grid DockPanel.Dock="Top">
 			<TextBlock Text="{Binding Title}" Grid.Column="1" FontSize="28" Margin="20,20,0,0"></TextBlock>
+			<!--Command Bar-->
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-				<Button Margin="0,20,10,0" ToolTip="Clear fields (Esc)" Command="{Binding ClearCommand}">
-					<Image Source="/Images/close-box-multiple.png" Width="30" Height="25"/>
-				</Button>
-				<Button Margin="0,20,20,0" 
-						ToolTip="Save (Ctrl+S)"
-						Command="{Binding SaveCommand}"
-						CommandParameter="{Binding}" 
-						Style="{StaticResource DisableOnValidationError}">
-					<Image Source="/Images/save.png" Width="30" Height="25"/>
-				</Button>
-
+				<ToolBarPanel DockPanel.Dock="Top" Margin="0,20,20,0"  ClipToBounds="True">
+					<ToolBar ToolBarTray.IsLocked="True" Margin="-5,0,-13,0" Padding="5,0,0,0">
+						<Menu>
+							<MenuItem Command="{Binding ClearCommand}" 
+									  ToolTip="Clear fields (Esc)"
+									  Cursor="Hand"
+									  Style="{StaticResource ClearFontIcon}">
+							</MenuItem>
+							<MenuItem Command="{Binding SaveCommand}" 
+									  CommandParameter="{Binding}" 
+									  ToolTip="Save (Ctrl+S)" 
+									  Style="{StaticResource DisableOnValidationError}"
+									  Cursor="Hand" >
+							</MenuItem>
+						</Menu>
+					</ToolBar>
+				</ToolBarPanel>
 			</StackPanel>
 		</Grid>
 
@@ -56,14 +63,9 @@
 					</Grid.ColumnDefinitions>
 
 					<StackPanel Grid.Row="1" Orientation="Horizontal">
-						<Image Source="{Binding Image}" Width="200" HorizontalAlignment="Left" Margin="0,0,0,20" AllowDrop="True" Drop="Image_Drop"/>
-						<Button Command="{Binding UploadImageCommand}" ToolTip="Upload" Margin="10,0,0,30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-							<Viewbox Width="30" Height="30">
-								<Canvas Width="24" Height="24">
-									<Path Fill="Black" Data="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" />
-								</Canvas>
-							</Viewbox>
-						</Button>
+						<Image Source="{Binding Image}" Width="200" Height="200" HorizontalAlignment="Left" Margin="0,0,0,20" AllowDrop="True" Drop="Image_Drop"/>
+						<Button Command="{Binding UploadImageCommand}" ToolTip="Upload" Margin="10,0,0,30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource UploadFontIcon}"/>
+
 					</StackPanel>
 					<StackPanel Grid.Row="2">
 						<TextBlock Style="{StaticResource FormText}">Name</TextBlock>
@@ -92,7 +94,7 @@
 					</Grid>
 					<StackPanel Grid.Row="3">
 						<TextBlock Style="{StaticResource FormText}">Category</TextBlock>
-						<ComboBox 
+						<ComboBox Style="{DynamicResource BasicComboBoxStyle}" 
 							ItemsSource="{Binding Categories}" 
 							SelectedItem="{Binding Category}" 
 							TextSearch.TextPath="Name" 
@@ -118,8 +120,7 @@
 						VerticalAlignment="Top" 
 						ToolTip="Add Ingredient"
 						Margin="0,0,20,0"
-						Command="{Binding AddIngredientCommand}">
-						<Image Source="/Images/plus-circle.png" Width="25"/>
+						Command="{Binding AddIngredientCommand}" Style="{StaticResource AddToFontIcon}">
 					</Button>
 					<Grid Grid.Row="5" Grid.ColumnSpan="2">
 						<ItemsControl ItemsSource="{Binding AddIngredientControls}">
@@ -127,8 +128,7 @@
 								<DataTemplate>
 									<StackPanel Orientation="Horizontal">
 										<ContentControl Content="{Binding}"/>
-										<Button x:Name="DeleteButton" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=local:RecipeView}}"  CommandParameter="{Binding}" Height="22" Width="20">
-											<Image Source="/Images/trash-can.png" Width="15" Height="15"/>
+										<Button x:Name="DeleteButton" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=local:RecipeView}}"  CommandParameter="{Binding}" Style="{StaticResource RemoveFromFontIcon}">
 										</Button>
 									</StackPanel>
 								</DataTemplate>
