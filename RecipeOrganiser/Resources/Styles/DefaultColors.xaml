@@ -10,20 +10,34 @@
 	<Color x:Key="BlackColor">Black</Color>
 	<Color x:Key="OrangeColor">#D37506</Color>
 	<Color x:Key="RedOrangeColor">#9F2B00</Color>
+	
+	<Color x:Key="BackgoundColor">#f3f3f1</Color>
 
-	<SolidColorBrush x:Key="Background" Color="{DynamicResource PewterColor}"/>
+	<!--Brushes-->
+
+	<SolidColorBrush x:Key="BaseBackground" Color="{DynamicResource PewterColor}"/>
+	<SolidColorBrush x:Key="BaseBorderBrush"  Color="{DynamicResource TaupeColor}"/>
+	
 	<SolidColorBrush x:Key="SelectionBackground" Color="{DynamicResource TaupeColor}"/>
+	<SolidColorBrush x:Key="SelectionBorderBrush" Color="{DynamicResource TaupeColor}"/>
+
+	<SolidColorBrush x:Key="AccentBackground" Color="{DynamicResource OrangeColor}"/>
+	<SolidColorBrush x:Key="AccentBorderBrush" Color="{DynamicResource OrangeColor}"/>
+
 	<SolidColorBrush x:Key="ButtonIcon" Color="{DynamicResource BlackColor}"/>
+	
 	<SolidColorBrush x:Key="MenuItemForeground" Color="{DynamicResource BlackColor}"/>
-	<SolidColorBrush x:Key="SelectionIndicator" Color="{DynamicResource OrangeColor}"/>
+	<SolidColorBrush x:Key="MenuItemBackground"  Color="{DynamicResource TaupeColor}"/>
 
-	<SolidColorBrush x:Key="SearchTextBoxBackground" Color="{DynamicResource PewterColor}"/>
+	<SolidColorBrush x:Key="SearchTextBoxBackground" Color="{DynamicResource BackgoundColor}"/>
 	<SolidColorBrush x:Key="SearchTextBoxForeground" Color="{DynamicResource BlackColor}"/>
-	<SolidColorBrush x:Key="SearchTextBoxBorder"  Color="{DynamicResource TaupeColor}"/>
-	<SolidColorBrush x:Key="SearchTextBoxBorderBackground"  Color="{DynamicResource PewterColor}"/>
-	<SolidColorBrush x:Key="SearchTextBoxCaret"  Color="{DynamicResource OrangeColor}"/>
-	<SolidColorBrush x:Key="SearchTextBoxSelection"  Color="{DynamicResource RedOrangeColor}"/>
-	<SolidColorBrush x:Key="FontForeground"  Color="{DynamicResource BlackColor}"/>
-	<SolidColorBrush x:Key="SearchButtonOnHoverBackground"  Color="{DynamicResource TaupeColor}"/>
+	<SolidColorBrush x:Key="SearchTextBoxBorder"  Color="{DynamicResource BackgoundColor}"/>
+	<SolidColorBrush x:Key="SearchTextBoxBorderBackground"  Color="{DynamicResource BackgoundColor}"/>
+	<SolidColorBrush x:Key="SearchButtonOnHoverBackground"  Color="{DynamicResource BackgoundColor}"/>
 
+	<SolidColorBrush x:Key="TextBoxCaret"  Color="{DynamicResource OrangeColor}"/>
+	<SolidColorBrush x:Key="TextBoxSelection"  Color="{DynamicResource RedOrangeColor}"/>
+	<SolidColorBrush x:Key="TextBoxBorderBrush"  Color="{DynamicResource OrangeColor}"/>
+
+	<SolidColorBrush x:Key="FontForeground"  Color="{DynamicResource BlackColor}"/>
 </ResourceDictionary>
