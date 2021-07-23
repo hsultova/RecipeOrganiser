@@ -33,7 +33,10 @@
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsHighlighted" Value="True">
 							<Setter Property="Background" TargetName="Border" Value="{DynamicResource MenuItemBackground}"/>
-							<Setter Property="BorderBrush" TargetName="Border"  Value="{DynamicResource BorderBrush}"/>
+							<Setter Property="BorderBrush" TargetName="Border"  Value="{DynamicResource MenuItemBorderBrush}"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="TextElement.Foreground" TargetName="Border" Value="{DynamicResource MenuItemDisabledBackground}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
@@ -77,7 +80,7 @@
 		<Setter Property="Header" Value="&#xE80F;"/>
 	</Style>
 
-	<Style x:Key="DisableOnValidationError" TargetType="MenuItem">
+	<Style x:Key="DisableOnValidationError" TargetType="MenuItem" BasedOn="{StaticResource BasicFontIconMenuItem}">
 		<Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
 		<Setter Property="LayoutTransform">
 			<Setter.Value>

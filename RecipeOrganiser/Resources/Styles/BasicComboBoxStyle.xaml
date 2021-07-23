@@ -367,6 +367,7 @@
 		</ControlTemplate.Triggers>
 	</ControlTemplate>
 	<Style x:Key="BasicComboBoxStyle" TargetType="{x:Type ComboBox}">
+		<Setter Property="Padding" Value="5"/>
 		<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
 		<Setter Property="Background" Value="{StaticResource ComboBox.Static.Background}"/>
 		<Setter Property="BorderBrush" Value="{StaticResource ComboBox.Static.Border}"/>

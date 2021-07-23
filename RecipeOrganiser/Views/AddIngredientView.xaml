@@ -19,7 +19,8 @@
 			StaysOpenOnEdit="True" 
 			Width="150" 
 			VerticalAlignment="Top" 
-			Margin="0,0,20,0">
+			Margin="0,0,20,0"
+			Style="{StaticResource BasicComboBoxStyle}">
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
 					<TextBlock Text="{Binding Name}"/>
@@ -37,7 +38,8 @@
 			TextSearch.TextPath="Name" 
 			Width="120" 
 			VerticalAlignment="Top" 
-			Margin="0,0,20,0">
+			Margin="0,0,20,0"
+			Style="{StaticResource BasicComboBoxStyle}">
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
 					<TextBlock Text="{Binding Name}"/>

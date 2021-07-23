@@ -114,8 +114,14 @@
 							SelectedItem="{Binding SelectedIngredient, Mode=TwoWay}" 
 							Width="150" 
 							Margin="10,0,10,0" 
-							SelectionChanged="IngredientComboBox_SelectionChanged" Style="{DynamicResource BasicComboBoxStyle}"/>
-				<Button x:Name="ClearFilterButton" Content="Clear" Click="ClearFilterButton_Click" Visibility="Collapsed"/>
+							SelectionChanged="IngredientComboBox_SelectionChanged"
+							Style="{DynamicResource BasicComboBoxStyle}"/>
+				<Button 
+					x:Name="ClearFilterButton"
+					Content="Clear"
+					Click="ClearFilterButton_Click"
+					Visibility="Collapsed"
+					Style="{StaticResource BasicButton}"/>
 			</StackPanel>
 
 			<ListBox x:Name="RecipesListBox" Grid.Row="2"

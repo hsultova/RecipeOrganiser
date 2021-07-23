@@ -10,7 +10,7 @@
 
 	<Style x:Key="BasicToggleButton" TargetType="ToggleButton">
 		<Setter Property="Padding" Value="5"/>
-		<Setter Property="FontWeight" Value="Bold"/>
+		<Setter Property="Cursor" Value="Hand"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -37,6 +37,17 @@
 							<Setter Property="Background" TargetName="Border" Value="{DynamicResource AccentBackground}"/>
 							<Setter Property="BorderBrush" TargetName="Border"  Value="{DynamicResource AccentBorderBrush}"/>
 						</Trigger>
+						<Trigger Property="IsChecked" Value="False">
+							<Setter Property="BorderBrush" TargetName="Border"  Value="Transparent"/>
+						</Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsChecked" Value="True"/>
+								<Condition Property="IsMouseOver" Value="True"/>
+							</MultiTrigger.Conditions>
+							<Setter Property="Background" TargetName="Border" Value="{DynamicResource SelectionBackground}"/>
+							<Setter Property="BorderBrush" TargetName="Border"  Value="{DynamicResource SelectionBorderBrush}"/>
+						</MultiTrigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
@@ -45,11 +56,38 @@
 
 	<!--Button-->
 
-	<Style TargetType="Button">
+	<Style x:Key="BasicButton" TargetType="Button">
 		<Setter Property="Cursor" Value="Hand"/>
+		<Setter Property="Padding" Value="5"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Border
+						x:Name="Border"
+						BorderBrush="Transparent"
+						BorderThickness="{TemplateBinding BorderThickness}"
+						Background="{TemplateBinding Background}"
+						SnapsToDevicePixels="True">
+						<ContentPresenter
+							x:Name="ContentPresenter"
+							Content="{TemplateBinding Content}"
+							ContentSource="Header"
+							Margin="{TemplateBinding Padding}"
+							RecognizesAccessKey="True"
+							SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Background" TargetName="Border" Value="{DynamicResource SelectionBackground}"/>
+							<Setter Property="BorderBrush" TargetName="Border"  Value="{DynamicResource SelectionBorderBrush}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
 	</Style>
 
-	<Style x:Key="BasicFontIconButton" TargetType="Button">
+	<Style x:Key="BasicFontIconButton" TargetType="Button" BasedOn="{StaticResource BasicButton}">
 		<Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
 		<Setter Property="Padding" Value="5"/>
 		<Setter Property="LayoutTransform">
@@ -65,9 +103,41 @@
 
 	<Style x:Key="AddToFontIcon" TargetType="Button" BasedOn="{StaticResource BasicFontIconButton}">
 		<Setter Property="Content" Value="&#xECC8;"/>
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="LayoutTransform">
+			<Setter.Value>
+				<ScaleTransform ScaleX="1.5" ScaleY="1.5"></ScaleTransform>
+			</Setter.Value>
+		</Setter>
 	</Style>
 
 	<Style x:Key="RemoveFromFontIcon" TargetType="Button" BasedOn="{StaticResource BasicFontIconButton}">
 		<Setter Property="Content" Value="&#xECC9;"/>
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="LayoutTransform">
+			<Setter.Value>
+				<ScaleTransform ScaleX="1.5" ScaleY="1.5"></ScaleTransform>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="RepeatButton">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+						<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger Property="IsFocused" Value="True">
+				<Setter Property="Background" Value="{DynamicResource AccentBackground}"></Setter>
+			</Trigger>
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="Background" Value="{DynamicResource SelectionBackground}"></Setter>
+			</Trigger>
+		</Style.Triggers>
 	</Style>
 </ResourceDictionary>

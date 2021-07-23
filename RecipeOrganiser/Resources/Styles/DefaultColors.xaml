@@ -28,6 +28,8 @@
 	
 	<SolidColorBrush x:Key="MenuItemForeground" Color="{DynamicResource BlackColor}"/>
 	<SolidColorBrush x:Key="MenuItemBackground"  Color="{DynamicResource TaupeColor}"/>
+	<SolidColorBrush x:Key="MenuItemBorderBrush"  Color="{DynamicResource TaupeColor}"/>
+	<SolidColorBrush x:Key="MenuItemDisabledBackground"  Color="#FF707070"/>
 
 	<SolidColorBrush x:Key="SearchTextBoxBackground" Color="{DynamicResource BackgoundColor}"/>
 	<SolidColorBrush x:Key="SearchTextBoxForeground" Color="{DynamicResource BlackColor}"/>
