@@ -13,42 +13,59 @@
 	</UserControl.InputBindings>
 
 	<DockPanel>
-		<Grid DockPanel.Dock="Top">
-			<TextBlock FontSize="28" Margin="20,20,0,0" Text="Edit Shopping List"/>
+		<Grid DockPanel.Dock="Top" Background="{DynamicResource AccentBackground}">
+			<TextBlock Text="Edit Shopping List" FontSize="28" Margin="40,10,0,0"/>
+			<!--Command Bar-->
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-				<Button Margin="0,20,20,0" ToolTip="Save (Ctrl+S)" Command="{Binding SaveCommand}">
-					<Image Source="/Images/save.png"/>
-				</Button>
+				<ToolBarPanel DockPanel.Dock="Top" Margin="0,5,20,0"  ClipToBounds="True">
+					<ToolBar 
+						ToolBarTray.IsLocked="True"
+						Margin="-5,0,-13,0"
+						Padding="5,0,0,0"
+						Background="{DynamicResource AccentBackground}">
+						<Menu>
+							<MenuItem
+								Command="{Binding SaveCommand}"
+								CommandParameter="{Binding}"
+								ToolTip="Save (Ctrl+S)"
+								Style="{StaticResource DisableOnValidationError}"
+								Cursor="Hand" >
+							</MenuItem>
+						</Menu>
+					</ToolBar>
+				</ToolBarPanel>
 			</StackPanel>
 		</Grid>
-
-		<Grid Margin="10">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition/>
-			</Grid.RowDefinitions>
-			<Button
+		<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Padding="0,50,0,50">
+			<Grid Margin="10">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				<Button
 				HorizontalAlignment="Right" 
 				VerticalAlignment="Top" 
 				ToolTip="Add Ingredient"
 				Margin="0,0,20,0"
-				Command="{Binding AddIngredientCommand}">
-				<Image Source="/Images/plus-circle.png"/>
-			</Button>
-			<ItemsControl x:Name="IngredientsItemsControl" Grid.Row="1" ItemsSource="{Binding AddIngredientControls}">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<StackPanel Orientation="Horizontal">
-							<ContentControl Content="{Binding}"/>
-							<Button x:Name="DeleteButton" 
-									Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=local:EditShoppingListView}}" 
-									CommandParameter="{Binding}" Height="22" Width="20">
-								<Image Source="/Images/trash-can.png"/>
-							</Button>
-						</StackPanel>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-		</Grid>
+				Command="{Binding AddIngredientCommand}" 
+				Style="{StaticResource AddToFontIcon}"/>
+
+				<ItemsControl x:Name="IngredientsItemsControl" Grid.Row="1" ItemsSource="{Binding AddIngredientControls}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<ContentControl Content="{Binding}"/>
+								<Button 
+								x:Name="DeleteButton" 
+								Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=local:EditShoppingListView}}"
+								CommandParameter="{Binding}"
+								Style="{StaticResource RemoveFromFontIcon}">
+								</Button>
+							</StackPanel>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</Grid>
+		</ScrollViewer>
 	</DockPanel>
 </UserControl>

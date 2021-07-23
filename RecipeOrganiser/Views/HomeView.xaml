@@ -18,7 +18,7 @@
 
 	<DockPanel>
 		<Grid DockPanel.Dock="Top" Background="{DynamicResource AccentBackground}">
-			<TextBlock FontSize="28" Margin="40,10,0,0">Home</TextBlock>
+			<TextBlock FontSize="28" Margin="40,10,0,0" Text="Home"/>
 			<!--Command Bar-->
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
 				<ToolBarPanel DockPanel.Dock="Top" Margin="0,5,20,0"  ClipToBounds="True">

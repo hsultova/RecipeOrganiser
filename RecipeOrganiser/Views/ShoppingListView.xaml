@@ -19,10 +19,10 @@
 
 	<DockPanel>
 		<Grid DockPanel.Dock="Top" Background="{DynamicResource AccentBackground}">
-			<TextBlock Text="Shopping Lists" FontSize="28" Margin="20,20,0,0"/>
+			<TextBlock Text="Shopping Lists" FontSize="28" Margin="40,10,0,0"/>
 			<!--Command Bar-->
 			<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-				<ToolBarPanel DockPanel.Dock="Top" Margin="0,20,20,0"  ClipToBounds="True">
+				<ToolBarPanel DockPanel.Dock="Top" Margin="0,5,20,0"  ClipToBounds="True">
 					<ToolBar ToolBarTray.IsLocked="True" Margin="-5,0,-13,0" Padding="5,0,0,0" Background="{DynamicResource AccentBackground}">
 						<Menu>
 							<MenuItem
@@ -57,7 +57,7 @@
 			</StackPanel>
 		</Grid>
 		<Grid Margin="10">
-			<DataGrid
+			<DataGrid ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
 				Name="ShoppingListDataGrid"
 				ItemsSource="{Binding ShoppingLists}"
 				AutoGenerateColumns="False"

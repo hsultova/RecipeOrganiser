@@ -140,4 +140,12 @@
 			</Trigger>
 		</Style.Triggers>
 	</Style>
+
+	<Style TargetType="CheckBox">
+		<Style.Triggers>
+			<Trigger Property="IsChecked" Value="True">
+				<Setter Property="Background" Value="{DynamicResource AccentBackground}"/>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
 </ResourceDictionary>
