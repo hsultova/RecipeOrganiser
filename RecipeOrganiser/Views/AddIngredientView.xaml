@@ -1,15 +1,16 @@
-﻿<UserControl x:Class="RecipeOrganiser.Views.AddIngredientView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:RecipeOrganiser.Views"
-			 xmlns:controls="clr-namespace:RecipeOrganiser.Resources.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl 
+	x:Class="RecipeOrganiser.Views.AddIngredientView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:local="clr-namespace:RecipeOrganiser.Views"
+	xmlns:controls="clr-namespace:RecipeOrganiser.Resources.Controls"
+	mc:Ignorable="d" 
+	d:DesignHeight="450" d:DesignWidth="800">
 
 	<WrapPanel Margin="5">
-		<TextBlock Style="{StaticResource FormText}" Margin="0,0,10,0">Name</TextBlock>
+		<TextBlock Style="{StaticResource FormText}" Margin="0,0,10,0" Text="Name"/>
 		<ComboBox 
 			ItemsSource="{Binding Ingredients}" 
 			SelectedItem="{Binding Ingredient}" 
@@ -27,17 +28,17 @@
 				</DataTemplate>
 			</ComboBox.ItemTemplate>
 		</ComboBox>
-		<TextBlock  Style="{StaticResource FormText}" Margin="0,0,10,0">Quantity</TextBlock>
+		<TextBlock  Style="{StaticResource FormText}" Margin="0,0,10,0" Text="Quantity"/>
 		<controls:NumericUpDownTextBox Value="{Binding Quantity}" Margin="0,0,20,0"/>
-		<TextBlock  Style="{StaticResource FormText}"  Margin="0,0,10,0">Weight/Volume</TextBlock>
+		<TextBlock  Style="{StaticResource FormText}"  Margin="0,0,10,0" Text="Weight/Volume"/>
 		<controls:NumericUpDownTextBox Value="{Binding Weight}" ValueType="Decimal" Margin="0,0,20,0"/>
 		<ComboBox 
-			ItemsSource="{Binding UnitsOfMeasurements}" 
-			SelectedItem="{Binding UnitOfMeasurement}" 
-			Text="{Binding UnitOfMeasurementName}" 
-			TextSearch.TextPath="Name" 
-			Width="120" 
-			VerticalAlignment="Top" 
+			ItemsSource="{Binding UnitsOfMeasurements}"
+			SelectedItem="{Binding UnitOfMeasurement}"
+			Text="{Binding UnitOfMeasurementName}"
+			TextSearch.TextPath="Name"
+			Width="120"
+			VerticalAlignment="Top"
 			Margin="0,0,20,0"
 			Style="{StaticResource BasicComboBoxStyle}">
 			<ComboBox.ItemTemplate>
