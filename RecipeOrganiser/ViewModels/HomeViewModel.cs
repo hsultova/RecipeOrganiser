@@ -44,8 +44,6 @@ namespace RecipeOrganiser.ViewModels
 			_shoppingListRepository = shoppingListRepository;
 
 			_recipeViewModel = recipeViewModel;
-			_recipeViewModel.Title = "Edit Recipe";
-
 			_shoppingListViewModel = shoppingListViewModel;
 
 			RecipesView = CollectionViewSource.GetDefaultView(Recipes);
@@ -185,6 +183,7 @@ namespace RecipeOrganiser.ViewModels
 			_mapper.Map(recipe, _recipeViewModel);
 			_recipeViewModel.CurrentRecipe = recipe;
 			_recipeViewModel.CategoryName = recipe.Category.Name;
+			_recipeViewModel.Title = "Edit Recipe";
 			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _recipeViewModel });
 		}
 

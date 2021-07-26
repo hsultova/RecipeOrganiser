@@ -29,8 +29,6 @@ namespace RecipeOrganiser.ViewModels
 			EditShoppingListViewModel editShoppingListViewModel)
 		{
 			_recipeViewModel = recipeViewModel;
-			_recipeViewModel.Title = "New Recipe";
-
 			_homeViewModel = homeViewModel;
 			_categoriesViewModel = categoriesViewModel;
 			_shoppingListViewModel = shoppingListViewModel;
@@ -84,7 +82,7 @@ namespace RecipeOrganiser.ViewModels
 					var result = MessageBox.Show("Are you sure you want to exit? Any unsaved changes will be lost.", "Confirm", MessageBoxButton.YesNo);
 					if (result == MessageBoxResult.No)
 					{
-						if(_navigationMappings.ContainsKey(CurrentViewModel))
+						if (_navigationMappings.ContainsKey(CurrentViewModel))
 							SelectedMenuItem = _navigationMappings[CurrentViewModel];
 						return;
 					}
@@ -126,7 +124,12 @@ namespace RecipeOrganiser.ViewModels
 
 		#region Commands
 		public ICommand HomeCommand => new RelayCommand(_ => { CurrentViewModel = _homeViewModel; });
-		public ICommand RecipeCommand => new RelayCommand(_ => { CurrentViewModel = _recipeViewModel; });
+		public ICommand RecipeCommand => new RelayCommand(_ =>
+		{
+			_recipeViewModel.Title = "New Recipe";
+			_recipeViewModel.Clear();
+			CurrentViewModel = _recipeViewModel;
+		});
 		public ICommand CategoriesCommand => new RelayCommand(_ => { CurrentViewModel = _categoriesViewModel; });
 		public ICommand ShoppingListsCommand => new RelayCommand(_ => { CurrentViewModel = _shoppingListViewModel; });
 		public ICommand CloseStatusMessageCommand => new RelayCommand(CloseStatusMessage);

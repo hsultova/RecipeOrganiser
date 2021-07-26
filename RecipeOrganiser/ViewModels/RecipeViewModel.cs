@@ -347,6 +347,7 @@ namespace RecipeOrganiser.ViewModels
 
 		public override void Clear()
 		{
+			Id = 0;
 			Name = string.Empty;
 			Description = string.Empty;
 			Note = string.Empty;
