@@ -57,7 +57,7 @@
 			</StackPanel>
 		</Grid>
 		<Grid Margin="10">
-			<DataGrid ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
+			<DataGrid
 				Name="ShoppingListDataGrid"
 				ItemsSource="{Binding ShoppingLists}"
 				AutoGenerateColumns="False"
