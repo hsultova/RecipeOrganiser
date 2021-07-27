@@ -90,7 +90,7 @@
 						<TextBlock Style="{StaticResource FormText}" Text="Description"/>
 						<TextBox
 							Grid.Row="1"
-							Text="{Binding Description, Mode=TwoWay}"
+							Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
 							Style="{StaticResource FormTextBox}"
 							TextWrapping="Wrap"/>
 					</Grid>
@@ -101,7 +101,7 @@
 						</Grid.RowDefinitions>
 
 						<TextBlock Style="{StaticResource FormText}" Text="Note"/>
-						<TextBox Grid.Row="1" Text="{Binding Note, Mode=TwoWay}"  Style="{StaticResource FormTextBox}"/>
+						<TextBox Grid.Row="1" Text="{Binding Note, UpdateSourceTrigger=PropertyChanged}"  Style="{StaticResource FormTextBox}"/>
 					</Grid>
 					<StackPanel Grid.Row="3">
 						<TextBlock Style="{StaticResource FormText}" Text="Category"/>
