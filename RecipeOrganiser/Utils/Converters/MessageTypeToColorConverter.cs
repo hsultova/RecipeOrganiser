@@ -14,7 +14,7 @@ namespace RecipeOrganiser.Utils.Converters
 			{
 				var color = type switch
 				{
-					DisplayMessageType.Info => new SolidColorBrush(Colors.LightBlue),
+					DisplayMessageType.Info => new SolidColorBrush(Colors.LightSteelBlue),
 					DisplayMessageType.Error => new SolidColorBrush(Colors.PaleVioletRed),
 					DisplayMessageType.None => new SolidColorBrush(Colors.White),
 					_ => new SolidColorBrush(Colors.LightGray),

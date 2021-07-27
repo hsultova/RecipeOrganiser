@@ -14,18 +14,9 @@
 		<converters:MessageTypeToColorConverter x:Key="MessageTypeToColorConverter"/>
 	</Window.Resources>
 
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
-
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition/>
-		</Grid.ColumnDefinitions>
-
+	<DockPanel>
 		<controls:NavigationMenu 
+			DockPanel.Dock="Left"
 			Background="{DynamicResource BaseBackground}" 
 			SelectionColor="{DynamicResource SelectionBackground}" 
 			HorizontalAlignment="Left" 
@@ -34,31 +25,44 @@
 			SelectionIndicatorColor="#D37506"
 			SelectedMenuItem="{Binding SelectedMenuItem}"
 			Items="{Binding Items}"/>
-		<ContentControl Grid.Column="1" Content="{Binding CurrentViewModel}"/>
 
-		<StatusBar Grid.Row="1" Grid.ColumnSpan="2" MaxHeight="200">
-			<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-				<UniformGrid>
-					<ItemsControl x:Name="StatusMessagesControl" ItemsSource="{Binding StatusMessages}">
-						<ItemsControl.ItemTemplate>
-							<DataTemplate>
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Text="{Binding Message}"  Background="{Binding MessageТype, Converter={StaticResource MessageTypeToColorConverter}}"/>
-									<Button Command="{Binding DataContext.CloseStatusMessageCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}">
-										<Viewbox Width="10" Height="10">
-											<Canvas Width="24" Height="24">
-												<Path Fill="Black" Data="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z" />
-											</Canvas>
-										</Viewbox>
-									</Button>
-								</StackPanel>
-							</DataTemplate>
-						</ItemsControl.ItemTemplate>
-					</ItemsControl>
-					<Button Margin="0,20,10,0" ToolTip="Clear all messages" Command="{Binding ClearMessagesCommand}" HorizontalAlignment="Right" VerticalAlignment="Top">
-						<Image Source="/Images/close-box-multiple.png" Width="30" Height="25"/>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+
+			<!--<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>-->
+
+			<ContentControl Content="{Binding CurrentViewModel}"/>
+
+			<StatusBar Grid.Row="1" MaxHeight="200">
+				<StatusBarItem>
+					<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+						<UniformGrid Margin="10,10,0,10">
+							<ItemsControl x:Name="StatusMessagesControl" ItemsSource="{Binding StatusMessages}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<StackPanel Orientation="Horizontal">
+											<TextBlock
+												Text="{Binding Message}"
+												Background="{Binding MessageТype, Converter={StaticResource MessageTypeToColorConverter}}"/>
+											<Button Command="{Binding DataContext.CloseStatusMessageCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Style="{StaticResource ClearFontIconButton}">
+											</Button>
+										</StackPanel>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</UniformGrid>
+					</ScrollViewer>
+				</StatusBarItem>
+				<StatusBarItem HorizontalAlignment="Right">
+					<Button Margin="0,0,20,0" Content="Clear All" ToolTip="Clear all messages" Command="{Binding ClearMessagesCommand}" HorizontalAlignment="Right" VerticalAlignment="Top">
 						<Button.Style>
-							<Style TargetType="Button">
+							<Style TargetType="Button" BasedOn="{StaticResource BasicButton}">
 								<Style.Triggers>
 									<DataTrigger Binding="{Binding Items.Count, ElementName=StatusMessagesControl}" Value="0">
 										<Setter Property="Visibility" Value="Collapsed" />
@@ -67,9 +71,8 @@
 							</Style>
 						</Button.Style>
 					</Button>
-				</UniformGrid>
-			</ScrollViewer>
-		</StatusBar>
-
-	</Grid>
+				</StatusBarItem>
+			</StatusBar>
+		</Grid>
+	</DockPanel>
 </Window>

@@ -101,6 +101,15 @@
 		<Setter Property="Content" Value="&#xE898;"/>
 	</Style>
 
+	<Style x:Key="ClearFontIconButton" TargetType="Button" BasedOn="{StaticResource BasicFontIconButton}">
+		<Setter Property="Content" Value="&#xE894;"/>
+		<Setter Property="LayoutTransform">
+			<Setter.Value>
+				<ScaleTransform ScaleX="0.7" ScaleY="0.7"></ScaleTransform>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<Style x:Key="AddToFontIcon" TargetType="Button" BasedOn="{StaticResource BasicFontIconButton}">
 		<Setter Property="Content" Value="&#xECC8;"/>
 		<Setter Property="Background" Value="Transparent"/>
