@@ -352,7 +352,9 @@ namespace RecipeOrganiser.ViewModels
 			Description = string.Empty;
 			Note = string.Empty;
 			CategoryName = string.Empty;
+			Category = null;
 			Image = PlaceholderImageData;
+			CurrentRecipe = null;
 			AddIngredientControls.Clear();
 
 			CanExit = true;

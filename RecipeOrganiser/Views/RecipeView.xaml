@@ -75,7 +75,7 @@
 
 					</StackPanel>
 					<StackPanel Grid.Row="2">
-						<TextBlock Style="{StaticResource FormText}">Name</TextBlock>
+						<TextBlock Style="{StaticResource FormText}" Text="Name"/>
 						<TextBox
 							Style="{StaticResource FormTextBox}"
 							Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
@@ -90,7 +90,7 @@
 						<TextBlock Style="{StaticResource FormText}" Text="Description"/>
 						<TextBox
 							Grid.Row="1"
-							Text="{Binding Description}"
+							Text="{Binding Description, Mode=TwoWay}"
 							Style="{StaticResource FormTextBox}"
 							TextWrapping="Wrap"/>
 					</Grid>
@@ -100,11 +100,11 @@
 							<RowDefinition/>
 						</Grid.RowDefinitions>
 
-						<TextBlock Style="{StaticResource FormText}">Note</TextBlock>
-						<TextBox Grid.Row="1" Text="{Binding Note}"  Style="{StaticResource FormTextBox}"/>
+						<TextBlock Style="{StaticResource FormText}" Text="Note"/>
+						<TextBox Grid.Row="1" Text="{Binding Note, Mode=TwoWay}"  Style="{StaticResource FormTextBox}"/>
 					</Grid>
 					<StackPanel Grid.Row="3">
-						<TextBlock Style="{StaticResource FormText}">Category</TextBlock>
+						<TextBlock Style="{StaticResource FormText}" Text="Category"/>
 						<ComboBox
 							Style="{DynamicResource BasicComboBoxStyle}" 
 							ItemsSource="{Binding Categories}" 
