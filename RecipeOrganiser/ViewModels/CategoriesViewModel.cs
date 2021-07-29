@@ -2,8 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using RecipeOrganiser.Data.Models;
-using RecipeOrganiser.Data.Repositories;
+using RecipeOrganiser.Domain.Models;
+using RecipeOrganiser.Domain.Repositories;
 using RecipeOrganiser.Utils.General;
 using RecipeOrganiser.ViewModels.Base;
 

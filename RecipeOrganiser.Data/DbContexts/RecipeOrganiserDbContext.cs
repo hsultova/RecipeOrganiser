@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RecipeOrganiser.Data.Models;
+using RecipeOrganiser.Domain.Models;
 
 namespace RecipeOrganiser.Data.DbContexts
 {

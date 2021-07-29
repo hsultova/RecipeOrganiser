@@ -5,7 +5,8 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using RecipeOrganiser.Data.DbContexts;
-using RecipeOrganiser.Data.Models;
+using RecipeOrganiser.Domain.Models;
+using RecipeOrganiser.Domain.Repositories;
 
 namespace RecipeOrganiser.Data.Repositories
 {

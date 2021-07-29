@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using RecipeOrganiser.Data.Models;
+using RecipeOrganiser.Domain.Models;
 
-namespace RecipeOrganiser.Data.Repositories
+namespace RecipeOrganiser.Domain.Repositories
 {
 	/// <summary>
 	/// Represents a repository with the basic CRUD operations.

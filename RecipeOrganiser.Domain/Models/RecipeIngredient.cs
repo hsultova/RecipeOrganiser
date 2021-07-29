@@ -1,4 +1,4 @@
-﻿namespace RecipeOrganiser.Data.Models
+﻿namespace RecipeOrganiser.Domain.Models
 {
 	/// <summary>
 	/// A recipe ingedient is used in recipes and can has quantity and weight.

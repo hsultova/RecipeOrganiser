@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using RecipeOrganiser.Data.Models;
+using RecipeOrganiser.Domain.Models;
 using RecipeOrganiser.ViewModels.Base;
 
 namespace RecipeOrganiser.ViewModels

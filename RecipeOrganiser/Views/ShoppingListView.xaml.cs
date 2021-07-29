@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using RecipeOrganiser.Data.Models;
+using RecipeOrganiser.Domain.Models;
 using RecipeOrganiser.ViewModels;
 
 namespace RecipeOrganiser.Views

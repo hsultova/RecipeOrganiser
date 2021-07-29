@@ -1,6 +1,6 @@
-﻿using RecipeOrganiser.Data.Models;
+﻿using RecipeOrganiser.Domain.Models;
 
-namespace RecipeOrganiser.Data.Repositories
+namespace RecipeOrganiser.Domain.Repositories
 {
 	public interface IRecipeIngredientRepository : IRepository<RecipeIngredient>
 	{

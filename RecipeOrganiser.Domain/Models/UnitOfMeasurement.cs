@@ -1,4 +1,4 @@
-﻿namespace RecipeOrganiser.Data.Models
+﻿namespace RecipeOrganiser.Domain.Models
 {
 	/// <summary>
 	/// Used for storing units of measurement, for example g, kg...

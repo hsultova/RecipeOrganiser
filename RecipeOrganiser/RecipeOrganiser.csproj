@@ -24,6 +24,7 @@
 	<ItemGroup>
     <ProjectReference Include="..\RecipeOrganiser.Controls\RecipeOrganiser.Controls.csproj" />
     <ProjectReference Include="..\RecipeOrganiser.Data\RecipeOrganiser.Data.csproj" />
+    <ProjectReference Include="..\RecipeOrganiser.Domain\RecipeOrganiser.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

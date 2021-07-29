@@ -1,4 +1,4 @@
-﻿namespace RecipeOrganiser.Data.Models
+﻿namespace RecipeOrganiser.Domain.Models
 {
 	/// <summary>
 	/// Shopping list ingredient is used in shopping lists and has quantity or weight.

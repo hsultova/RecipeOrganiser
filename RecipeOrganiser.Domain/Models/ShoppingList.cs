@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RecipeOrganiser.Data.Models
+namespace RecipeOrganiser.Domain.Models
 {
 	public class ShoppingList : BaseModel
 	{

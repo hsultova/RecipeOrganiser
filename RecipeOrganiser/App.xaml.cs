@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RecipeOrganiser.Data.DbContexts;
 using RecipeOrganiser.Data.Repositories;
+using RecipeOrganiser.Domain.Repositories;
 using RecipeOrganiser.Utils;
 using RecipeOrganiser.ViewModels;
 

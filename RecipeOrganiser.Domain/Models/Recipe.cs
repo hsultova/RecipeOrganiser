@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RecipeOrganiser.Data.Models
+namespace RecipeOrganiser.Domain.Models
 {
 	/// <summary>
 	/// Cooking recipe. Can be added in category. Contains list of ingredients (of type <see cref="RecipeIngredients"/>)

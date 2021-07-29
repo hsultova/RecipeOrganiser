@@ -1,4 +1,4 @@
-﻿namespace RecipeOrganiser.Data.Models
+﻿namespace RecipeOrganiser.Domain.Models
 {
 	/// <summary>
 	/// An ingredient which can be used when creating recipes

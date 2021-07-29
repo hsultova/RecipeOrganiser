@@ -1,4 +1,4 @@
-﻿namespace RecipeOrganiser.Data.Models
+﻿namespace RecipeOrganiser.Domain.Models
 {
 	public class ShoppingListRecipe : BaseModel
 	{
