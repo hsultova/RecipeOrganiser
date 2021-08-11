@@ -6,7 +6,7 @@ C#, WPF
 SQL
 
 **To Do:**
-- [ ] Fix add to shopping list menu functionality - styling.
+- [ ] Add styling to the context menus.
 - [ ] Change UI, add web version of the application.
 - [x] Recipe functionality - CRUD.
 - [x] Category functionality - CRUD. 
@@ -32,4 +32,7 @@ SQL
 Categories window:
 
 ![image](https://user-images.githubusercontent.com/13272856/127877014-e8903960-689c-489c-9c62-c9cd8c65a01b.png)
+
+Shopping list
+![image](https://user-images.githubusercontent.com/13272856/129004745-8c3a36d8-6803-4f84-baf6-4fff60938e6e.png)
 
