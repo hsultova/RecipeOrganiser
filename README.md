@@ -2,8 +2,9 @@
 **Recipe Organiser** is a desktop application for recipe organisation. The user can **create, edit, delete recipes** and organise them in **categories**. Also, the user can **create a shopping list** and add **ingredients** from existing recipes to it or add **new ingredients.** The items from the shopping list can be **checked/unchecked.**
 
 **Technologies:**
-C#, WPF
-SQL
+
+- C#, WPF
+- SQL
 
 **To Do:**
 - [ ] Add styling to the context menus.
