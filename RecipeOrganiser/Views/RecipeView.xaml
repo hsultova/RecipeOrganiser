@@ -110,7 +110,7 @@
 							ItemsSource="{Binding Categories}" 
 							SelectedItem="{Binding Category}" 
 							TextSearch.TextPath="Name" 
-							Text="{Binding CategoryName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+							Text="{Binding CategoryName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
 							IsEditable="True" 
 							StaysOpenOnEdit="True" 
 							Width="300" 
