@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using RecipeOrganiser.Domain.Models;
 using RecipeOrganiser.Domain.Repositories;
+using RecipeOrganiser.Domain.Services.Abstract;
 using RecipeOrganiser.Utils.Events;
 using RecipeOrganiser.Utils.General;
 using RecipeOrganiser.ViewModels.Base;
@@ -12,15 +13,15 @@ namespace RecipeOrganiser.ViewModels
 {
 	public class ShoppingListViewModel : BaseViewModel
 	{
-		private readonly IShoppingListRepository _shoppingListRepository;
+		private readonly IShoppingListService _shoppingListService;
 
 		private readonly EditShoppingListViewModel _editShoppingListViewModel;
 
 		public ShoppingListViewModel(
-			IShoppingListRepository shoppingListRepository,
+			IShoppingListService shoppingListService,
 			EditShoppingListViewModel editShoppingListViewModel)
 		{
-			_shoppingListRepository = shoppingListRepository;
+			_shoppingListService = shoppingListService;
 
 			_editShoppingListViewModel = editShoppingListViewModel;
 		}
@@ -32,7 +33,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (_shoppingLists == null)
 				{
-					_shoppingLists = new ObservableCollection<ShoppingList>(_shoppingListRepository.GetAll(null, x => x.ShoppingListIngredients));
+					_shoppingLists = new ObservableCollection<ShoppingList>(_shoppingListService.GetAllWithIngredients());
 				}
 				return _shoppingLists;
 			}
@@ -61,22 +62,20 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (list.Id == 0)
 				{
-					_shoppingListRepository.Create(list);
+					_shoppingListService.Create(list.Name, list.Description);
 					OnRecordCreated<ShoppingList>(list.Name);
 				}
 				else
 				{
-					_shoppingListRepository.Update(list);
+					_shoppingListService.Update(list.Id, list.Name, list.Description);
 					OnRecordUpdated<ShoppingList>(list.Name);
 				}
 			}
-
-			_shoppingListRepository.SaveChanges();
 		}
 
 		private void Edit(object obj)
 		{
-			var shoppingList = _shoppingListRepository.Get(r => r.Id == SelectedShoppingList.Id, r => r.ShoppingListIngredients);
+			var shoppingList = _shoppingListService.GetWithIngredients(SelectedShoppingList.Id);
 
 			_editShoppingListViewModel.Id = shoppingList.Id;
 			_editShoppingListViewModel.CurrentShoppingList = shoppingList;
@@ -93,11 +92,10 @@ namespace RecipeOrganiser.ViewModels
 				{
 					continue;
 				}
-				_shoppingListRepository.Delete(selectedList.Id);
+				_shoppingListService.Delete(selectedList.Id);
 				OnRecordDeleted<ShoppingList>(selectedList.Name);
 			}
 
-			_shoppingListRepository.SaveChanges();
 			SelectedShoppingLists.Clear();
 			Refresh();
 		}
@@ -106,13 +104,13 @@ namespace RecipeOrganiser.ViewModels
 		{
 			base.Refresh();
 
-			var shoppingLists = _shoppingListRepository.GetAll();
+			var shoppingLists = _shoppingListService.GetAll();
 			ShoppingLists.Clear();
 			SelectedShoppingLists.Clear();
 
 			foreach (ShoppingList list in shoppingLists)
 			{
-				_shoppingListRepository.Reload(list);
+				_shoppingListService.Reload(list);
 				ShoppingLists.Add(list);
 			}
 		}

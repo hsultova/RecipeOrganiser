@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using RecipeOrganiser.Domain.Models;
 using RecipeOrganiser.Domain.Repositories;
+using RecipeOrganiser.Domain.Services.Abstract;
 using RecipeOrganiser.Utils;
 using RecipeOrganiser.Utils.Events;
 using RecipeOrganiser.Utils.General;
@@ -17,31 +18,23 @@ namespace RecipeOrganiser.ViewModels
 {
 	public class HomeViewModel : BaseViewModel
 	{
-		private readonly IMapper _mapper;
-
 		private readonly RecipeViewModel _recipeViewModel;
 		private readonly ShoppingListViewModel _shoppingListViewModel;
 
-		private readonly IRecipeRepository _recipeRepository;
-		private readonly ICategoryRepository _categoryRepository;
-		private readonly IIngredientRepository _ingredientRepository;
-		private readonly IShoppingListRepository _shoppingListRepository;
+		private readonly IRecipeService _recipeService;
+		private readonly ICategoryService _categoryService;
+		private readonly IShoppingListService _shoppingListService;
 
 		public HomeViewModel(
-			IMapper mapper,
-			IRecipeRepository recipeRepository,
-			ICategoryRepository categoryRepository,
-			IIngredientRepository ingredientRepository,
-			IShoppingListRepository shoppingListRepository,
+			IRecipeService recipeService,
+			ICategoryService categoryService,
+			IShoppingListService shoppingListService,
 			RecipeViewModel recipeViewModel,
 			ShoppingListViewModel shoppingListViewModel)
 		{
-			_mapper = mapper;
-
-			_recipeRepository = recipeRepository;
-			_categoryRepository = categoryRepository;
-			_ingredientRepository = ingredientRepository;
-			_shoppingListRepository = shoppingListRepository;
+			_recipeService = recipeService;
+			_categoryService = categoryService;
+			_shoppingListService = shoppingListService;
 
 			_recipeViewModel = recipeViewModel;
 			_shoppingListViewModel = shoppingListViewModel;
@@ -57,7 +50,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (_recipes == null)
 				{
-					_recipes = new ObservableCollection<Recipe>(_recipeRepository.GetAll());
+					_recipes = new ObservableCollection<Recipe>(_recipeService.GetAll());
 				}
 				return _recipes;
 			}
@@ -90,7 +83,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (_categories == null)
 				{
-					_categories = _categoryRepository.GetAll().Select(c => c.Name).ToList();
+					_categories = _categoryService.GetAll().Select(c => c.Name).ToList();
 				}
 				return _categories;
 			}
@@ -123,7 +116,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (_ingredients == null)
 				{
-					_ingredients = _ingredientRepository.GetAll().Select(i => i.Name).ToList();
+					_ingredients = _recipeService.GetIngredients().Select(i => i.Name).ToList();
 				}
 				return _ingredients;
 			}
@@ -140,7 +133,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (_shoppingLists == null)
 				{
-					_shoppingLists = new ObservableCollection<ShoppingList>(_shoppingListRepository.GetAll());
+					_shoppingLists = new ObservableCollection<ShoppingList>(_shoppingListService.GetAll());
 				}
 				return _shoppingLists;
 			}
@@ -178,11 +171,16 @@ namespace RecipeOrganiser.ViewModels
 
 		private void Edit(object obj)
 		{
-			var recipe = _recipeRepository.Get(r => r.Id == ((Recipe) obj).Id, r => r.RecipeIngredients);
+			var recipe = _recipeService.GetWithIngredients(((Recipe)obj).Id);
 
-			_mapper.Map(recipe, _recipeViewModel);
-			_recipeViewModel.CurrentRecipe = recipe;
+			_recipeViewModel.Id = recipe.Id;
+			_recipeViewModel.Name = recipe.Name;
+			_recipeViewModel.Description = recipe.Description;
+			_recipeViewModel.Note = recipe.Note;
+			_recipeViewModel.Image = recipe.Image;
+			_recipeViewModel.Category = recipe.Category;
 			_recipeViewModel.CategoryName = recipe.Category.Name;
+			_recipeViewModel.RecipeIngredients = recipe.RecipeIngredients;
 			_recipeViewModel.Title = "Edit Recipe";
 			OnChangeViewModel(new ChangeViewModelEventArgs { ViewModel = _recipeViewModel });
 		}
@@ -196,43 +194,17 @@ namespace RecipeOrganiser.ViewModels
 				{
 					continue;
 				}
-				_recipeRepository.Delete(selectedRecipe.Id);
+				_recipeService.Delete(selectedRecipe.Id);
 				OnRecordDeleted<Recipe>(selectedRecipe.Name);
 			}
 
-			_recipeRepository.SaveChanges();
 			SelectedRecipes.Clear();
 			Refresh();
 		}
 
 		private void AddNewShoppingList(object obj)
 		{
-			var shoppingList = new ShoppingList { Name = "Untitled" };
-
-			shoppingList.ShoppingListRecipes = new List<ShoppingListRecipe>();
-			shoppingList.ShoppingListIngredients = new List<ShoppingListIngredient>();
-
-			foreach (var recipe in SelectedRecipes)
-			{
-				_recipeRepository.Get(x => x.Id == recipe.Id, x => x.RecipeIngredients);
-				var shoppingListRecipe = new ShoppingListRecipe
-				{
-					Recipe = recipe,
-					ShoppingList = shoppingList
-				};
-				shoppingList.ShoppingListRecipes.Add(shoppingListRecipe);
-
-				foreach (var recipeIngredient in recipe.RecipeIngredients)
-				{
-					var shoppingListIngredient = new ShoppingListIngredient();
-					_mapper.Map(recipeIngredient, shoppingListIngredient, nameof(recipeIngredient.Id));
-
-					shoppingList.ShoppingListIngredients.Add(shoppingListIngredient);
-				}
-			}
-
-			_shoppingListRepository.Create(shoppingList);
-			_shoppingListRepository.SaveChanges();
+			var shoppingList = _shoppingListService.AddRecipesToShoppingList(SelectedRecipes);
 
 			_shoppingListViewModel.SelectedShoppingList = shoppingList;
 
@@ -246,37 +218,7 @@ namespace RecipeOrganiser.ViewModels
 			if (shoppingList == null)
 				return;
 
-			shoppingList = _shoppingListRepository.Get(x => x.Id == shoppingList.Id, x => x.ShoppingListRecipes, x => x.ShoppingListIngredients);
-
-			foreach (var recipe in SelectedRecipes)
-			{
-				_recipeRepository.Get(r => r.Id == recipe.Id, r => r.RecipeIngredients);
-				var shoppingListRecipe = new ShoppingListRecipe
-				{
-					Recipe = recipe,
-					ShoppingList = shoppingList
-				};
-				shoppingList.ShoppingListRecipes.Add(shoppingListRecipe);
-			}
-
-			List<RecipeIngredient> allRecipeIngredients = SelectedRecipes.SelectMany(r => r.RecipeIngredients).ToList();
-			foreach (var recipeIngredient in allRecipeIngredients)
-			{
-				var shoppingListIngredient = shoppingList.ShoppingListIngredients.FirstOrDefault(s => s.IngredientId == recipeIngredient.IngredientId);
-				if (shoppingListIngredient == null)
-				{
-					shoppingListIngredient = new ShoppingListIngredient();
-					_mapper.Map(recipeIngredient, shoppingListIngredient, nameof(recipeIngredient.Id));
-					shoppingList.ShoppingListIngredients.Add(shoppingListIngredient);
-					continue;
-				}
-
-				shoppingListIngredient.Quantity += recipeIngredient.Quantity;
-				shoppingListIngredient.Weight += recipeIngredient.Weight;
-			}
-
-			_shoppingListRepository.Update(shoppingList);
-			_shoppingListRepository.SaveChanges();
+			 _shoppingListService.AddRecipesToShoppingList(shoppingList.Id, SelectedRecipes);
 
 			_shoppingListViewModel.SelectedShoppingList = shoppingList;
 
@@ -286,46 +228,9 @@ namespace RecipeOrganiser.ViewModels
 
 		private bool Filter(object obj)
 		{
-			if (string.IsNullOrEmpty(SearchText) && !IsFilterEnabled)
-			{
-				return true;
-			}
-
 			var recipeObj = (Recipe)obj;
-			Recipe recipe = _recipeRepository.Get(r => r.Id == recipeObj.Id, r => r.Category, r => r.RecipeIngredients);
-
-			bool hasName = true;
-			if (!string.IsNullOrEmpty(SearchText))
-			{
-				hasName = recipe.Name.ToLower().Contains(SearchText.ToLower());
-			}
-
-			if (IsFilterEnabled)
-			{
-				bool hasCategory = true;
-				bool hasIngredient = true;
-
-				if (!string.IsNullOrEmpty(SelectedCategory))
-				{
-					hasCategory = recipe.Category.Name == SelectedCategory;
-				}
-
-				if (!string.IsNullOrEmpty(SelectedIngredient))
-				{
-					hasIngredient = recipe.RecipeIngredients.Select(i => i.Ingredient.Name).Contains(SelectedIngredient);
-				}
-
-				if (hasName && hasCategory && hasIngredient)
-				{
-					return true;
-				}
-
-				return false;
-			}
-
-			return hasName;
+			return _recipeService.IsVisible(recipeObj.Id, SearchText, SelectedCategory, SelectedIngredient, IsFilterEnabled);
 		}
-
 
 		private void DoubleClick(object obj)
 		{
@@ -334,7 +239,7 @@ namespace RecipeOrganiser.ViewModels
 
 		public override void Refresh()
 		{
-			var recipes = _recipeRepository.GetAll();
+			var recipes = _recipeService.GetAll();
 			Recipes.Clear();
 
 			foreach (Recipe recipe in recipes)
@@ -344,10 +249,10 @@ namespace RecipeOrganiser.ViewModels
 
 			SelectedRecipes.Clear();
 
-			Categories = _categoryRepository.GetAll().Select(c => c.Name).ToList();
-			Ingredients = _ingredientRepository.GetAll().Select(i => i.Name).ToList();
+			Categories = _categoryService.GetAll().Select(c => c.Name).ToList();
+			Ingredients = _recipeService.GetIngredients().Select(i => i.Name).ToList();
 
-			var shoppingLists = _shoppingListRepository.GetAll();
+			var shoppingLists = _shoppingListService.GetAll();
 			ShoppingLists.Clear();
 
 			foreach (ShoppingList list in shoppingLists)

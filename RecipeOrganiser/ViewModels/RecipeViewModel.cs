@@ -3,8 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Input;
 using RecipeOrganiser.Domain.Models;
-using RecipeOrganiser.Domain.Repositories;
-using RecipeOrganiser.Utils;
+using RecipeOrganiser.Domain.Services.Abstract;
 using RecipeOrganiser.Utils.General;
 using RecipeOrganiser.ViewModels.Base;
 
@@ -15,33 +14,19 @@ namespace RecipeOrganiser.ViewModels
 		private const string PlaceholderImagePath = "../../../Images/image-placeholder.png";
 		private readonly byte[] PlaceholderImageData;
 
-		private readonly IMapper _mapper;
-
-		private readonly IRecipeRepository _recipeRepository;
-		private readonly ICategoryRepository _categoryRepository;
-		private readonly IIngredientRepository _ingredientRepository;
-		private readonly IUnitOfMeasurementRepository _unitOfMeasurementRepository;
-
+		private readonly IRecipeService _recipeService;
+		private readonly ICategoryService _categoryService;
 		private readonly IngredientDTO _ingredientDTO;
 
-		public RecipeViewModel(
-			IMapper mapper,
-			IRecipeRepository recipeRepository,
-			ICategoryRepository categoryRepository,
-			IIngredientRepository ingredientRepository,
-			IUnitOfMeasurementRepository unitOfMeasurementRepository)
+		public RecipeViewModel(IRecipeService recipeService, ICategoryService categoryService)
 		{
-			_mapper = mapper;
-
-			_recipeRepository = recipeRepository;
-			_categoryRepository = categoryRepository;
-			_ingredientRepository = ingredientRepository;
-			_unitOfMeasurementRepository = unitOfMeasurementRepository;
+			_recipeService = recipeService;
+			_categoryService = categoryService;
 
 			_ingredientDTO = new IngredientDTO
 			{
-				Ingredients = _ingredientRepository.GetAll(),
-				UnitsOfMeasurement = _unitOfMeasurementRepository.GetAll()
+				Ingredients = _recipeService.GetIngredients(),
+				UnitsOfMeasurement = recipeService.GetUnits()
 			};
 
 			PlaceholderImageData = File.ReadAllBytes(PlaceholderImagePath);
@@ -51,7 +36,6 @@ namespace RecipeOrganiser.ViewModels
 		#region Properties
 
 		public int Id { get; set; }
-		public Recipe CurrentRecipe { get; set; }
 
 		private string _title;
 		public string Title
@@ -116,7 +100,7 @@ namespace RecipeOrganiser.ViewModels
 			set
 			{
 				if (value == null)
-					return;
+					value = PlaceholderImageData;
 
 				if (SetBackingFieldProperty<byte[]>(ref _image, value, nameof(Image)))
 				{
@@ -168,7 +152,7 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (_categories == null)
 				{
-					_categories = new ObservableCollection<Category>(_categoryRepository.GetAll());
+					_categories = new ObservableCollection<Category>(_categoryService.GetAll());
 				}
 				return _categories;
 			}
@@ -248,32 +232,35 @@ namespace RecipeOrganiser.ViewModels
 				Category = new Category { Name = CategoryName };
 			}
 
-			var recipe = new Recipe();
 			bool shouldClear = false;
-			if (CurrentRecipe != null)
+			var recipeId = Id;
+
+			if (recipeId == 0)
 			{
-				recipe = CurrentRecipe;
-				_mapper.Map(recipeViewModel, recipe);
-				OnRecordUpdated<Recipe>(recipe.Name);
+				recipeId = _recipeService.Create(Name, Description, Note, Image, Category);
+				OnRecordCreated<Recipe>(recipeViewModel.Name);
+				shouldClear = true;
 			}
 			else
 			{
-				_mapper.Map(recipeViewModel, recipe, nameof(RecipeIngredients));
-				shouldClear = true;
-				OnRecordCreated<Recipe>(recipe.Name);
+				_recipeService.Update(Id, Name, Description, Note, Image, Category);
+				OnRecordUpdated<Recipe>(recipeViewModel.Name);
 			}
 
-			recipe.RecipeIngredients = new List<RecipeIngredient>();
+			var recipe = _recipeService.GetWithIngredients(recipeId);
+			recipe.RecipeIngredients.Clear();
+
 			foreach (var addIngredientViewModel in AddIngredientControls)
 			{
 				addIngredientViewModel.SetIngredientIfNew();
 
-				var recipeIngredient = new RecipeIngredient();
-				_mapper.Map(addIngredientViewModel, recipeIngredient);
-				recipe.RecipeIngredients.Add(recipeIngredient);
+				_recipeService.CreateRecipeIngredient(
+					recipe,
+					addIngredientViewModel.Quantity,
+					addIngredientViewModel.Weight,
+					addIngredientViewModel.Ingredient,
+					addIngredientViewModel.UnitOfMeasurement);
 			}
-
-			CreateOrUpdateRecipe(recipe);
 
 			if (shouldClear)
 				Clear();
@@ -311,27 +298,10 @@ namespace RecipeOrganiser.ViewModels
 			AddIngredientControls.Remove(addIngredietnViewModel);
 		}
 
-		/// <summary>
-		/// Creates or updates a recipe.
-		/// </summary>
-		/// <param name="recipe">A recipe to create or update in the DB table</param>
-		private void CreateOrUpdateRecipe(Recipe recipe)
-		{
-			if (recipe.Id == 0)
-			{
-				_recipeRepository.Create(recipe);
-			}
-			else
-			{
-				_recipeRepository.Update(recipe);
-			}
-
-			_recipeRepository.SaveChanges();
-		}
 
 		public override void Refresh()
 		{
-			var categories = _categoryRepository.GetAll();
+			var categories = _categoryService.GetAll();
 
 			Categories.Clear();
 			foreach (Category category in categories)
@@ -339,7 +309,7 @@ namespace RecipeOrganiser.ViewModels
 				Categories.Add(category);
 			}
 
-			_ingredientDTO.Ingredients = _ingredientRepository.GetAll();
+			_ingredientDTO.Ingredients = _recipeService.GetIngredients();
 			CanExit = true;
 
 			base.Refresh();
@@ -354,7 +324,6 @@ namespace RecipeOrganiser.ViewModels
 			CategoryName = string.Empty;
 			Category = null;
 			Image = PlaceholderImageData;
-			CurrentRecipe = null;
 			AddIngredientControls.Clear();
 
 			CanExit = true;

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using RecipeOrganiser.Domain.Models;
-using RecipeOrganiser.Domain.Repositories;
+using RecipeOrganiser.Domain.Services.Abstract;
 using RecipeOrganiser.Utils.General;
 using RecipeOrganiser.ViewModels.Base;
 
@@ -11,13 +11,13 @@ namespace RecipeOrganiser.ViewModels
 {
 	public class CategoriesViewModel : BaseViewModel
 	{
-		private readonly ICategoryRepository _categoryRepository;
+		private readonly ICategoryService _categoryService;
 
-		public CategoriesViewModel(ICategoryRepository categoryRepository)
+		public CategoriesViewModel(ICategoryService categoryService)
 		{
-			_categoryRepository = categoryRepository;
+			_categoryService = categoryService;
 
-			Categories = new ObservableCollection<Category>(_categoryRepository.GetAll());
+			Categories = new ObservableCollection<Category>(_categoryService.GetAll());
 			SelectedCategories = new List<Category>();
 		}
 
@@ -42,17 +42,16 @@ namespace RecipeOrganiser.ViewModels
 			{
 				if (category.Id == 0)
 				{
-					_categoryRepository.Create(category);
+					_categoryService.Create(category.Name, category.Description);
 					OnRecordCreated<Category>(category.Name);
 				}
 				else
 				{
-					_categoryRepository.Update(category);
+					_categoryService.Update(category.Id, category.Name, category.Description);
 					OnRecordUpdated<Category>(category.Name);
 				}
 			}
 
-			_categoryRepository.SaveChanges();
 			CanExit = true;
 		}
 
@@ -65,11 +64,10 @@ namespace RecipeOrganiser.ViewModels
 				{
 					continue;
 				}
-				_categoryRepository.Delete(selectedCategory.Id);
+				_categoryService.Delete(selectedCategory.Id);
 				OnRecordDeleted<Category>(selectedCategory.Name);
 			}
 
-			_categoryRepository.SaveChanges();
 			SelectedCategories.Clear();
 			Refresh();
 		}
@@ -78,13 +76,13 @@ namespace RecipeOrganiser.ViewModels
 		{
 			base.Refresh();
 
-			var categories = _categoryRepository.GetAll();
+			var categories = _categoryService.GetAll();
 			SelectedCategories.Clear();
 			Categories.Clear();
 
 			foreach (Category category in categories)
 			{
-				_categoryRepository.Reload(category);
+				_categoryService.Reload(category);
 				Categories.Add(category);
 			}
 		}

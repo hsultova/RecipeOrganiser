@@ -5,6 +5,8 @@ using Microsoft.Extensions.Hosting;
 using RecipeOrganiser.Data.DbContexts;
 using RecipeOrganiser.Data.Repositories;
 using RecipeOrganiser.Domain.Repositories;
+using RecipeOrganiser.Domain.Services;
+using RecipeOrganiser.Domain.Services.Abstract;
 using RecipeOrganiser.Utils;
 using RecipeOrganiser.ViewModels;
 
@@ -33,6 +35,10 @@ namespace RecipeOrganiser
 					services.AddScoped<IUnitOfMeasurementRepository, UnitOfMeasurementRepository>();
 					services.AddScoped<IShoppingListRepository, ShoppingListRepository>();
 					services.AddScoped<IShoppingListRecipeRepository, ShoppingListRecipeRepository>();
+
+					services.AddScoped<IRecipeService, RecipeService>();
+					services.AddScoped<ICategoryService, CategoryService>();
+					services.AddScoped<IShoppingListService, ShoppingListService>();
 
 					services.AddScoped<RecipeViewModel>();
 					services.AddScoped<AddIngredientViewModel>();

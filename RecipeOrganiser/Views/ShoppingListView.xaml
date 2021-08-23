@@ -35,7 +35,7 @@
 							</MenuItem>
 							<MenuItem
 								x:Name="DeleteToolbarMenuItem"
-								Command="{Binding EditCommand}"
+								Command="{Binding DeleteCommand}"
 								IsEnabled="False"
 								ToolTipService.ShowOnDisabled="True"
 								Cursor="Hand"

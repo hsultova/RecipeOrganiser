@@ -2,8 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using RecipeOrganiser.Domain.Models;
-using RecipeOrganiser.Domain.Repositories;
-using RecipeOrganiser.Utils;
+using RecipeOrganiser.Domain.Services.Abstract;
 using RecipeOrganiser.Utils.General;
 using RecipeOrganiser.ViewModels.Base;
 
@@ -11,30 +10,20 @@ namespace RecipeOrganiser.ViewModels
 {
 	public class EditShoppingListViewModel : BaseViewModel
 	{
-		private readonly IMapper _mapper;
-
-		private readonly IShoppingListRepository _shoppingListRepository;
-		private readonly IIngredientRepository _ingredientRepository;
-		private readonly IUnitOfMeasurementRepository _unitOfMeasurementRepository;
+		private readonly IShoppingListService _shoppingListService;
+		private readonly IRecipeService _recipeService;
 
 		private readonly IngredientDTO _ingredientDTO;
 
-		public EditShoppingListViewModel(
-			IMapper mapper,
-			IShoppingListRepository shoppingListRepository,
-			IIngredientRepository ingredientRepository,
-			IUnitOfMeasurementRepository unitOfMeasurementRepository)
+		public EditShoppingListViewModel(IShoppingListService shoppingListService, IRecipeService recipeService)
 		{
-			_mapper = mapper;
-
-			_shoppingListRepository = shoppingListRepository;
-			_ingredientRepository = ingredientRepository;
-			_unitOfMeasurementRepository = unitOfMeasurementRepository;
+			_shoppingListService = shoppingListService;
+			_recipeService = recipeService;
 
 			_ingredientDTO = new IngredientDTO
 			{
-				Ingredients = _ingredientRepository.GetAll(),
-				UnitsOfMeasurement = _unitOfMeasurementRepository.GetAll()
+				Ingredients = _recipeService.GetIngredients(),
+				UnitsOfMeasurement = _recipeService.GetUnits()
 			};
 		}
 
@@ -76,7 +65,7 @@ namespace RecipeOrganiser.ViewModels
 			}
 			set
 			{
-				if(SetBackingFieldProperty<ObservableCollection<AddIngredientViewModel>>(ref _addIngredientControls, value, nameof(AddIngredientControls)))
+				if (SetBackingFieldProperty<ObservableCollection<AddIngredientViewModel>>(ref _addIngredientControls, value, nameof(AddIngredientControls)))
 				{
 					CanExit = false;
 				}
@@ -112,16 +101,20 @@ namespace RecipeOrganiser.ViewModels
 			{
 				addIngredientViewModel.SetIngredientIfNew();
 
-				var shopppingListIngredient = new ShoppingListIngredient();
-				_mapper.Map(addIngredientViewModel, shopppingListIngredient);
+				var shopppingListIngredient = new ShoppingListIngredient
+				{
+					Ingredient = addIngredientViewModel.Ingredient,
+					Quantity = addIngredientViewModel.Quantity,
+					UnitOfMeasurement = addIngredientViewModel.UnitOfMeasurement,
+					Weight = addIngredientViewModel.Weight
+				};
 				CurrentShoppingList.ShoppingListIngredients.Add(shopppingListIngredient);
 			}
 
 			OnRecordUpdated<ShoppingList>(CurrentShoppingList.Name);
 			Refresh();
 
-			_shoppingListRepository.Update(CurrentShoppingList);
-			_shoppingListRepository.SaveChanges();
+			_shoppingListService.Update(CurrentShoppingList.Id, CurrentShoppingList.Name, CurrentShoppingList.Description);
 		}
 
 		private void Delete(object obj)
@@ -135,7 +128,7 @@ namespace RecipeOrganiser.ViewModels
 
 		public override void Refresh()
 		{
-			_ingredientDTO.Ingredients = _ingredientRepository.GetAll();
+			_ingredientDTO.Ingredients = _recipeService.GetIngredients();
 			CanExit = true;
 
 			base.Refresh();
