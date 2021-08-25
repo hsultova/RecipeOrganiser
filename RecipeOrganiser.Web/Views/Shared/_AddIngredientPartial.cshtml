@@ -1,0 +1,39 @@
+﻿@model RecipeIngredientViewModel
+
+<div id="addIngredientControl" class="row">
+	<div class="col">
+		<div class="form-group">
+			<label asp-for="Name"></label>
+			<input class="form-control" asp-for="Name" />
+			<span asp-validation-for="Name"></span>
+		</div>
+	</div>
+	<div class="col">
+		<div class="form-group">
+			<label asp-for="Quantity"></label>
+			<input class="form-control" asp-for="Quantity" />
+			<span asp-validation-for="Quantity"></span>
+		</div>
+	</div>
+	<div class="col">
+		<div class="form-group">
+			<label asp-for="Weight"></label>
+			<input class="form-control" asp-for="Weight" />
+			<span asp-validation-for="Weight"></span>
+		</div>
+	</div>
+		<div class="col-sm-1 target">
+
+			<a style="visibility:hidden"> Delete :</a>   @*just to make the button align *@
+			<button id="deleteButton" type="submit">
+			</button>
+
+		</div>
+	</div>
+
+
+
+@*<div class="form-group">
+		<label asp-for="UnitId"></label>
+		<select class="form-control" asp-for="UnitId" asp-items="Model.Units"></select>
+	</div>*@

@@ -1,0 +1,15 @@
+﻿@model List<RecipeViewModel>
+@{
+	ViewData["Title"] = "Recipes";
+}
+
+<ul class="nav navbar">
+	<li><button class="btn btn-dark" asp-action="Create" asp-controller="Recipe">Create</button></li>
+</ul>
+
+<ul>
+	@foreach (var recipe in Model)
+	{
+		<li>@recipe.Name</li>
+	}
+</ul>
