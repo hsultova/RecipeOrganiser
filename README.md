@@ -1,3 +1,8 @@
+# Table of Contents
+1. [RecipeOrganiser - Desktop App](#recipeorganiser)
+2. [RecipeOrganiser - Web App](#recipeorganiser-web-application)
+
+
 # RecipeOrganiser
 **Recipe Organiser** is a desktop application for recipe organisation. The user can **create, edit, delete recipes** and organise them in **categories**. Also, the user can **create a shopping list** and add **ingredients** from existing recipes to it or add **new ingredients.** The items from the shopping list can be **checked/unchecked.**
 
@@ -38,7 +43,14 @@ Shopping list
 ![image](https://user-images.githubusercontent.com/13272856/129004745-8c3a36d8-6803-4f84-baf6-4fff60938e6e.png)
 
 
-**RecipeOrganiser Web application (Work in progress)**
+# RecipeOrganiser Web application
+- (Work in progress)
+- Recipe Organiser with web presentation layer. Reuse db models and functionality from the desktop version of the app.
+
+**Technologies:**
+
+- C#, ASP.NET Core 3.1 MVC
+- SQL
 
 ![image](https://user-images.githubusercontent.com/13272856/130783640-41f53be5-102b-43de-89a4-c070e47c0d45.png)
 
