@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +45,25 @@ namespace RecipeOrganiser.Web.Controllers
 			return View(model);
 		}
 
+		[HttpGet]
+		public IActionResult GetRecipeImageFile(int recipeId)
+		{
+			var recipe = _recipeService.Get(recipeId);
+
+			if (recipe.Image == null)
+			{
+				var path = Path.Combine("/images/placeholder.png");
+				return File(path, "image/png");
+			}
+
+			return GetFileFromBytes(recipe.Image);
+		}
+
+		public FileResult GetFileFromBytes(byte[] bytesIn)
+		{
+			return File(bytesIn, "image/png");
+		}
+
 		// GET: RecipeController/Details/5
 		public IActionResult Details(int id)
 		{
@@ -50,6 +71,7 @@ namespace RecipeOrganiser.Web.Controllers
 		}
 
 		// GET: RecipeController/Create
+		[HttpGet]
 		public IActionResult Create()
 		{
 			var model = new RecipeViewModel { Categories = _categoryService.GetAll().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name, Selected = true }) };
@@ -64,7 +86,7 @@ namespace RecipeOrganiser.Web.Controllers
 			if (ModelState.IsValid)
 			{
 				//ToDO: Create RecipeIngredients
-				_recipeService.Create(model.Name, model.Description, model.Note, model.Image.ToBytes(), model.CategoryId);
+				_recipeService.Create(model.Name, model.Description, model.Note, model.Image?.ToBytes(), model.CategoryId);
 
 				return RedirectToAction(nameof(Index));
 				

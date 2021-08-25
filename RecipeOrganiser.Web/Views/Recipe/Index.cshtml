@@ -1,15 +1,34 @@
 ﻿@model List<RecipeViewModel>
+
 @{
 	ViewData["Title"] = "Recipes";
+	int counter = 0;
 }
 
 <ul class="nav navbar">
-	<li><button class="btn btn-dark" asp-action="Create" asp-controller="Recipe">Create</button></li>
+	<li class="nav-item">
+		<a class="btn btn-primary" role="button" asp-area="" asp-controller="Recipe" asp-action="Create">Create</a>
+	</li>
 </ul>
 
-<ul>
+<div class="row">
 	@foreach (var recipe in Model)
 	{
-		<li>@recipe.Name</li>
+		if (counter != 0 && counter % 3 == 0)
+		{
+		@:</div>
+		@:<div class="row">
+		}
+
+		<div class="col-md-4">
+			<div class="card bg-light mb-3" style="max-width: 18rem;">
+				<img class="card-img-top" src='@Url.Action("GetRecipeImageFile", "Recipe", new { recipeId = recipe.Id })' width="400" />
+				<div class="card-body">
+					<h5 class="card-title">@recipe.Name</h5>
+				</div>
+			</div>
+		</div>
+
+		counter++;
 	}
-</ul>
+</div>
