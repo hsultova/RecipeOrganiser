@@ -11,6 +11,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RecipeOrganiser.Data.Repositories;
+using RecipeOrganiser.Domain.Repositories;
+using RecipeOrganiser.Domain.Services;
+using RecipeOrganiser.Domain.Services.Abstract;
 using RecipeOrganiser.Web.Data;
 
 namespace RecipeOrganiser.Web
@@ -32,6 +36,16 @@ namespace RecipeOrganiser.Web
 					Configuration.GetConnectionString("DefaultConnection")));
 			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<ApplicationDbContext>();
+
+			services.AddScoped<IRecipeRepository, RecipeRepository>();
+			services.AddScoped<ICategoryRepository, CategoryRepository>();
+			services.AddScoped<IIngredientRepository, IngredientRepository>();
+			services.AddScoped<IRecipeIngredientRepository, RecipeIngredientRepository>();
+			services.AddScoped<IUnitOfMeasurementRepository, UnitOfMeasurementRepository>();
+
+			services.AddScoped<IRecipeService, RecipeService>();
+			services.AddScoped<ICategoryService, CategoryService>();
+
 			services.AddControllersWithViews();
 			services.AddRazorPages();
 		}
