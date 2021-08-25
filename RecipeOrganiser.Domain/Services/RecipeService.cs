@@ -26,6 +26,11 @@ namespace RecipeOrganiser.Domain.Services
 			return _recipeRepository.GetAll();
 		}
 
+		public Recipe Get(int id)
+		{
+			return _recipeRepository.Get(id);
+		}
+
 		public Recipe GetWithIngredients(int id)
 		{
 			return _recipeRepository.Get(r => r.Id == id, r => r.RecipeIngredients);

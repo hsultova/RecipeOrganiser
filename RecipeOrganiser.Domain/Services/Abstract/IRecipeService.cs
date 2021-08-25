@@ -7,6 +7,8 @@ namespace RecipeOrganiser.Domain.Services.Abstract
 	{
 		IList<Recipe> GetAll();
 
+		Recipe Get(int id);
+
 		Recipe GetWithIngredients(int id);
 
 		int Create(
