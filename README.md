@@ -53,6 +53,7 @@ Shopping list
 - SQL
 
 ![image](https://user-images.githubusercontent.com/13272856/130783640-41f53be5-102b-43de-89a4-c070e47c0d45.png)
-![image](https://user-images.githubusercontent.com/13272856/130813385-27687752-9914-4079-8479-513ae28e7b01.png)
+![image](https://user-images.githubusercontent.com/13272856/130950658-82d732a6-a2ec-47b2-8b17-35241a0f3b8b.png)
+
 
 
