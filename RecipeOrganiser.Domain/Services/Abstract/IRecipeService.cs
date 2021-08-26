@@ -9,7 +9,7 @@ namespace RecipeOrganiser.Domain.Services.Abstract
 
 		Recipe Get(int id);
 
-		Recipe GetWithIngredients(int id);
+		Recipe GetFull(int id);
 
 		int Create(
 			string name,

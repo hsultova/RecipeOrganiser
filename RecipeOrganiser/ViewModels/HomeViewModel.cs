@@ -171,7 +171,7 @@ namespace RecipeOrganiser.ViewModels
 
 		private void Edit(object obj)
 		{
-			var recipe = _recipeService.GetWithIngredients(((Recipe)obj).Id);
+			var recipe = _recipeService.GetFull(((Recipe)obj).Id);
 
 			_recipeViewModel.Id = recipe.Id;
 			_recipeViewModel.Name = recipe.Name;

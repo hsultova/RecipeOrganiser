@@ -247,7 +247,7 @@ namespace RecipeOrganiser.ViewModels
 				OnRecordUpdated<Recipe>(recipeViewModel.Name);
 			}
 
-			var recipe = _recipeService.GetWithIngredients(recipeId);
+			var recipe = _recipeService.GetFull(recipeId);
 			recipe.RecipeIngredients.Clear();
 
 			foreach (var addIngredientViewModel in AddIngredientControls)

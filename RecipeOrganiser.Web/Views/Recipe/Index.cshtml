@@ -1,4 +1,4 @@
-﻿@model List<RecipeViewModel>
+﻿@model RecipesIndexViewModel
 
 @{
 	ViewData["Title"] = "Recipes";
@@ -11,24 +11,37 @@
 	</li>
 </ul>
 
-<div class="row">
-	@foreach (var recipe in Model)
-	{
-		if (counter != 0 && counter % 3 == 0)
-		{
-		@:</div>
-		@:<div class="row">
-		}
+<div class="container">
+	<div class="row justify-content-end">
+		<form class="form-inline" asp-action="Index" asp-controller="Recipe">
+			<div class="form-group">
+				<input class="form-control m-sm-2" asp-for="SearchText" />
+				<select class="form-control m-sm-2" asp-items="Model.Categories" asp-for="CategoryName"></select>
+				@*<select asp-items="Model.Ingredients" asp-for="IngredientName"></select>*@
+			</div>
+			<button type="submit" class="btn btn-info m-sm-2">Filter</button>
+		</form>
+	</div>	
 
-		<div class="col-md-4">
-			<div class="card bg-light mb-3" style="max-width: 18rem;">
-				<img class="card-img-top" src='@Url.Action("GetRecipeImageFile", "Recipe", new { recipeId = recipe.Id })' width="400" />
-				<div class="card-body">
-					<h5 class="card-title">@recipe.Name</h5>
+	<div class="row">
+		@foreach (var recipe in Model.Recipes)
+		{
+			if (counter != 0 && counter % 3 == 0)
+			{
+			@:</div>
+			@:<div class="row">
+			}
+
+			<div class="col-md-4">
+				<div class="card bg-light mb-3" style="max-width: 18rem;">
+					<img class="card-img-top" src='@Url.Action("GetRecipeImageFile", "Recipe", new { recipeId = recipe.Id })' width="400" />
+					<div class="card-body">
+						<h5 class="card-title">@recipe.Name</h5>
+					</div>
 				</div>
 			</div>
-		</div>
 
-		counter++;
-	}
+			counter++;
+		}
+	</div>
 </div>

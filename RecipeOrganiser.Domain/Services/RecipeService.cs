@@ -31,9 +31,9 @@ namespace RecipeOrganiser.Domain.Services
 			return _recipeRepository.Get(id);
 		}
 
-		public Recipe GetWithIngredients(int id)
+		public Recipe GetFull(int id)
 		{
-			return _recipeRepository.Get(r => r.Id == id, r => r.RecipeIngredients);
+			return _recipeRepository.Get(r => r.Id == id, r => r.RecipeIngredients, r => r.Category);
 		}
 
 		public int Create(
@@ -207,7 +207,7 @@ namespace RecipeOrganiser.Domain.Services
 				return true;
 			}
 
-			Recipe recipe = GetWithIngredients(recipeId);
+			Recipe recipe = GetFull(recipeId);
 
 			bool hasName = true;
 			if (!string.IsNullOrEmpty(searchText))

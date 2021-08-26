@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using RecipeOrganiser.Domain.Models;
 using RecipeOrganiser.Domain.Services.Abstract;
 using RecipeOrganiser.Web.Helpers;
+using RecipeOrganiser.Web.Helpers.Extensions;
 using RecipeOrganiser.Web.Models;
 
 namespace RecipeOrganiser.Web.Controllers
@@ -25,22 +23,28 @@ namespace RecipeOrganiser.Web.Controllers
 		}
 
 		// GET: RecipeController
-		public IActionResult Index()
+		public IActionResult Index(RecipesIndexViewModel model)
 		{
-			var model = new List<RecipeViewModel>();
-			IList<Recipe> recipes = _recipeService.GetAll();
-
+			var recipesVm = new List<RecipeViewModel>();
+			var recipes = _recipeService.GetAll();
 			foreach (var recipe in recipes)
 			{
-				model.Add(new RecipeViewModel
+				if(_recipeService.IsVisible(recipe.Id, model.SearchText, model.CategoryName, model.IngredientName, true))
 				{
-					Id = recipe.Id,
-					Name = recipe.Name,
-					Description = recipe.Description,
-					Note = recipe.Note,
-					CategoryId = recipe.CategoryId
-				});
+					recipesVm.Add(new RecipeViewModel
+					{
+						Id = recipe.Id,
+						Name = recipe.Name,
+						Description = recipe.Description,
+						Note = recipe.Note,
+						CategoryId = recipe.CategoryId
+					});
+				}
 			}
+
+			model.Recipes = recipesVm;
+			model.Categories = _categoryService.GetAll().ToSelectListItem<Category>(x => x.Name, x => x.Name);
+			model.Ingredients = _recipeService.GetIngredients().ToSelectListItem<Ingredient>(x => x.Name, x => x.Name);
 
 			return View(model);
 		}
@@ -74,7 +78,7 @@ namespace RecipeOrganiser.Web.Controllers
 		[HttpGet]
 		public IActionResult Create()
 		{
-			var model = new RecipeViewModel { Categories = _categoryService.GetAll().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name, Selected = true }) };
+			var model = new RecipeViewModel { Categories = _categoryService.GetAll().ToSelectListItem<Category>(x => x.Name, x => x.Id.ToString()) };
 			return View(model);
 		}
 
@@ -89,10 +93,10 @@ namespace RecipeOrganiser.Web.Controllers
 				_recipeService.Create(model.Name, model.Description, model.Note, model.Image?.ToBytes(), model.CategoryId);
 
 				return RedirectToAction(nameof(Index));
-				
+
 			}
 
-			model.Categories = _categoryService.GetAll().Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name, Selected = true });
+			model.Categories = _categoryService.GetAll().ToSelectListItem<Category>(x => x.Name, x => x.Id.ToString());
 			return View(model);
 		}
 
