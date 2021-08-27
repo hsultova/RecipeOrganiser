@@ -55,6 +55,10 @@ Shopping list
 ![image](https://user-images.githubusercontent.com/13272856/130783640-41f53be5-102b-43de-89a4-c070e47c0d45.png)
 ![image](https://user-images.githubusercontent.com/13272856/131121743-ff11faa1-2597-48e2-9f0f-568abf753be4.png)
 ![image](https://user-images.githubusercontent.com/13272856/131121467-3eebdceb-c687-4370-bb85-dce5a2e0047c.png)
+![image](https://user-images.githubusercontent.com/13272856/131138066-5d396259-73dd-4cd8-9706-a4b2c5d55253.png)
+![image](https://user-images.githubusercontent.com/13272856/131138166-1bcff996-6489-404b-bda8-bd603be24acf.png)
+![image](https://user-images.githubusercontent.com/13272856/131138116-10f1a14f-b8d2-495b-8e0b-146d627a02c1.png)
+
 
 
 
