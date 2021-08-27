@@ -21,7 +21,7 @@
 			</div>
 			<button type="submit" class="btn btn-info m-sm-2">Filter</button>
 		</form>
-	</div>	
+	</div>
 
 	<div class="row">
 		@foreach (var recipe in Model.Recipes)
@@ -33,12 +33,7 @@
 			}
 
 			<div class="col-md-4">
-				<div class="card bg-light mb-3" style="max-width: 18rem;">
-					<img class="card-img-top" src='@Url.Action("GetRecipeImageFile", "Recipe", new { recipeId = recipe.Id })' width="400" />
-					<div class="card-body">
-						<h5 class="card-title">@recipe.Name</h5>
-					</div>
-				</div>
+				@await Html.PartialAsync("_RecipeCard", recipe) 
 			</div>
 
 			counter++;

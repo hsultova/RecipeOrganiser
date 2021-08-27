@@ -1,0 +1,16 @@
+﻿@model RecipeViewModel
+
+<div class="card bg-light mb-3" style="max-width: 18rem;">
+	<img class="card-img-top" src='@Url.Action("GetRecipeImageFile", "Recipe", new { recipeId = Model.Id })' width="400" />
+	<div class="card-body">
+		<h5 class="card-title">@Model.Name</h5>
+		<a class="btn btn-primary" asp-action="Edit" asp-controller="Recipe" asp-route-id="@Model.Id">Edit</a>
+		<a 
+		   id="delete" 
+		   class="btn btn-danger" 
+		   asp-action="Delete" asp-controller="Recipe" asp-route-id="@Model.Id" 
+		   onclick="return confirm('This item will be permanently deleted. Are you sure?')">
+			Delete
+		</a>
+	</div>
+</div>
