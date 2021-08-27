@@ -1,0 +1,9 @@
+﻿@model RecipeViewModel
+
+<div class="card bg-light mb-3" style="max-width: 18rem;">
+	<img id="previewImage" class="card-img-top" src='@Url.Action("GetRecipeImageFile", "Recipe", new { recipeId = Model.Id })' width="400" />
+</div>
+<div class="form-group">
+	<label asp-for="Image" class="control-label"></label>
+	<input id="imageFile" type="file" asp-for="Image" />
+</div>
