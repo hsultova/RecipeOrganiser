@@ -4,13 +4,14 @@
 	<img class="card-img-top" src='@Url.Action("GetRecipeImageFile", "Recipe", new { recipeId = Model.Id })' width="400" />
 	<div class="card-body">
 		<h5 class="card-title">@Model.Name</h5>
-		<a class="btn btn-primary" asp-action="Edit" asp-controller="Recipe" asp-route-id="@Model.Id">Edit</a>
-		<a 
-		   id="delete" 
-		   class="btn btn-danger" 
-		   asp-action="Delete" asp-controller="Recipe" asp-route-id="@Model.Id" 
-		   onclick="return confirm('This item will be permanently deleted. Are you sure?')">
-			Delete
-		</a>
+		<div class="btn-group btn-group-sm" role="group" aria-label="Recipe actions">
+			<a class="btn btn-light" asp-action="Edit" asp-controller="Recipe" asp-route-id="@Model.Id"><img src="~/images/edit.png" /></a>
+			<a id="delete"
+			   class="btn btn-light"
+			   asp-action="Delete" asp-controller="Recipe" asp-route-id="@Model.Id"
+			   onclick="return confirm('This item will be permanently deleted. Are you sure?')">
+				<img src="~/images/delete.png" />
+			</a>
+		</div>
 	</div>
 </div>
