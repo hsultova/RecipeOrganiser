@@ -1,5 +1,48 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<CategoryViewModel>
+
 @{
+	ViewData["Title"] = "Categories";
 }
+
+<ul class="nav navbar float-md-right">
+	<li class="nav-item">
+		<a class="btn btn-primary" role="button" asp-area="" asp-controller="Category" asp-action="Create">Create</a>
+	</li>
+</ul>
+
+<div class="row">
+	<div class="col-4">
+		<div class="list-group" id="list-tab" role="tablist">
+			@foreach (var category in Model)
+			{
+				<a class="list-group-item list-group-item-action" id="list-@category.Id-list" data-toggle="list" href="#list-@category.Id" role="tab" aria-controls="@category.Id">
+					@category.Name
+					<span class="badge badge-dark badge-pill">@category.RecipeCount</span>
+				</a>
+			}
+		</div>
+	</div>
+	<div class="col-8">
+		<div class="tab-content" id="nav-tabContent">
+			@foreach (var category in Model)
+			{
+			<div class="tab-pane fade" id="list-@category.Id" role="tabpanel" aria-labelledby="list-@category.Id-list">
+
+				<h4>
+					@category.Name
+					<span class="float-right">
+						<a class="btn btn-light" asp-action="Edit" asp-controller="Category" asp-route-id="@category.Id"><img src="~/images/edit.png" /></a>
+						<a id="delete"
+						   class="btn btn-light"
+						   asp-action="Delete" asp-controller="Category" asp-route-id="@category.Id"
+						   onclick="return confirm('This item will be permanently deleted. Are you sure?')">
+							<img src="~/images/delete.png" />
+						</a>
+					</span>
+				</h4>
+				@category.Description
+			</div>
+			}
+		</div>
+	</div>
+</div>

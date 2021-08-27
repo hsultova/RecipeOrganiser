@@ -20,7 +20,20 @@ namespace RecipeOrganiser.Web.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+			var categories = _categoryService.GetAll();
+			var model = new List<CategoryViewModel>();
+			foreach (var category in categories)
+			{
+					model.Add(new CategoryViewModel
+					{
+						Id = category.Id,
+						Name = category.Name,
+						Description = category.Description,
+						RecipeCount = _categoryService.GetRecipeCount(category.Id)
+					});
+			}
+
+			return View(model);
 		}
 
 		[HttpGet]
@@ -30,7 +43,6 @@ namespace RecipeOrganiser.Web.Controllers
 			return View(model);
 		}
 
-		// POST: RecipeController/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Create(CategoryViewModel model)
@@ -45,6 +57,41 @@ namespace RecipeOrganiser.Web.Controllers
 			}
 
 			return View(model);
+		}
+
+		public IActionResult Edit(int id)
+		{
+			var category = _categoryService.Get(id);
+			var model = new CategoryViewModel
+			{
+				Id = id,
+				Name = category.Name,
+				Description = category.Description,
+			};
+			return View(model);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Edit(int id, CategoryViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				//ToDO: Edit RecipeIngredients
+				_categoryService.Update(id, model.Name, model.Description);
+
+				return RedirectToAction(nameof(Index));
+
+			}
+
+			return View(model);
+		}
+
+		// GET: RecipeController/Delete/5
+		public IActionResult Delete(int id)
+		{
+			_categoryService.Delete(id);
+			return RedirectToAction(nameof(Index));
 		}
 	}
 }

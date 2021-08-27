@@ -19,6 +19,11 @@ namespace RecipeOrganiser.Domain.Services
 			return _categoryRepository.GetAll();
 		}
 
+		public Category Get(int id)
+		{
+			return _categoryRepository.Get(id);
+		}
+
 		public int Create(
 			string name,
 			string description)
@@ -58,6 +63,12 @@ namespace RecipeOrganiser.Domain.Services
 		public void Reload(Category category)
 		{
 			_categoryRepository.Reload(category);
+		}
+
+		public int GetRecipeCount(int id)
+		{
+			var category = _categoryRepository.Get(r => r.Id == id, r=> r.Recipes);
+			return category.Recipes.Count;
 		}
 	}
 }

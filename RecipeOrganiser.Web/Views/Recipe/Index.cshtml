@@ -5,13 +5,13 @@
 	int counter = 0;
 }
 
-<ul class="nav navbar">
-	<li class="nav-item">
-		<a class="btn btn-primary" role="button" asp-area="" asp-controller="Recipe" asp-action="Create">Create</a>
-	</li>
-</ul>
+<div class="m-4">
+	<ul class="nav navbar float-md-right">
+		<li class="nav-item">
+			<a class="btn btn-primary" role="button" asp-area="" asp-controller="Recipe" asp-action="Create">Create</a>
+		</li>
+	</ul>
 
-<div class="container">
 	<div class="row justify-content-end">
 		<form class="form-inline" asp-action="Index" asp-controller="Recipe">
 			<div class="form-group">
@@ -23,20 +23,22 @@
 		</form>
 	</div>
 
-	<div class="row">
-		@foreach (var recipe in Model.Recipes)
-		{
-			if (counter != 0 && counter % 3 == 0)
-			{
-			@:</div>
-			@:<div class="row">
-			}
-
-			<div class="col-md-4">
-				@await Html.PartialAsync("_RecipeCard", recipe) 
-			</div>
-
-			counter++;
-		}
-	</div>
 </div>
+
+<div class="row">
+	@foreach (var recipe in Model.Recipes)
+	{
+		if (counter != 0 && counter % 3 == 0)
+		{
+		@:</div>
+		@:<div class="row">
+		}
+
+		<div class="col-md-4">
+			@await Html.PartialAsync("_RecipeCard", recipe)
+		</div>
+
+		counter++;
+	}
+</div>
+
