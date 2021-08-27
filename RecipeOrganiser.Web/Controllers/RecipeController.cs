@@ -29,7 +29,7 @@ namespace RecipeOrganiser.Web.Controllers
 			var recipes = _recipeService.GetAll();
 			foreach (var recipe in recipes)
 			{
-				if(_recipeService.IsVisible(recipe.Id, model.SearchText, model.CategoryName, model.IngredientName, true))
+				if (_recipeService.IsVisible(recipe.Id, model.SearchText, model.CategoryName, model.IngredientName, true))
 				{
 					recipesVm.Add(new RecipeViewModel
 					{
@@ -54,7 +54,7 @@ namespace RecipeOrganiser.Web.Controllers
 		{
 			var recipe = _recipeService.Get(recipeId);
 
-			if (recipe.Image == null)
+			if (recipe == null || recipe.Image == null)
 			{
 				var path = Path.Combine("/images/placeholder.png");
 				return File(path, "image/png");
@@ -108,28 +108,43 @@ namespace RecipeOrganiser.Web.Controllers
 		// GET: RecipeController/Edit/5
 		public IActionResult Edit(int id)
 		{
-			return View();
+			var recipe = _recipeService.Get(id);
+			var model = new RecipeViewModel
+			{
+				Id = id,
+				Name = recipe.Name,
+				Description = recipe.Description,
+				Note = recipe.Note,
+				Image = recipe.Image.ToFormFile(),
+				CategoryId = recipe.CategoryId,
+				Categories = _categoryService.GetAll().ToSelectListItem<Category>(x => x.Name, x => x.Id.ToString())
+			};
+			return View(model);
 		}
 
 		// POST: RecipeController/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Edit(int id, IFormCollection collection)
+		public IActionResult Edit(int id, RecipeViewModel model)
 		{
-			try
+			if (ModelState.IsValid)
 			{
+				//ToDO: Edit RecipeIngredients
+				_recipeService.Update(id, model.Name, model.Description, model.Note, model.Image?.ToBytes(), model.CategoryId);
+
 				return RedirectToAction(nameof(Index));
+
 			}
-			catch
-			{
-				return View();
-			}
+
+			model.Categories = _categoryService.GetAll().ToSelectListItem<Category>(x => x.Name, x => x.Id.ToString());
+			return View(model);
 		}
 
 		// GET: RecipeController/Delete/5
 		public IActionResult Delete(int id)
 		{
-			return View();
+			_recipeService.Delete(id);
+			return RedirectToAction(nameof(Index));
 		}
 
 		// POST: RecipeController/Delete/5

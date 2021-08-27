@@ -14,5 +14,16 @@ namespace RecipeOrganiser.Web.Helpers
 				return stream.ToArray();
 			}
 		}
+
+		public static IFormFile ToFormFile(this byte[] bytes)
+		{
+			if (bytes == null)
+				return null;
+
+			using (var stream = new MemoryStream(bytes))
+			{
+				return new FormFile(stream, 0, bytes.Length, "name", "fileName");
+			}
+		}
 	}
 }

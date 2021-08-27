@@ -1,0 +1,60 @@
+﻿@model RecipeViewModel
+@{
+	ViewData["Title"] = "Edit Recipe";
+}
+
+<form asp-action="Edit" asp-controller="Recipe" enctype="multipart/form-data">
+	<div class="float-right">
+		<button type="submit" class="btn btn-success">Save</button>
+	</div>
+
+	@await Html.PartialAsync("_PreviewRecipe", Model)
+	<div class="form-group">
+		<label asp-for="Name"></label>
+		<input class="form-control" asp-for="Name" />
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="CategoryId"></label>
+		<select class="form-control" asp-for="CategoryId" asp-items="Model.Categories"></select>
+	</div>
+	<div class="form-group">
+		<label asp-for="Description"></label>
+		<textarea class="form-control" asp-for="Description"></textarea>
+		<span asp-validation-for="Description"></span>
+	</div>
+	<div class="form-group">
+		<label asp-for="Note"></label>
+		<textarea class="form-control" asp-for="Note"></textarea>
+		<span asp-validation-for="Note"></span>
+	</div>
+	<div class="container">
+		<div id="addIngredientPartial">
+		</div>
+	</div>
+
+	<div class="float-right">
+		<button type="button" id="addIngredient" class="btn btn-light">Add Ingredient</button>
+	</div>
+</form>
+
+
+@section Scripts
+{
+	<script src="~/js/preview-recipe.js" asp-append-version="true"></script>
+	<script>
+		$(document).on('click', '#addIngredient', function (e) {
+			$.ajax({
+				url: '/Recipe/AddIngredient',
+				success: function (partialView) {
+					$('#addIngredientPartial').append(partialView);
+				}
+			});
+		});
+
+		$(document).on("click", "#deleteButton", function () {
+			$(this).parent().parent().remove();
+		});
+
+	</script>
+}
